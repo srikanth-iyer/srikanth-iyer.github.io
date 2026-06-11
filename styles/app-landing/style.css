@@ -1,0 +1,115 @@
+/* app-landing-inspired: bold gradient hero, centered column, feature cards */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #fff;
+  color: #2b2b3a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  text-align: center;
+}
+
+a { color: #6a4fd8; }
+
+.hero {
+  background: linear-gradient(140deg, #5b3df5 0%, #8b5cf6 55%, #c084fc 100%);
+  color: #fff;
+  padding: 4.5rem 1.5rem 5rem;
+  position: relative;
+}
+
+.back {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.back:hover { color: #fff; }
+
+.app-icon {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 1.5rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  font-size: 3rem;
+  line-height: 94px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+h1 { font-size: 2.6rem; font-weight: 700; margin-bottom: 0.25rem; }
+
+.subtitle { font-size: 1.1rem; opacity: 0.85; margin-bottom: 1.5rem; }
+
+.pitch {
+  max-width: 36em;
+  margin: 0 auto 2.25rem;
+  font-size: 1.1rem;
+  opacity: 0.95;
+}
+
+.cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+.badge {
+  display: inline-block;
+  background: #111;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.85rem 1.6rem;
+  border-radius: 12px;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+}
+
+.badge-alt { background: rgba(255, 255, 255, 0.92); color: #2b2b3a; }
+
+main { max-width: 64rem; margin: 0 auto; padding: 0 1.5rem; }
+
+.features { padding: 4rem 0 1rem; }
+
+h2 { font-size: 1.9rem; margin-bottom: 2.25rem; }
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin-bottom: 2rem;
+}
+
+.feature {
+  background: #faf9ff;
+  border: 1px solid #ece8fb;
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+}
+
+.icon { font-size: 2.2rem; color: #6a4fd8; margin-bottom: 0.75rem; }
+
+.feature h3 { font-size: 1.1rem; margin-bottom: 0.6rem; }
+
+.feature p { font-size: 0.95rem; color: #55556a; }
+
+.feature.small { padding: 1.5rem 1.25rem; }
+
+.stripe {
+  background: #f5f3ff;
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+}
+
+.stripe p { max-width: 42em; margin: 0 auto 1rem; color: #44445a; }
+
+.motto { font-weight: 600; font-style: italic; color: #5b3df5 !important; }
+
+footer {
+  padding: 2.5rem 1.5rem;
+  font-size: 0.85rem;
+  color: #888;
+}

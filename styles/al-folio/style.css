@@ -1,0 +1,108 @@
+/* al-folio-inspired: clean academic, white, restrained sans, purple accent */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #fff;
+  color: #2a2a2a;
+  font-family: "Roboto", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+a { color: #b509ac; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.topnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e8e8e8;
+  font-size: 0.95rem;
+}
+
+.brand { font-weight: 300; letter-spacing: 0.01em; }
+.brand strong { font-weight: 500; }
+
+.links a { margin-left: 1.1rem; color: #555; }
+.links a:hover { color: #b509ac; text-decoration: none; }
+.links .back { color: #999; font-style: italic; }
+
+.masthead {
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 0;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 200;
+  letter-spacing: 0.01em;
+}
+
+h1 strong { font-weight: 500; color: #b509ac; }
+
+.affiliation {
+  color: #6e6e6e;
+  font-size: 1.05rem;
+  margin-top: 0.25rem;
+}
+
+main {
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 2rem;
+}
+
+section { padding: 1.75rem 0; }
+
+h2 {
+  font-size: 1.35rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+}
+
+.lede { font-size: 1.15rem; margin-bottom: 1rem; }
+
+p { margin-bottom: 1rem; color: #3a3a3a; }
+
+/* publication-style list */
+.pub-list { list-style: none; counter-reset: pub; }
+
+.pub-list li {
+  counter-increment: pub;
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 0 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #efefef;
+}
+
+.pub-list li::before {
+  content: "[" counter(pub) "]";
+  color: #b509ac;
+  font-variant-numeric: tabular-nums;
+}
+
+.pub-title { font-weight: 500; grid-column: 2; }
+.pub-venue { grid-column: 2; color: #555; font-size: 0.95rem; }
+
+ul { padding-left: 1.25rem; }
+li { margin-bottom: 0.6rem; color: #3a3a3a; }
+
+.note { font-style: italic; color: #777; font-size: 0.92rem; margin-top: 1rem; }
+
+footer {
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  border-top: 1px solid #e8e8e8;
+  font-size: 0.85rem;
+  color: #888;
+}

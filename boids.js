@@ -107,7 +107,7 @@
         const a = boids[i], c = boids[j];
         const d = Math.hypot(a.x - c.x, a.y - c.y);
         if (d < PERCEPTION) {
-          ctx.strokeStyle = `rgba(232, 181, 77, ${0.10 * (1 - d / PERCEPTION)})`;
+          ctx.strokeStyle = `rgba(138, 90, 0, ${0.12 * (1 - d / PERCEPTION)})`;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(c.x, c.y);
@@ -121,7 +121,7 @@
       ctx.save();
       ctx.translate(b.x, b.y);
       ctx.rotate(angle);
-      ctx.fillStyle = "rgba(232, 230, 225, 0.55)";
+      ctx.fillStyle = "rgba(45, 45, 45, 0.4)";
       ctx.beginPath();
       ctx.moveTo(5, 0);
       ctx.lineTo(-4, 3);

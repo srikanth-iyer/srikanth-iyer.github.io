@@ -1,0 +1,35 @@
+# Srikanth Iyer
+
+> Complex systems researcher studying emergent computation and LLM agents in
+> socio-economic models. Former advertising professional and screenwriter with
+> a sold feature film script. Based at https://srikanth-iyer.github.io
+
+## Research
+
+- Emergent computation: the conditions under which distributed systems with no
+  central controller — cellular automata, swarms, economies — perform
+  information processing.
+- LLM agents in socio-economic models: agent-based models populated by
+  language-model agents that negotiate, deceive, cooperate, and rationalize;
+  used as laboratories for studying institutions, markets, and norms.
+- Mechanism and policy design aimed at net-positive outcomes for the people
+  inside the systems being modeled, with explicit honesty about model limits.
+
+## Background
+
+- Career in advertising before research; wrote and sold a feature film script.
+- Sees modeling and storytelling as one practice: "a model is a story you can
+  run; a story is a model you can feel."
+- Literary influences: Terry Pratchett and Ursula K. Le Guin.
+- Holds a strong commitment to ethics in research: net positive to society,
+  honesty about model assumptions, and legibility of systems to the people
+  governed by them.
+
+## Contact
+
+- Email: shriek123@gmail.com
+- GitHub: https://github.com/srikanth-iyer
+
+## Pages
+
+- [Home](https://srikanth-iyer.github.io/): about, research, stories, ethos, contact (single page)
