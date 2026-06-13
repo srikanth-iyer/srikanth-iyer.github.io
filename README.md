@@ -15,7 +15,6 @@ at <https://srikanth-iyer.github.io>.
 - `robots.txt` — welcomes all crawlers, including AI bots
 - `styles/` — alternative looks for the same content:
   - `styles/al-folio/` — academic (al-folio inspired)
-  - `styles/app-landing/` — gradient app-landing-page look
   - `styles/tokyo/` — one-page portfolio, huge display type
   - `styles/condesa/` — airy editorial serif
 
