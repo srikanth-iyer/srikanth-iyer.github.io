@@ -1,0 +1,20 @@
+{
+  "name": "srikanth-iyer.github.io",
+  "version": "1.0.0",
+  "description": "Personal website of Srikanth Iyer — complex systems researcher and storyteller.",
+  "main": "boids.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://local_proxy@127.0.0.1:38953/git/srikanth-iyer/srikanth-iyer.github.io"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "playwright": "^1.60.0",
+    "puppeteer": "^25.1.0"
+  }
+}
