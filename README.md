@@ -17,6 +17,7 @@ at <https://srikanth-iyer.github.io>.
   - `styles/al-folio/` — academic (al-folio inspired)
   - `styles/tokyo/` — one-page portfolio, huge display type
   - `styles/condesa/` — airy editorial serif
+  - `styles/dct/` — density-classification-task spacetime diagrams (live GKL cellular automaton)
 
 ## Choosing a style
 
