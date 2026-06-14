@@ -18,6 +18,10 @@ at <https://srikanth-iyer.github.io>.
   - `styles/tokyo/` — one-page portfolio, huge display type
   - `styles/condesa/` — airy editorial serif
   - `styles/dct/` — density-classification-task spacetime diagrams (live GKL cellular automaton)
+- `astro-site/` — the same site rebuilt on the [Astro](https://astro.build)
+  architecture (components, layouts, content-as-data, zero-JS-by-default) as an
+  alternative to the hand-written static HTML. It has its own build step and is
+  not auto-deployed; see `astro-site/README.md` to run or deploy it.
 
 ## Choosing a style
 

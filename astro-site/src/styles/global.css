@@ -1,0 +1,128 @@
+:root {
+  --ink: #1a1a1a;
+  --ink-soft: #444;
+  --accent: #8a5a00;
+  --line: #e4e1db;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #ffffff;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+/* ---------- hero ---------- */
+
+.hero {
+  position: relative;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+
+#boids {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-content {
+  position: relative;
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 4rem;
+}
+
+nav { margin-bottom: 4rem; }
+
+nav a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  margin-right: 1.5rem;
+  font-size: 0.9rem;
+}
+
+nav a:hover { color: var(--accent); }
+
+h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
+}
+
+.tagline {
+  color: var(--ink-soft);
+  margin-bottom: 1.75rem;
+}
+
+.intro { max-width: 36em; }
+
+.hero-hint {
+  margin-top: 1.25rem;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* ---------- sections ---------- */
+
+main, footer {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+section {
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 1rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+
+h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+}
+
+p { margin-bottom: 1rem; }
+
+a { color: var(--accent); }
+
+ul { padding-left: 1.25rem; }
+
+li { margin-bottom: 0.75rem; }
+
+.note {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* ---------- footer ---------- */
+
+footer {
+  padding-top: 2rem;
+  padding-bottom: 2.5rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.alt-styles { margin-top: 0.5rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

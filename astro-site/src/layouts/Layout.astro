@@ -1,0 +1,43 @@
+---
+import { site } from "../data/site";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = site.title, description = site.description } = Astro.props;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  url: site.url,
+  email: `mailto:${site.email}`,
+  jobTitle: "Complex Systems Researcher",
+  description:
+    "Complex systems researcher studying emergent computation and LLM agents in socio-economic models. Former advertising professional and screenwriter with a sold feature film script.",
+  knowsAbout: site.knowsAbout,
+  sameAs: [site.github],
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content="Research on emergent computation and LLM agents in socio-economic models." />
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content={site.url} />
+    <link rel="canonical" href={site.url} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

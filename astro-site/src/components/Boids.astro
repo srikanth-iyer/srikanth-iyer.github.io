@@ -1,0 +1,11 @@
+---
+// The hero's flocking animation. The <script> below is bundled by Astro and
+// shipped as the page's only client-side JavaScript — everything else is
+// static HTML rendered at build time (zero JS by default).
+---
+
+<canvas id="boids" aria-hidden="true"></canvas>
+
+<script>
+  import "../scripts/boids.js";
+</script>
