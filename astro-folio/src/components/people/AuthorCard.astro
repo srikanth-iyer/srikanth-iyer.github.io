@@ -1,0 +1,68 @@
+---
+import type { AuthorData } from "@/lib/blog/types"
+import { cn } from "@/lib/utils"
+import ProfileLinks from "@/components/profile/ProfileLinks.astro"
+
+import AuthorAvatar from "./AuthorAvatar.astro"
+
+import "@/styles/card.css"
+
+interface Props {
+  author: AuthorData
+  variant?: "full" | "compact"
+}
+
+const { author, variant = "full" } = Astro.props
+const { id, name, bio, pronouns, links } = author
+const isAuthorPage = Astro.url.pathname === `/people/${id}`
+const isCompact = variant === "compact"
+
+const cardClasses = cn(
+  "author-card card relative flex",
+  isCompact ? "items-start gap-2 py-2" : "flex-wrap gap-4 py-4",
+  !isCompact && !isAuthorPage && "card-clickable group"
+)
+---
+
+<article class={cardClasses}>
+  {
+    !isCompact && !isAuthorPage && (
+      <a
+        href={`/people/${id}`}
+        class="absolute inset-0 z-20"
+        aria-label={`View profile for ${name}`}
+      />
+    )
+  }
+
+  <AuthorAvatar
+    author={author}
+    fallbackStyle="all-initials"
+    class={cn("relative z-10 shrink-0", isCompact ? "size-12" : "size-40")}
+  />
+
+  <div
+    class={cn(
+      "relative z-10 flex grow flex-col",
+      isCompact ? "gap-y-1" : "justify-between gap-y-4"
+    )}
+  >
+    <div>
+      <div class="flex flex-wrap items-center gap-x-2">
+        {
+          isCompact ? (
+            <a href={`/people/${id}`} class="text-sm font-medium hover:underline">
+              {name}
+            </a>
+          ) : (
+            <h3 class="text-lg font-medium">{name}</h3>
+          )
+        }
+        {pronouns && <span class="text-muted-foreground text-sm">({pronouns})</span>}
+      </div>
+      {bio && <p class={cn("text-muted-foreground text-sm", isCompact && "line-clamp-2")}>{bio}</p>}
+    </div>
+
+    {!isCompact && <ProfileLinks links={links} class="relative z-30" />}
+  </div>
+</article>

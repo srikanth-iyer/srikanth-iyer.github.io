@@ -1,0 +1,37 @@
+---
+import { getLatestUpdates } from "@/lib/updates"
+import CommonLayout from "@/layouts/CommonLayout.astro"
+import Link from "@/components/base/Link.astro"
+import Section from "@/components/layout/Section.astro"
+import UpdatesTimeline from "@/components/timeline/UpdatesTimeline.astro"
+
+import { Content as NowContent } from "@/content/now.md"
+
+const nowDescription = "A sporadically updated log of what I am doing, thinking, and exploring."
+const renderedUpdates = await getLatestUpdates(10)
+---
+
+<CommonLayout
+  title="What I'm doing now"
+  description={nowDescription}
+  modifiedTime={new Date()}
+  breadcrumbs={[{ label: "Now", icon: "timeline" }]}
+>
+  <section id="now-content">
+    <NowContent />
+  </section>
+  {
+    renderedUpdates.length > 0 && (
+      <Section title="Timeline">
+        <UpdatesTimeline renderedUpdates={renderedUpdates} />
+      </Section>
+    )
+  }
+
+  <p class="text-muted-foreground text-sm">
+    Learn more about now pages and browse others at
+    <Link href="https://nownownow.com" class="text-foreground" external underline
+      >nownownow.com</Link
+    >
+  </p>
+</CommonLayout>

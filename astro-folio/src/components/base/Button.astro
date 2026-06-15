@@ -1,0 +1,115 @@
+---
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+import Link from "./Link.astro"
+
+const buttonVariants = cva(
+  [
+    // Base layout & display
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md",
+
+    // Typography
+    "text-sm font-medium",
+
+    // Base sizing
+    "min-h-[44px]",
+
+    // Touch & interaction
+    "touch-manipulation transition-all cursor-pointer select-none",
+    "text-decoration-none",
+
+    // Focus & accessibility
+    "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+    "disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed",
+    "aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
+    "dark:aria-invalid:ring-destructive/40"
+  ],
+  {
+    variants: {
+      variant: {
+        default: [
+          "bg-border text-foreground border border-transparent rounded-md",
+          "hover:bg-primary hover:text-primary-foreground hover:border-primary",
+          "focus-visible:ring-2 focus-visible:ring-primary/20"
+        ],
+        primary: [
+          "bg-primary text-primary-foreground border border-transparent rounded-md",
+          "hover:bg-background hover:text-foreground hover:border-primary",
+          "focus-visible:ring-2 focus-visible:ring-primary/20"
+        ],
+        accent: [
+          "bg-accent text-accent-foreground border border-transparent rounded-md",
+          "hover:bg-background hover:text-foreground hover:border-accent",
+          "focus-visible:ring-2 focus-visible:ring-accent/20"
+        ],
+        destructive: [
+          "bg-destructive text-accent-foreground border border-transparent rounded-md",
+          "hover:bg-background hover:text-foreground hover:border-destructive",
+          "focus-visible:ring-2 focus-visible:ring-destructive/20"
+        ],
+        outline: [
+          "bg-transparent text-foreground border border-border rounded-lg",
+          "hover:bg-accent hover:text-accent-foreground hover:border-accent",
+          "focus-visible:ring-2 focus-visible:ring-primary/20"
+        ],
+        "primary-outline": [
+          "bg-transparent text-foreground border border-border rounded-lg",
+          "hover:bg-primary hover:text-primary-foreground hover:border-primary",
+          "focus-visible:ring-2 focus-visible:ring-primary/20"
+        ],
+        "accent-outline": [
+          "bg-transparent text-foreground border border-border rounded-lg",
+          "hover:bg-accent hover:text-accent-foreground hover:border-accent",
+          "focus-visible:ring-2 focus-visible:ring-accent/20"
+        ],
+        "destructive-outline": [
+          "bg-transparent text-foreground border border-border rounded-lg",
+          "hover:bg-destructive hover:text-accent-foreground hover:border-destructive",
+          "focus-visible:ring-2 focus-visible:ring-destructive/20"
+        ],
+        ghost: "hover:bg-accent hover:text-accent-foreground active:bg-accent/80"
+      },
+      size: {
+        default: "px-3 py-2",
+        square: "aspect-square p-2 gap-0"
+      }
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default"
+    }
+  }
+)
+
+export interface Props extends astroHTML.JSX.ButtonHTMLAttributes {
+  variant?: VariantProps<typeof buttonVariants>["variant"]
+  size?: VariantProps<typeof buttonVariants>["size"]
+  href?: string
+}
+
+const { variant = "default", size = "default", class: className, href, ...rest } = Astro.props
+---
+
+{
+  href ? (
+    <Link
+      href={href}
+      data-slot="button"
+      class={cn(buttonVariants({ variant, size }), className)}
+      {...rest}
+    >
+      <slot />
+    </Link>
+  ) : (
+    <button
+      type="button"
+      data-slot="button"
+      class={cn(buttonVariants({ variant, size }), className)}
+      {...rest}
+    >
+      <slot />
+    </button>
+  )
+}

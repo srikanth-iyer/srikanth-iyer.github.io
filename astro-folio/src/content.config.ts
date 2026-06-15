@@ -1,0 +1,130 @@
+import { defineCollection, reference } from "astro:content"
+import { file, glob } from "astro/loaders"
+import { z } from "astro/zod"
+
+import { ProfileLinkConfigSchema } from "@/schemas"
+
+import { createLocalDate } from "@/lib/date-utils"
+import { dedupLowerCase, dedupPreserveCase, slugify } from "@/lib/string-manipulation"
+
+/**
+ * @input string YYYY-MM
+ * @returns Date object with year and month (defaults to first day of month)
+ */
+const yearMonthDateSchema = z
+  .union([z.date(), z.string().transform(createLocalDate)])
+  .describe("Should be valid YYYY-MM format.")
+
+/** Accepts YYYY-MM-DD and ISO datetime formats */
+const dateSchema = z
+  .union([z.date(), z.string().transform(createLocalDate)])
+  .refine((date) => !Number.isNaN(date.getTime()), {
+    error:
+      "Invalid date format. Must be YYYY-MM-DD or ISO datetime format.\n For more, see https://zod.dev/api#datetimes"
+  })
+
+const blog = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/blog" }),
+  schema: ({ image }) =>
+    z
+      .object({
+        title: z.string(),
+        description: z.string().max(200).optional(),
+        createdAt: dateSchema,
+        updatedAt: dateSchema.optional(),
+        order: z.number().optional(),
+        image: image().optional(),
+        tags: z
+          .array(z.string())
+          .default([])
+          .transform((arr) => dedupLowerCase(arr).map((tag) => slugify(tag))),
+        authors: z.array(reference("people")).default([]),
+        draft: z.boolean().default(false),
+        stage: z.enum(["seedling", "budding", "evergreen"]).optional(),
+        audience: z.string().max(300).optional()
+      })
+      .refine(
+        (data) => {
+          if (!data.createdAt || !data.updatedAt) return true
+          return data.updatedAt > data.createdAt
+        },
+        {
+          error: "Modified date must be after published date"
+        }
+      )
+})
+
+const people = defineCollection({
+  loader: file("./src/content/people.toml"),
+  schema: z.object({
+    id: z.string(),
+    name: z.string(),
+    pronouns: z.string().optional(),
+    /**
+     * Optional URL path to avatar, or /public/path/to/image.jpg.
+     * The latter renders to /path/to/image.jpg, which you should use
+     */
+    avatar: z
+      .url()
+      .or(z.string().startsWith("/"))
+      .optional()
+      .describe(
+        "This people's avatar field only deal with image under /public/ directory or a remote image"
+      ),
+    bio: z.string().max(200).optional(),
+    affiliation: z.string().max(100).optional(),
+    links: ProfileLinkConfigSchema
+  })
+})
+
+const projects = defineCollection({
+  loader: glob({ base: "./src/content/projects", pattern: "**/!(*README).{md,mdx}" }),
+  schema: z
+    .object({
+      title: z.string().max(75),
+      isHighlighted: z.boolean().default(false),
+      fromDate: yearMonthDateSchema.optional(),
+      toDate: yearMonthDateSchema.optional(),
+      code: z.url().optional(),
+      doc: z.url().optional(),
+      url: z.url().optional(),
+      release: z.url().optional(),
+      context: z.enum(["community", "personal", "research", "school", "work"]).optional(),
+      description: z.string().max(200).optional(),
+      tags: z
+        .array(z.string())
+        .default([])
+        .transform((arr) => dedupPreserveCase(arr))
+    })
+    .refine(
+      // Validate that toDate is after fromDate
+      (data) => {
+        if (!data.fromDate || !data.toDate) return true
+        return data.toDate >= data.fromDate
+      },
+      {
+        error: "End date must be on or after start date"
+      }
+    )
+})
+
+const updates = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/updates" }),
+  schema: z.object({})
+})
+
+const experience = defineCollection({
+  loader: file("./src/content/experience.json"),
+  schema: z.object({
+    category: z.enum(["research", "education", "teaching"]),
+    title: z.string(),
+    org: z.string(),
+    orgUrl: z.url().optional(),
+    startDate: yearMonthDateSchema,
+    endDate: yearMonthDateSchema.optional(),
+    location: z.string().optional(),
+    description: z.string().optional()
+  })
+})
+
+export const collections = { blog, experience, people, projects, updates }

@@ -1,0 +1,3 @@
+- Building socio-economic models populated by LLM-driven agents, and studying what institutions and norms emerge.
+- Reading widely on emergent computation — cellular automata, swarms, and economies as systems that compute without a controller.
+- Writing about the place where modeling meets storytelling.

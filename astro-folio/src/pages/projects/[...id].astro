@@ -1,0 +1,123 @@
+---
+import "@/styles/callout.css"
+import "@/styles/sidenote.css"
+
+import { render, type CollectionEntry } from "astro:content"
+
+import {
+  getContextVariant,
+  getProjectLinks,
+  getProjectNavigation,
+  getProjects
+} from "@/lib/projects"
+import Layout from "@/layouts/Layout.astro"
+import Badge from "@/components/base/Badge.astro"
+import Button from "@/components/base/Button.astro"
+import CopyMarkdown from "@/components/base/CopyMarkdown.astro"
+import Icon from "@/components/base/Icon.astro"
+import Breadcrumbs from "@/components/layout/Breadcrumbs.astro"
+import { ProjectNavigation } from "@/components/projects"
+import DateRange from "@/components/projects/DateRange.astro"
+
+export async function getStaticPaths() {
+  const projects = await getProjects((project) => !!project.body?.trim())
+
+  return projects.map((project) => ({
+    params: { id: project.id },
+    props: { project }
+  }))
+}
+
+type Props = {
+  project: CollectionEntry<"projects">
+}
+
+const { project } = Astro.props
+const [{ Content }, navigation] = await Promise.all([
+  render(project),
+  getProjectNavigation(project.id)
+])
+const { title, isHighlighted, fromDate, toDate, code, doc, url, release, context, tags } =
+  project.data
+
+const links = getProjectLinks(code, doc, url, release)
+const rawMarkdown = project.body ?? null
+
+const contextVariant = getContextVariant(context)
+---
+
+<Layout title={title} description={`Project: ${title}`}>
+  <Breadcrumbs
+    items={[
+      { href: "/projects", label: "Projects", icon: "folder-open" },
+      { label: title, icon: "file" }
+    ]}
+  />
+
+  <header class="mb-8 flex flex-col gap-4">
+    {/* Title and Highlight */}
+    <div class="flex items-start justify-between gap-4">
+      <h1 class="text-3xl leading-tight font-bold sm:text-4xl">{title}</h1>
+      {
+        isHighlighted && (
+          <Badge variant="default" class="shrink-0">
+            <Icon name="star" class="mr-1 size-3" />
+            Featured
+          </Badge>
+        )
+      }
+    </div>
+
+    {/* Context and Date */}
+    <div class="flex flex-wrap items-center gap-3 text-sm">
+      {
+        context && (
+          <Badge variant={contextVariant}>
+            {context.charAt(0).toUpperCase() + context.slice(1)}
+          </Badge>
+        )
+      }
+      <DateRange
+        fromDate={fromDate}
+        toDate={toDate}
+        class="text-muted-foreground flex items-center gap-1"
+        showIcon={true}
+      />
+    </div>
+
+    {/* Tags */}
+    {
+      tags && tags.length > 0 && (
+        <div class="flex flex-wrap gap-2">
+          {tags.map((tag: string) => (
+            <Badge variant="muted" class="text-xs">
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      )
+    }
+
+    {/* Links */}
+    {
+      links.length > 0 && (
+        <div class="flex flex-wrap gap-2">
+          {links.map(({ href, icon, label }) => (
+            <Button href={href} variant="accent-outline">
+              <Icon name={icon} />
+              <span>{label}</span>
+            </Button>
+          ))}
+        </div>
+      )
+    }
+  </header>
+
+  <article class="prose lg:prose-lg">
+    <Content />
+  </article>
+
+  {rawMarkdown && <CopyMarkdown markdown={rawMarkdown} class="flex justify-end" />}
+
+  <ProjectNavigation prev={navigation.prev} next={navigation.next} />
+</Layout>

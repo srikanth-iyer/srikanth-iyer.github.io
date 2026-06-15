@@ -1,0 +1,87 @@
+---
+import type { ProfileConfig } from "@/types"
+
+import Avatar from "@/components/base/Avatar.astro"
+import Badge from "@/components/base/Badge.astro"
+import Collapse from "@/components/base/Collapse.astro"
+import Icon from "@/components/base/Icon.astro"
+import avatar from "@/assets/avatar.jpg"
+
+import EmailLink from "./EmailLink.astro"
+import ProfileLinks from "./ProfileLinks.astro"
+import { Content as AboutContent } from "@/content/about.md"
+
+interface Props {
+  profile: ProfileConfig
+}
+
+const { profile } = Astro.props
+---
+
+<article id="profile">
+  <header class="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
+    <Avatar
+      src={avatar}
+      alt={profile.name}
+      fallback={profile.name.charAt(0)}
+      data-slot="profile-avatar"
+      width={200}
+      height={200}
+      loading="eager"
+      fetchpriority="high"
+      class="size-28 self-center sm:size-50 sm:self-start"
+    />
+
+    <div class="flex-1 space-y-4">
+      <div class="space-y-2">
+        <h1 class="flex flex-wrap items-center gap-2 text-2xl font-bold sm:text-3xl">
+          {profile.name}
+          {
+            profile.pronouns && (
+              <Badge variant="outline" class="text-xs">
+                {profile.pronouns}
+              </Badge>
+            )
+          }
+        </h1>
+        {profile.othernames && <p class="text-muted-foreground text-sm">{profile.othernames}</p>}
+        <p class="text-foreground">{profile.tagline}</p>
+      </div>
+      {
+        profile.pronunciation && (
+          <Collapse title="Pronunciation" variant="muted">
+            <p class="text-muted-foreground">{profile.pronunciation}</p>
+          </Collapse>
+        )
+      }
+    </div>
+  </header>
+</article>
+
+<section class="prose">
+  <AboutContent />
+</section>
+
+<footer class="text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-2 px-4 pt-4">
+  <EmailLink email={profile.email} />
+
+  {
+    profile.location && (
+      <span class="flex items-center gap-2">
+        <Icon name="mingcute:location-line" class="size-4" />
+        <span>{profile.location}</span>
+      </span>
+    )
+  }
+
+  {
+    profile.phone && (
+      <span class="flex items-center gap-2">
+        <Icon name="mingcute:phone-line" class="size-4" />
+        <span>{profile.phone}</span>
+      </span>
+    )
+  }
+
+  <ProfileLinks highlight />
+</footer>

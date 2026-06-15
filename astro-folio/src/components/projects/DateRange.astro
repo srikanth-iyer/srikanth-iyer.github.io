@@ -1,0 +1,48 @@
+---
+import { createDateRange, formatDateTimeISO } from "@/lib/date-utils"
+import Icon from "@/components/base/Icon.astro"
+
+interface Props {
+  /** Start date of the project */
+  fromDate?: Date
+  /** End date of the project (optional, defaults to "Present") */
+  toDate?: Date
+  /** Additional CSS classes for the container */
+  class?: string
+  /** Show calendar icon */
+  showIcon?: boolean
+}
+
+const { fromDate, toDate, class: className, showIcon = false } = Astro.props
+
+const data = createDateRange(fromDate, toDate)
+if (!data) return null
+
+// Determine if we should show both dates (when displays differ)
+const showBoth = data.fromDate && data.toDate && data.fromDateDisplay !== data.toDateDisplay
+// Determine what to show: only toDate, or fromDate with optional range/Present
+const showOnlyToDate = !data.fromDate && data.toDate
+---
+
+<span class={className}>
+  {showIcon && <Icon name="calendar" class="size-3" />}
+
+  {
+    showOnlyToDate ? (
+      <time datetime={formatDateTimeISO(data.toDate!)}>{data.toDateDisplay}</time>
+    ) : (
+      <>
+        {data.fromDate && (
+          <time datetime={formatDateTimeISO(data.fromDate)}>{data.fromDateDisplay}</time>
+        )}
+        {showBoth && (
+          <>
+            <span> - </span>
+            <time datetime={formatDateTimeISO(data.toDate!)}>{data.toDateDisplay}</time>
+          </>
+        )}
+        {!data.toDate && data.fromDate && <span> - Present</span>}
+      </>
+    )
+  }
+</span>

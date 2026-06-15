@@ -1,0 +1,54 @@
+---
+import Button from "@/components/base/Button.astro"
+import Icon from "@/components/base/Icon.astro"
+---
+
+<Button
+  variant="outline"
+  size="square"
+  class="group bg-background fixed right-2 bottom-8 z-50 hidden"
+  id="scroll-to-top"
+  title="Scroll to top"
+  aria-label="Scroll to top"
+>
+  <Icon name="to-top" size="1.25rem" class="transition-all group-hover:-translate-y-1" />
+</Button>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const scrollToTopButton = document.getElementById("scroll-to-top")
+    const footer = document.querySelector("footer")
+
+    if (scrollToTopButton && footer) {
+      scrollToTopButton.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" })
+      })
+
+      window.addEventListener("scroll", () => {
+        const footerRect = footer.getBoundingClientRect()
+        const isFooterVisible = footerRect.top <= window.innerHeight
+
+        scrollToTopButton.classList.toggle("hidden", window.scrollY <= 300 || isFooterVisible)
+      })
+    }
+  })
+
+  document.addEventListener("astro:after-swap", () => {
+    // Re-initialize after page transitions
+    const scrollToTopButton = document.getElementById("scroll-to-top")
+    const footer = document.querySelector("footer")
+
+    if (scrollToTopButton && footer) {
+      scrollToTopButton.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" })
+      })
+
+      window.addEventListener("scroll", () => {
+        const footerRect = footer.getBoundingClientRect()
+        const isFooterVisible = footerRect.top <= window.innerHeight
+
+        scrollToTopButton.classList.toggle("hidden", window.scrollY <= 300 || isFooterVisible)
+      })
+    }
+  })
+</script>

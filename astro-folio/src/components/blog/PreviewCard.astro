@@ -1,0 +1,105 @@
+---
+import { Image } from "astro:assets"
+
+import { getStageVariant } from "@/lib/blog/stage"
+import type { PostMeta } from "@/lib/blog/types"
+import Badge from "@/components/base/Badge.astro"
+import Icon from "@/components/base/Icon.astro"
+import PostMetadata from "@/components/blog/PostMetadata.astro"
+
+import "@/styles/card.css"
+
+interface Props {
+  metadata: PostMeta
+}
+
+const { metadata } = Astro.props
+const tags = metadata.tags
+---
+
+<article class="card card-clickable group relative overflow-hidden">
+  <a
+    href={`/blog/${metadata.id}`}
+    class="absolute inset-0 z-20"
+    aria-label={`Post: ${metadata.title}`}
+  >
+  </a>
+
+  {
+    metadata.image && (
+      <Image
+        src={metadata.image}
+        alt={metadata.title}
+        width={1200}
+        height={630}
+        sizes="(max-width: 768px) 100vw, 60vw"
+        class="cover-image absolute end-0 top-0 z-0 h-full w-3/5 object-cover opacity-30 transition-all duration-300 group-hover:opacity-50 max-md:h-2/3 max-md:w-full"
+        loading="lazy"
+      />
+    )
+  }
+
+  <div
+    class:list={[
+      "card-content relative z-10 transition-all duration-300",
+      metadata.image && "max-md:pt-24 md:max-w-[80%]"
+    ]}
+  >
+    {/** Row 1: Title + stage badge */}
+    <div class="flex items-center gap-2">
+      <h3 class="card-title group-hover:text-primary transition-colors duration-300">
+        {metadata.title}
+      </h3>
+      {
+        metadata.stage && (
+          <Badge variant={getStageVariant(metadata.stage)} class="text-[0.65rem]">
+            <Icon name={metadata.stage} />
+            {metadata.stage}
+          </Badge>
+        )
+      }
+    </div>
+
+    {/** Row 2: Desc */}
+    <p class="card-description">
+      {metadata.description}
+    </p>
+
+    {/** Row 3: Meta information */}
+    <PostMetadata {...metadata} variant="card" />
+
+    {/** Row 4: Tags */}
+    {
+      tags && (
+        <div class="card-tags">
+          {tags.map((tag: string) => (
+            <Badge variant={"muted"} class="tag-badge transition-all duration-300">
+              <Icon name="hashtag" />
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .card:hover {
+    background-color: oklch(from var(--muted) l c h / 0.5);
+
+    & .tag-badge {
+      background-color: oklch(from var(--muted) l c h / 0.5);
+    }
+  }
+
+  .cover-image {
+    mask: linear-gradient(to right, transparent 0%, black 100%);
+  }
+
+  @media (max-width: 768px) {
+    .cover-image {
+      mask: linear-gradient(to top, transparent 0%, black 100%);
+    }
+  }
+</style>

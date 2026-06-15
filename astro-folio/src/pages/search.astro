@@ -1,0 +1,14 @@
+---
+import CommonLayout from "@/layouts/CommonLayout.astro"
+import Search from "astro-pagefind/components/Search.astro"
+
+const searchDescription = "Full-text search across this site — pages, projects, publications, and writing."
+---
+
+<CommonLayout
+  title="Search"
+  description={searchDescription}
+  breadcrumbs={[{ label: "Search", icon: "search" }]}
+>
+  <Search className="pagefind-ui" />
+</CommonLayout>

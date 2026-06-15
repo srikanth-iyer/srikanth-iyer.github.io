@@ -1,0 +1,63 @@
+---
+import { PostManager } from "@/lib/blog"
+import { getAllAuthors, getAuthorById } from "@/lib/blog/author"
+import Layout from "@/layouts/Layout.astro"
+import PreviewCard from "@/components/blog/PreviewCard.astro"
+import Breadcrumbs from "@/components/layout/Breadcrumbs.astro"
+import AuthorCard from "@/components/people/AuthorCard.astro"
+
+export async function getStaticPaths() {
+  const authors = await getAllAuthors()
+
+  return authors.map((author) => ({
+    params: { id: author.id },
+    props: { authorId: author.id }
+  }))
+}
+
+const { authorId } = Astro.props
+
+const postManager = PostManager.getInstance()
+const [author, authorPostsMetadata] = await Promise.all([
+  getAuthorById(authorId),
+  postManager.getPostsByAuthor(authorId)
+])
+
+if (!author) {
+  return Astro.redirect("/404")
+}
+---
+
+<Layout
+  title={`${author.name}`}
+  description={author.bio || `Profile of ${author.name}.`}
+  noindex
+  type="profile"
+>
+  <Breadcrumbs
+    items={[
+      { href: "/people", label: "People", icon: "group" },
+      { label: author.name, icon: "person" }
+    ]}
+  />
+
+  <section>
+    <AuthorCard author={author} />
+  </section>
+  <section class="flex flex-col gap-y-4">
+    <h2 class="text-2xl font-medium">Posts by {author.name}</h2>
+    {
+      authorPostsMetadata.length > 0 ? (
+        <ul class="flex flex-col gap-4">
+          {authorPostsMetadata.map((metadata) => (
+            <li>
+              <PreviewCard metadata={metadata} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="text-muted-foreground">No posts available from this author.</p>
+      )
+    }
+  </section>
+</Layout>

@@ -1,0 +1,80 @@
+---
+import type { Post } from "@/lib/blog/types"
+import { cn } from "@/lib/utils"
+import Button from "@/components/base/Button.astro"
+import Icon from "@/components/base/Icon.astro"
+
+interface Props {
+  prevPost?: Post | null
+  nextPost?: Post | null
+  parentPost?: Post | null
+}
+
+const { prevPost, nextPost, parentPost } = Astro.props
+const isSubpost = !!parentPost
+---
+
+<nav
+  class={cn("col-start-2 grid grid-cols-1 gap-4", isSubpost ? "sm:grid-cols-3" : "sm:grid-cols-2")}
+>
+  <Button
+    href={nextPost ? `/${nextPost.collection}/${nextPost.id}#post-title` : undefined}
+    variant="outline"
+    class={cn(
+      "rounded-lg group flex items-center justify-start size-full",
+      !nextPost && "pointer-events-none opacity-50 cursor-not-allowed"
+    )}
+    aria-disabled={!nextPost}
+  >
+    <Icon name="arrow-left" class="mr-2 transition-transform group-hover:-translate-x-1" />
+    <div class="flex flex-col items-start overflow-hidden text-wrap">
+      <span class="text-muted-foreground text-left text-xs">
+        {isSubpost ? "Previous Subpost" : "Previous Post"}
+      </span>
+      <span class="line-clamp-2 w-full text-left text-sm text-balance text-ellipsis">
+        {nextPost?.data.title || (isSubpost ? "No older subpost" : "You're at the oldest post!")}
+      </span>
+    </div>
+  </Button>
+
+  {
+    isSubpost && (
+      <Button
+        href={parentPost ? `/${parentPost.collection}/${parentPost.id}#post-title` : undefined}
+        variant="outline"
+        class={cn(
+          "group flex size-full items-center justify-center rounded-lg",
+          !parentPost && "pointer-events-none cursor-not-allowed opacity-50"
+        )}
+      >
+        <Icon name="arrow-left-up" class="mr-1 transition-transform group-hover:-translate-1" />
+        <div class="flex flex-col items-center overflow-hidden text-wrap">
+          <span class="text-muted-foreground text-center text-xs">Parent Post</span>
+          <span class="line-clamp-2 w-full text-center text-sm text-balance text-ellipsis">
+            {parentPost?.data.title || "No parent post"}
+          </span>
+        </div>
+      </Button>
+    )
+  }
+
+  <Button
+    href={prevPost ? `/${prevPost.collection}/${prevPost.id}#post-title` : undefined}
+    variant="outline"
+    class={cn(
+      "rounded-lg group flex items-center justify-end size-full",
+      !prevPost && "pointer-events-none opacity-50 cursor-not-allowed"
+    )}
+    aria-disabled={!prevPost}
+  >
+    <div class="flex flex-col items-end overflow-hidden text-wrap">
+      <span class="text-muted-foreground text-right text-xs">
+        {isSubpost ? "Next Subpost" : "Next Post"}
+      </span>
+      <span class="line-clamp-2 w-full text-right text-sm text-balance text-ellipsis">
+        {prevPost?.data.title || (isSubpost ? "No newer subpost" : "You're at the newest post!")}
+      </span>
+    </div>
+    <Icon name="arrow-right" class="ml-1 transition-transform group-hover:translate-x-1" />
+  </Button>
+</nav>

@@ -1,0 +1,31 @@
+[
+  {
+    "id": "complex-systems-research",
+    "category": "research",
+    "title": "Independent Researcher — Complex Systems",
+    "org": "Self-directed",
+    "startDate": "2023-01",
+    "location": "Remote",
+    "description": "Emergent computation and LLM agents in socio-economic models: how distributed systems with no central controller end up performing computation, and what artificial agents reveal about institutions, markets, and norms."
+  },
+  {
+    "id": "advertising-career",
+    "category": "research",
+    "title": "Advertising & Narrative Strategy",
+    "org": "Industry",
+    "startDate": "2014-01",
+    "endDate": "2022-12",
+    "location": "—",
+    "description": "Years in advertising learning how stories move people — that audiences don't adopt ideas, they adopt the stories that carry them. Wrote and sold a feature film script. TODO: replace with specific roles/agencies."
+  },
+  {
+    "id": "education-placeholder",
+    "category": "education",
+    "title": "TODO: add your degree",
+    "org": "TODO: add your university",
+    "startDate": "2010-01",
+    "endDate": "2014-01",
+    "location": "TODO",
+    "description": "Replace this entry with your education details (degree, field, institution, dates)."
+  }
+]

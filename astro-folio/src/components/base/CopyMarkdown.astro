@@ -1,0 +1,20 @@
+---
+import CopyButton from "./CopyButton.astro"
+
+interface Props {
+  markdown: string
+  class?: string
+}
+
+const { markdown, class: className } = Astro.props
+---
+
+<div class:list={["copy-markdown-wrapper", className]}>
+  <CopyButton
+    text={markdown}
+    label="Copy Markdown"
+    title="Copy as Markdown"
+    size="1rem"
+    class="hover:bg-accent hover:text-accent-foreground active:bg-accent/80 inline-flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all select-none"
+  />
+</div>

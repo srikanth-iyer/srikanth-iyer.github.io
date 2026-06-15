@@ -1,0 +1,45 @@
+---
+import Badge from "@/components/base/Badge.astro"
+import Icon from "@/components/base/Icon.astro"
+
+import { getTagVariant, ToolTag } from "./tags"
+
+export interface Props {
+  name: string
+  description: string
+  href: string
+  icon: string
+  tags?: ToolTag[]
+}
+
+const { name, description, href, icon, tags } = Astro.props
+
+const getSafeIcon = (icon: string): string => {
+  return icon && icon.trim() !== "" ? icon : "mingcute:box-line"
+}
+
+const safeIcon = getSafeIcon(icon)
+---
+
+<a
+  class="group hover:border-border hover:bg-muted flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors"
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer nofollow"
+  aria-label={`${name}: ${description}`}
+>
+  <Icon name={safeIcon} size="2rem" aria-hidden="true" />
+  <div class="min-w-0 flex-1">
+    <div class="mb-1 flex flex-wrap items-center gap-2">
+      <span class="text-foreground font-medium">{name}</span>
+      {
+        tags?.map((tag: ToolTag) => (
+          <Badge variant={getTagVariant(tag)} class="text-xs">
+            {tag}
+          </Badge>
+        ))
+      }
+    </div>
+    <p class="text-muted-foreground text-sm">{description}</p>
+  </div>
+</a>

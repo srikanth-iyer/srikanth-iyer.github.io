@@ -1,0 +1,1 @@
+Started a new thread of work building socio-economic models populated by [LLM-driven agents](/projects/llm-agents-socioeconomic) — using them as laboratories for studying institutions, markets, and norms.

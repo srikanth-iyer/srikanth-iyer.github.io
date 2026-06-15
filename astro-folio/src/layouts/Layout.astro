@@ -1,0 +1,104 @@
+---
+import "@/styles/global.css"
+import "@/styles/typography.css"
+
+import { SITE } from "@site-config"
+import { cn } from "@/lib/utils"
+import BackToTop from "@/components/base/BackToTop.astro"
+import Footer from "@/components/layout/Footer.astro"
+import Head from "@/components/layout/Head.astro"
+import Header from "@/components/layout/Header.astro"
+
+interface Props {
+  class?: string
+  title?: string
+  description?: string
+  image?: string | URL
+  noindex?: boolean
+  type?: "website" | "article" | "profile"
+  publishedTime?: Date
+  modifiedTime?: Date
+  author?: string
+  tags?: string[]
+  section?: string
+}
+
+const {
+  class: className,
+  title,
+  description,
+  image,
+  noindex,
+  type,
+  publishedTime,
+  modifiedTime,
+  author,
+  tags,
+  section
+} = Astro.props
+---
+
+<!doctype html>
+<html class="bg-background text-foreground" lang={SITE.locale.lang}>
+  <Head
+    title={title}
+    description={description}
+    image={image}
+    noindex={noindex}
+    type={type}
+    publishedTime={publishedTime}
+    modifiedTime={modifiedTime}
+    author={author}
+    tags={tags}
+    section={section}
+  >
+    <slot name="head" />
+  </Head>
+  <body class="flex min-h-screen flex-col font-sans">
+    <div
+      id="main-header"
+      class="bg-background/80 sticky top-0 z-50 w-full divide-y backdrop-blur-sm xl:divide-none"
+    >
+      <Header />
+      {
+        Astro.slots.has("subposts-navigation-header") && (
+          <slot name="subposts-navigation-header" aria-label="Post-subposts navigation" />
+        )
+      }
+      {Astro.slots.has("toc-header") && <slot name="toc-header" aria-label="Table of contents" />}
+    </div>
+    {
+      Astro.slots.has("breadcrumb") && (
+        <div class="my-4 flex w-full">
+          <slot name="breadcrumb" />
+        </div>
+      )
+    }
+    <main class={cn("flex grow flex-col gap-y-6", className)}>
+      <slot />
+    </main>
+
+    <BackToTop />
+
+    <Footer />
+
+    <script>
+      // Update header height CSS variable dynamically
+      function updateHeaderHeight() {
+        const header = document.getElementById("main-header")
+        if (header) {
+          const height = header.offsetHeight
+          document.documentElement.style.setProperty("--header-height", `${height}px`)
+        }
+      }
+
+      // Update on load and resize
+      updateHeaderHeight()
+      window.addEventListener("resize", updateHeaderHeight)
+
+      // Update after navigation (for Astro page transitions)
+      document.addEventListener("astro:page-load", updateHeaderHeight)
+      document.addEventListener("astro:after-swap", updateHeaderHeight)
+    </script>
+  </body>
+</html>

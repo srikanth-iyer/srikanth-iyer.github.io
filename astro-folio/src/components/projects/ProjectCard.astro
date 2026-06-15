@@ -1,0 +1,78 @@
+---
+import type { CollectionEntry } from "astro:content"
+
+import { getProjectLinks } from "@/lib/projects"
+import { cn } from "@/lib/utils"
+import Badge from "@/components/base/Badge.astro"
+import Button from "@/components/base/Button.astro"
+import Icon from "@/components/base/Icon.astro"
+import DateRange from "@/components/projects/DateRange.astro"
+
+import "@/styles/card.css"
+
+interface Props {
+  project: CollectionEntry<"projects">
+}
+
+const { project } = Astro.props
+const { title, isHighlighted, fromDate, toDate, code, doc, url, release, tags } = project.data
+
+const links = getProjectLinks(code, doc, url, release)
+
+const hasDetailPage = !!project.body?.trim()
+
+const cardClasses = cn(
+  "card card-content",
+  isHighlighted && "card-selected",
+  hasDetailPage && "card-clickable relative group"
+)
+---
+
+<article class={cardClasses}>
+  {
+    hasDetailPage && (
+      <a
+        href={`/projects/${project.id}`}
+        class="absolute inset-0 z-10"
+        aria-label={`View details for ${title}`}
+      />
+    )
+  }
+
+  <div class="card-header relative">
+    <h3 class="card-title text-base">{title}</h3>
+  </div>
+
+  <div class="card-meta relative text-base">
+    <DateRange fromDate={fromDate} toDate={toDate} class="flex gap-1" />
+  </div>
+
+  {project.data.description && <p class="card-description relative">{project.data.description}</p>}
+
+  {/* Tags */}
+  {
+    tags && tags.length > 0 && (
+      <div class="card-tags relative">
+        {tags.map((tag: string) => (
+          <Badge variant="tag" class="px-1.5 py-0.5 text-xs leading-tight">
+            {tag}
+          </Badge>
+        ))}
+      </div>
+    )
+  }
+
+  {/* Links */}
+  {
+    links.length > 0 && (
+      <div class="card-actions relative z-20">
+        {links.map(({ href, icon, label }) => (
+          <Button href={href} variant="accent-outline">
+            <Icon name={icon} />
+            <span>{label}</span>
+          </Button>
+        ))}
+      </div>
+    )
+  }
+</article>

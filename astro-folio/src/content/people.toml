@@ -1,0 +1,8 @@
+[srikanth]
+id   = "srikanth"
+name = "Srikanth Iyer"
+bio  = "Complex systems researcher and storyteller"
+
+[srikanth.links]
+email  = "shriek123@gmail.com"
+github = "https://github.com/srikanth-iyer"

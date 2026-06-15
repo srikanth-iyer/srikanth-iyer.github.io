@@ -21,6 +21,10 @@ at <https://srikanth-iyer.github.io>.
   architecture (components, layouts, content-as-data, zero-JS-by-default) as an
   alternative to the hand-written static HTML. It has its own build step and is
   not auto-deployed; see `astro-site/README.md` to run or deploy it.
+- `astro-folio/` — an academic-portfolio version: Astro + the al-folio design
+  and feature set (BibTeX publications, projects, news, CV timeline, blog with
+  math, dark mode). Built on the Apache-2.0 `chiffonng/astro-academic` theme;
+  also build-stepped and not auto-deployed. See `astro-folio/README.md`.
 
 ## Choosing a style
 

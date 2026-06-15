@@ -1,0 +1,92 @@
+---
+import type { TOCSection } from "@/lib/blog/types"
+import ScrollArea from "@/components/blog/ScrollArea.astro"
+import TOCSectionComponent from "@/components/blog/TOCSection.astro"
+
+interface Props {
+  sections: TOCSection[]
+  currentPostId: string
+  class?: string
+}
+
+const { sections, currentPostId, class: className } = Astro.props
+
+const hasSections = sections.length > 0
+---
+
+{
+  hasSections && (
+    <aside
+      id="toc-sidebar-container"
+      role="complementary"
+      aria-labelledby="toc-heading"
+      class={className}
+    >
+      <header class="border-border sticky top-0 mb-2 border-b pb-1">
+        <h2 id="toc-heading" class="text-foreground/80 text-sm font-semibold">
+          Table of Contents
+        </h2>
+      </header>
+      <ScrollArea
+        class="flex max-h-[calc(100vh_-_var(--header-height,4rem))] flex-col gap-2 p-2"
+        data-scroll-area
+      >
+        <ol class="space-y-2" role="navigation" aria-labelledby="toc-heading">
+          {sections.map((section: TOCSection, index: number) => {
+            const isFirstSubpost = section.isSubpost && !sections[index - 1]?.isSubpost
+
+            return (
+              <li>
+                {isFirstSubpost && (
+                  <div
+                    class="mb-4 flex items-center gap-3"
+                    role="separator"
+                    aria-label="Subposts section"
+                  >
+                    <div class="bg-border h-px flex-1" />
+                    <span class="text-muted-foreground px-2 text-xs font-semibold tracking-wider uppercase">
+                      Subposts
+                    </span>
+                    <div class="bg-border h-px flex-1" />
+                  </div>
+                )}
+                <TOCSectionComponent
+                  id={section.postId}
+                  title={section.postTitle}
+                  isActive={section.postId === currentPostId}
+                  headings={section.headings}
+                />
+              </li>
+            )
+          })}
+        </ol>
+      </ScrollArea>
+    </aside>
+  )
+}
+
+<script>
+  import { SITE } from "@site-config"
+  import { UnifiedTOCController } from "@/lib/blog/scroll"
+
+  let controller: UnifiedTOCController | null = null
+
+  function initController() {
+    controller?.cleanup()
+    controller = new UnifiedTOCController(
+      "#toc-sidebar-container",
+      "#toc-sidebar-container [data-heading-link]",
+      { tocMaxDepth: SITE.blog.tocMaxDepth }
+    )
+    controller.init()
+  }
+
+  function cleanupController() {
+    controller?.cleanup()
+    controller = null
+  }
+
+  document.addEventListener("astro:page-load", initController)
+  document.addEventListener("astro:after-swap", initController)
+  document.addEventListener("astro:before-swap", cleanupController)
+</script>

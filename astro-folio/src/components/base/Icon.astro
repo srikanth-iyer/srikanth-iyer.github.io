@@ -1,0 +1,42 @@
+---
+import type { HTMLAttributes } from "astro/types"
+import { Icon as AstroIcon } from "astro-icon/components"
+
+import { SEMANTIC_ICONS, type SemanticIconName } from "@icon-config"
+
+interface Props extends HTMLAttributes<"svg"> {
+  /** The name of the icon to include - can be semantic name or direct icon name */
+  name: SemanticIconName | string
+  /** Shorthand for including a <title> element in the SVG */
+  title?: string
+  /** Shorthand for including a <desc> element in the SVG */
+  desc?: string
+  /** Shorthand for setting both width and height */
+  size?: number | string
+  /** Sets the width of the icon */
+  width?: number | string
+  /** Sets the height of the icon */
+  height?: number | string
+  /** CSS class names */
+  class?: string
+  /** Any other HTML attributes (forwarded to the <svg> element) */
+  [key: string]: any
+}
+
+const { name, title, desc, ...props } = Astro.props
+
+// Check if it's a semantic name, otherwise use the name directly
+const iconName = (SEMANTIC_ICONS as Record<string, string>)[name] || name
+
+// Derive accessibility attributes from props
+const accessibility: Record<string, any> = {}
+
+if (title || desc) {
+} else {
+  // If neither title nor desc, make it decorative
+  accessibility.role = "presentation"
+  accessibility["aria-hidden"] = "true"
+}
+---
+
+<AstroIcon name={iconName as any} {...props} {...accessibility} />

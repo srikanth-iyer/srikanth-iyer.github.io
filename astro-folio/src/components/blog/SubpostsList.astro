@@ -1,0 +1,22 @@
+---
+import { type PostNavItem as PostNavItemData } from "@/lib/blog/types"
+import PostNavItem from "@/components/blog/PostNavItem.astro"
+
+interface Props {
+  items: PostNavItemData[]
+}
+
+const { items } = Astro.props
+---
+
+{
+  items.length > 0 && (
+    <ul class="gap-y-1">
+      {items.map((item) => (
+        <li>
+          <PostNavItem {...item} />
+        </li>
+      ))}
+    </ul>
+  )
+}

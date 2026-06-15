@@ -1,0 +1,229 @@
+---
+import "@/styles/callout.css"
+import "@/styles/sidenote.css"
+
+import { Image } from "astro:assets"
+import { render } from "astro:content"
+
+import { SITE } from "@site-config"
+import { PostManager } from "@/lib/blog"
+import { getStageVariant } from "@/lib/blog/stage"
+import Layout from "@/layouts/Layout.astro"
+import BackToTop from "@/components/base/BackToTop.astro"
+import Badge from "@/components/base/Badge.astro"
+import Icon from "@/components/base/Icon.astro"
+import AboutAuthors from "@/components/blog/AboutAuthors.astro"
+import PostMetadata from "@/components/blog/PostMetadata.astro"
+import PostNav from "@/components/blog/PostNavigation.astro"
+import ShareActions from "@/components/blog/ShareActions.astro"
+import SubpostsFloat from "@/components/blog/SubpostsFloat.astro"
+import SubpostsHeader from "@/components/blog/SubpostsHeader.astro"
+import SubpostsSidebar from "@/components/blog/SubpostsSidebar.astro"
+import TOCFloat from "@/components/blog/TOCFloat.astro"
+import TOCHeader from "@/components/blog/TOCHeader.astro"
+import TOCSidebar from "@/components/blog/TOCSidebar.astro"
+import Breadcrumbs from "@/components/layout/Breadcrumbs.astro"
+import SlideOut from "@/components/layout/SlideOut.astro"
+
+export async function getStaticPaths() {
+  const posts = await PostManager.getInstance().getAllPostsAndSubposts()
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: post
+  }))
+}
+
+const post = Astro.props
+if (!post) {
+  throw new Error(`Blog post not found: ${post}`)
+}
+
+const postManager = PostManager.getInstance()
+const currentPostId = post.id
+
+// Render first, then pass headings to context to avoid double render() in TOC generation
+const { Content, headings: rawHeadings } = await render(post)
+const context = await postManager.getPostContext(currentPostId, SITE.blog.tocMaxDepth, rawHeadings)
+
+const {
+  metadata,
+  navigation,
+  tocSections,
+  headings,
+  parentPost,
+  isSubpost,
+  hasSubposts,
+  postNavItems,
+  activePostNavItem
+} = context
+
+const rawMarkdown = post.body ?? null
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  image={typeof post.data.image === "string" ? post.data.image : post.data.image?.src}
+  type="article"
+  publishedTime={post.data.createdAt}
+  modifiedTime={post.data.updatedAt}
+  author={metadata.authors[0]?.name}
+  tags={post.data.tags}
+  section="Blog"
+>
+  {
+    (hasSubposts || isSubpost) && activePostNavItem && (
+      <SubpostsHeader
+        slot="subposts-navigation-header"
+        currentPost={post}
+        parentPost={navigation.parent}
+        postNavItems={postNavItems}
+        isSubpost={isSubpost}
+        activePostNavItem={activePostNavItem}
+      />
+    )
+  }
+  {headings.length > 1 && <TOCHeader slot="toc-header" headings={headings} />}
+  <Breadcrumbs
+    slot="breadcrumb"
+    items={[
+      { href: "/blog", label: "Blog", icon: "blog" },
+      ...(isSubpost && parentPost
+        ? [
+            {
+              href: `/blog/${parentPost.id}`,
+              label: parentPost.title,
+              icon: "parent-post"
+            },
+            {
+              href: `/blog/${currentPostId}`,
+              label: post.data.title,
+              icon: "subpost"
+            }
+          ]
+        : [
+            {
+              href: `/blog/${currentPostId}`,
+              label: post.data.title,
+              icon: "post-active"
+            }
+          ])
+    ]}
+  />
+  {/** Hero image */}
+  {
+    post.data.image && (
+      <Image
+        src={post.data.image}
+        alt={post.data.title}
+        width={1200}
+        height={630}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+        class="mx-auto w-full object-cover"
+        loading="lazy"
+      />
+    )
+  }
+
+  {/** Post header */}
+  <header class="flex flex-col gap-y-4 text-center">
+    <h1
+      id="post-title"
+      class="[scroll-margin-top:var(--header-height)] text-3xl leading-tight font-medium sm:text-4xl"
+    >
+      {post.data.title}
+    </h1>
+
+    {/** Post metadata */}
+    <PostMetadata {...metadata} variant="full" />
+
+    {/** Stage + Tags */}
+    {
+      (post.data.stage || post.data.tags?.length > 0) && (
+        <ul class="flex flex-wrap justify-center gap-2" aria-label="Post tags">
+          {post.data.stage && (
+            <li>
+              <Badge
+                href={`/blog/stages/${post.data.stage}`}
+                variant={getStageVariant(post.data.stage)}
+              >
+                <Icon name={post.data.stage} class="size-3" />
+                {post.data.stage}
+              </Badge>
+            </li>
+          )}
+          {post.data.tags.map((tag: string) => (
+            <li>
+              <Badge href={`/blog/tags/${tag}`} variant="muted">
+                <Icon name="hashtag" class="size-3" />
+                {tag}
+              </Badge>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </header>
+
+  {/** Top navigation */}
+  <PostNav prevPost={navigation.newer} nextPost={navigation.older} parentPost={navigation.parent} />
+
+  {
+    post.data.audience && (
+      <aside class="border-primary/40 bg-muted/30 rounded-r-lg border-l-4 px-4 py-3 text-sm">
+        <span class="font-medium">Assumed audience:</span> {post.data.audience}
+      </aside>
+    )
+  }
+
+  {/** Left sidebar - TOC */}
+  <SlideOut position="left">
+    {
+      tocSections.length > 0 && (
+        <TOCSidebar slot="main" sections={tocSections} currentPostId={currentPostId} />
+      )
+    }
+    {headings.length > 0 && <TOCFloat slot="summary" headings={headings} />}
+  </SlideOut>
+
+  {/** Right sidebar - Subposts */}
+  {
+    (hasSubposts || isSubpost) && activePostNavItem && (
+      <SlideOut position="right">
+        <SubpostsSidebar
+          slot="main"
+          postNavItems={postNavItems}
+          activePostNavItem={activePostNavItem}
+        />
+        <SubpostsFloat
+          slot="summary"
+          postNavItems={postNavItems}
+          activePostNavItem={activePostNavItem}
+        />
+      </SlideOut>
+    )
+  }
+
+  {/** Main article content */}
+  <article class="post-content prose lg:prose-lg">
+    <Content />
+  </article>
+
+  {/** Post footer: authors + actions */}
+  <footer class="flex flex-col gap-y-6">
+    {metadata.authors.length > 0 && <AboutAuthors authors={metadata.authors} />}
+
+    <ShareActions
+      title={post.data.title}
+      url={`${SITE.href}/blog/${currentPostId}`}
+      authors={metadata.authors}
+      markdown={rawMarkdown}
+      class="flex justify-end"
+    />
+  </footer>
+
+  {/** Bottom navigation */}
+  <PostNav prevPost={navigation.newer} nextPost={navigation.older} parentPost={navigation.parent} />
+</Layout>
+
+<BackToTop />

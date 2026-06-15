@@ -1,0 +1,150 @@
+---
+import CommonLayout from "@/layouts/CommonLayout.astro"
+import CopyButton from "@/components/base/CopyButton.astro"
+
+const colorGroups = [
+  {
+    label: "Core",
+    tokens: ["background", "foreground"]
+  },
+  {
+    label: "Brand",
+    tokens: ["primary", "primary-foreground", "accent", "accent-foreground"]
+  },
+  {
+    label: "UI",
+    tokens: ["muted", "muted-foreground", "border", "ring", "destructive"]
+  }
+]
+---
+
+<CommonLayout
+  title="Colors Palette"
+  description="Palette with live previews, computed by theme."
+  breadcrumbs={[{ label: "Palette", icon: "mingcute:palette-line" }]}
+  prose={false}
+>
+  {
+    colorGroups.map((group) => (
+      <section class="mb-8">
+        <h2 class="text-foreground mb-3 text-xl font-semibold">{group.label}</h2>
+        <div class="grid grid-cols-2 gap-4">
+          {group.tokens.map((token) => (
+            <div
+              class="group border-border overflow-hidden rounded-lg border"
+              data-palette-card={token}
+            >
+              <div class="relative" style={`height:8rem;background-color:var(--${token})`}>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
+                  <span class="rounded-md px-3 py-2 font-mono text-xs" data-overlay={token}>
+                    {token}
+                  </span>
+                </div>
+              </div>
+              <div class="flex flex-col gap-1 p-2">
+                <p class="text-foreground mb-1 text-sm font-semibold">{token}</p>
+                <div class="flex items-center justify-between gap-1">
+                  <code class="oklch-value text-muted-foreground text-xs" data-value={token}>
+                    …
+                  </code>
+                  <CopyButton
+                    selector=".oklch-value"
+                    title={`Copy ${token} OKLCH value`}
+                    size="1rem"
+                    class="text-muted-foreground hover:text-foreground shrink-0"
+                  />
+                </div>
+                <div class="flex items-center justify-between gap-1">
+                  <code class="hex-value text-muted-foreground text-xs" data-hex={token}>
+                    …
+                  </code>
+                  <CopyButton
+                    selector=".hex-value"
+                    title={`Copy ${token} hex value`}
+                    size="1rem"
+                    class="text-muted-foreground hover:text-foreground shrink-0"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))
+  }
+</CommonLayout>
+
+<script is:inline data-astro-rerun>
+  ;(function () {
+    var hexCtx = document.createElement("canvas").getContext("2d")
+
+    function colorToHex(color) {
+      if (!color) return ""
+      hexCtx.fillStyle = "#000"
+      hexCtx.fillStyle = color
+      var resolved = hexCtx.fillStyle
+      if (resolved.charAt(0) === "#") return resolved
+      var m = resolved.match(/[\d.]+/g)
+      if (!m || m.length < 3) return ""
+      return (
+        "#" +
+        [m[0], m[1], m[2]]
+          .map(function (v) {
+            var h = Math.round(Number(v)).toString(16)
+            return h.length === 1 ? "0" + h : h
+          })
+          .join("")
+      )
+    }
+
+    function isLight(el) {
+      var color = getComputedStyle(el).backgroundColor
+      hexCtx.fillStyle = "#000"
+      hexCtx.fillStyle = color
+      var resolved = hexCtx.fillStyle
+      var m = resolved.match(/[\d.]+/g)
+      if (!m || m.length < 3) {
+        var hex = resolved.replace("#", "")
+        var r = parseInt(hex.substring(0, 2), 16)
+        var g = parseInt(hex.substring(2, 4), 16)
+        var b = parseInt(hex.substring(4, 6), 16)
+        return r * 0.299 + g * 0.587 + b * 0.114 > 150
+      }
+      return Number(m[0]) * 0.299 + Number(m[1]) * 0.587 + Number(m[2]) * 0.114 > 150
+    }
+
+    function updateColorValues() {
+      var style = getComputedStyle(document.documentElement)
+
+      document.querySelectorAll("[data-value]").forEach(function (el) {
+        var token = el.getAttribute("data-value")
+        var value = style.getPropertyValue("--" + token).trim()
+        el.textContent = value || "–"
+      })
+
+      document.querySelectorAll("[data-hex]").forEach(function (el) {
+        var token = el.getAttribute("data-hex")
+        var value = style.getPropertyValue("--" + token).trim()
+        el.textContent = value ? colorToHex(value) : "–"
+      })
+
+      document.querySelectorAll("[data-overlay]").forEach(function (pill) {
+        var card = pill.closest("[data-palette-card]")
+        if (!card) return
+        var swatchEl = card.querySelector("[style*=background-color]")
+        if (!swatchEl) return
+        var light = isLight(swatchEl)
+        pill.style.backgroundColor = light ? "rgba(0,0,0,0.75)" : "rgba(255,255,255,0.85)"
+        pill.style.color = light ? "#fff" : "#000"
+      })
+    }
+
+    updateColorValues()
+    document.addEventListener("astro:after-swap", updateColorValues)
+
+    new MutationObserver(updateColorValues).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"]
+    })
+  })()
+</script>

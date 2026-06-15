@@ -1,0 +1,84 @@
+---
+import type { PostNavItem as PostNavItemData } from "@/lib/blog/types"
+import { getPostIconName } from "@/lib/blog/utils"
+import Icon from "@/components/base/Icon.astro"
+import Link from "@/components/base/Link.astro"
+import ReadingTime from "@/components/base/ReadingTime.astro"
+import SubpostCountBadge from "@/components/blog/SubpostCountBadge.astro"
+
+interface Props extends PostNavItemData {}
+
+const { title, isActive, isSubpost, wordCount, combinedWordCount, subpostCount, href } = Astro.props
+
+const iconName = getPostIconName(isActive, isSubpost)
+
+// For subposts, don't use combinedWordCount - only show individual reading time
+// For parent posts, show both individual and combined times
+const effectiveCombinedWordCount = isSubpost ? undefined : combinedWordCount
+---
+
+{
+  isActive ? (
+    <div
+      class:list={[
+        "flex items-center gap-2 rounded-md px-2 py-2 text-sm",
+        "bg-primary/40 text-primary-foreground font-medium"
+      ]}
+      aria-current="page"
+    >
+      <Icon
+        name={iconName}
+        class="text-primary mt-0.5 self-start"
+        aria-label={isSubpost ? "Current subpost" : "Current post"}
+      />
+      <div class="flex min-w-0 flex-col gap-0.5">
+        <span class="text-foreground line-clamp-2 leading-tight font-medium">{title}</span>
+        {!isSubpost && !!subpostCount && subpostCount > 0 && (
+          <SubpostCountBadge count={subpostCount} variant="full" />
+        )}
+        {wordCount > 0 && (
+          <ReadingTime
+            wordCount={wordCount}
+            combinedWordCount={effectiveCombinedWordCount}
+            class="text-muted-foreground flex items-center gap-2 text-xs"
+          />
+        )}
+      </div>
+    </div>
+  ) : (
+    <Link
+      href={href}
+      class:list={[
+        "group/post flex items-center gap-2 rounded-md px-2 py-2 text-sm",
+        "hover:bg-accent/50 transition-all duration-200",
+        "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2"
+      ]}
+    >
+      <Icon
+        name={iconName}
+        class="text-muted-foreground group-hover/post:text-accent-foreground mt-0.5 self-start transition-colors"
+        aria-label={isSubpost ? "Subpost" : "Parent post"}
+      />
+      <div class="flex min-w-0 flex-col gap-0.5">
+        <span
+          class:list={[
+            "text-muted-foreground line-clamp-2 font-medium",
+            "group-hover/post:text-accent-foreground transition-colors"
+          ]}
+        >
+          {title}
+        </span>
+        {(wordCount > 0 || (!!subpostCount && subpostCount > 0 && !isSubpost)) && (
+          <div class="text-muted-foreground/60 group-hover/post:text-accent-foreground/50 flex items-center gap-2 text-xs transition-colors">
+            {wordCount > 0 && (
+              <ReadingTime wordCount={wordCount} combinedWordCount={effectiveCombinedWordCount} />
+            )}
+            {!!subpostCount && subpostCount > 0 && !isSubpost && (
+              <SubpostCountBadge count={subpostCount} variant="compact" />
+            )}
+          </div>
+        )}
+      </div>
+    </Link>
+  )
+}

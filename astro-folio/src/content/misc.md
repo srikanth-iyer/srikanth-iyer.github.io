@@ -1,0 +1,4 @@
+- Before research, I spent years in advertising — learning, the hard way, that people don't adopt ideas; they adopt stories that carry them.
+- I've written and sold a feature film script, which remains one of my favorite empirical results.
+- Patron saints: **Terry Pratchett** and **Ursula K. Le Guin**.
+- A working motto: a model is a story you can run; a story is a model you can feel.

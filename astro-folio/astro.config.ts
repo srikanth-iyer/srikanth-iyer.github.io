@@ -1,0 +1,128 @@
+import { defineConfig } from "astro/config"
+import { rehypeHeadingIds, unified } from "@astrojs/markdown-remark"
+import mdx from "@astrojs/mdx"
+import sitemap from "@astrojs/sitemap"
+import expressiveCode from "astro-expressive-code"
+import icon from "astro-icon"
+import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections"
+import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers"
+
+import rehypeAutolinkHeadings from "rehype-autolink-headings"
+import rehypeExternalLinks from "rehype-external-links"
+import rehypeKatex from "rehype-katex"
+
+import remarkNormalizeHeadings from "./src/plugins/remark-normalize-headings"
+import remarkCallout from "@r4ai/remark-callout"
+import remarkMath from "remark-math"
+import remarkSectionize from "remark-sectionize"
+
+import tailwindcss from "@tailwindcss/vite"
+import pagefind from "astro-pagefind"
+
+import rehypeSidenotes from "./src/plugins/rehype-sidenotes"
+
+export default defineConfig({
+  site: "https://srikanth-iyer.github.io",
+  trailingSlash: "never",
+  output: "static",
+  image: {
+    responsiveStyles: true,
+    layout: "constrained",
+    remotePatterns: [
+      {
+        protocol: "data"
+      },
+      {
+        protocol: "https",
+        hostname: "gravatar.com"
+      }
+    ]
+  },
+  integrations: [
+    expressiveCode({
+      themes: ["catppuccin-macchiato", "catppuccin-latte"],
+      plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
+      themeCssSelector: (theme) => `[data-theme='${theme.type}']`,
+      defaultProps: {
+        wrap: true,
+        collapseStyle: "collapsible-auto",
+        overridesByLang: {
+          "ansi,bat,bash,batch,cmd,console,powershell,ps,ps1,psd1,psm1,sh,shell,shellscript,shellsession,text,zsh":
+            {
+              showLineNumbers: false
+            }
+        }
+      },
+      styleOverrides: {
+        codeFontSize: "0.75rem",
+        borderColor: "var(--border)",
+        codeFontFamily: "var(--font-mono)",
+        codeBackground: "color-mix(in oklab, var(--muted) 25%, transparent)",
+        frames: {
+          editorActiveTabForeground: "var(--muted-foreground)",
+          editorActiveTabBackground: "color-mix(in oklab, var(--muted) 25%, transparent)",
+          editorActiveTabIndicatorBottomColor: "transparent",
+          editorActiveTabIndicatorTopColor: "transparent",
+          editorTabBorderRadius: "0",
+          editorTabBarBackground: "transparent",
+          editorTabBarBorderBottomColor: "transparent",
+          frameBoxShadowCssValue: "none",
+          terminalBackground: "color-mix(in oklab, var(--muted) 25%, transparent)",
+          terminalTitlebarBackground: "transparent",
+          terminalTitlebarBorderBottomColor: "transparent",
+          terminalTitlebarForeground: "var(--muted-foreground)"
+        },
+        lineNumbers: {
+          foreground: "var(--muted-foreground)"
+        },
+        uiFontFamily: "var(--font-sans)"
+      }
+    }),
+    mdx(),
+    sitemap(),
+    pagefind(),
+    icon({
+      iconDir: "src/assets/icons/"
+    })
+  ],
+  vite: {
+    plugins: [tailwindcss()],
+    build: {
+      reportCompressedSize: false
+    }
+  },
+  server: {
+    port: 4321,
+    host: true
+  },
+  devToolbar: {
+    enabled: false
+  },
+  markdown: {
+    syntaxHighlight: false,
+    processor: unified({
+      rehypePlugins: [
+        [
+          rehypeExternalLinks,
+          {
+            target: "_blank",
+            rel: ["nofollow", "noreferrer", "noopener"],
+            content: { type: "text", value: "↗" }
+          }
+        ],
+        rehypeHeadingIds,
+        [
+          rehypeAutolinkHeadings,
+          {
+            behavior: "append",
+            properties: { className: ["anchor"] },
+            content: { type: "text", value: " 🔗" }
+          }
+        ],
+        rehypeKatex,
+        rehypeSidenotes
+      ],
+      remarkPlugins: [remarkMath, remarkCallout, remarkNormalizeHeadings, remarkSectionize]
+    })
+  }
+})
