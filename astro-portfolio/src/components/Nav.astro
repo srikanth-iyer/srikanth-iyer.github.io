@@ -1,0 +1,72 @@
+---
+// Sticky, minimal top navigation. Name on the left, in-page links on the right.
+import { site, nav } from "../data/site";
+---
+
+<header class="topbar">
+  <div class="shell topbar-inner">
+    <a class="brand" href="#top">{site.name}</a>
+    <nav class="nav" aria-label="Sections">
+      {nav.map((item) => <a href={`#${item.id}`}>{item.label}</a>)}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: saturate(1.2) blur(10px);
+    -webkit-backdrop-filter: saturate(1.2) blur(10px);
+    background: color-mix(in srgb, var(--paper) 82%, transparent);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+  }
+  /* Hairline appears once the page scrolls (toggled via .is-scrolled on body). */
+  :global(body.is-scrolled) .topbar {
+    border-bottom-color: var(--line);
+  }
+
+  .topbar-inner {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1.05rem;
+  }
+
+  .brand {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.12rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .brand:hover {
+    color: var(--accent-deep);
+    text-decoration: none;
+  }
+
+  .nav {
+    display: flex;
+    gap: clamp(0.85rem, 3vw, 1.9rem);
+    font-size: 0.92rem;
+  }
+  .nav a {
+    color: var(--ink-soft);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+  .nav a:hover {
+    color: var(--accent-deep);
+    text-decoration: none;
+  }
+
+  @media (max-width: 34rem) {
+    /* Drop the first nav item on very small screens to avoid wrapping. */
+    .nav a:first-child {
+      display: none;
+    }
+  }
+</style>

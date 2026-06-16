@@ -1,0 +1,47 @@
+---
+// A titled content section: small serif index number + heading, then a slot.
+// Sections reveal gently on scroll (see the reveal script in index.astro).
+interface Props {
+  id: string;
+  index: string;
+  title: string;
+}
+const { id, index, title } = Astro.props;
+const headingId = `${id}-heading`;
+---
+
+<section id={id} class="section reveal" aria-labelledby={headingId}>
+  <div class="shell">
+    <header class="section-head">
+      <span class="section-index" aria-hidden="true">{index}</span>
+      <h2 id={headingId}>{title}</h2>
+    </header>
+    <div class="section-body">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: var(--section-gap);
+    border-top: 1px solid var(--line);
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.85rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .section-index {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-weight: 500;
+    font-feature-settings: "tnum" 1;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    padding-top: 0.15rem;
+  }
+</style>

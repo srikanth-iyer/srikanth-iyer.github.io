@@ -1,0 +1,22 @@
+{
+  "name": "srikanth-iyer-astro-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "nikhitasingh.com-inspired portfolio variant for Srikanth Iyer, built with Astro.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@fontsource-variable/fraunces": "^5.2.5",
+    "@fontsource-variable/inter": "^5.2.5",
+    "astro": "^6.4.6"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "typescript": "^6.0.3"
+  }
+}

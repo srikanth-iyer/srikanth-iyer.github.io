@@ -25,6 +25,11 @@ at <https://srikanth-iyer.github.io>.
   and feature set (BibTeX publications, projects, news, CV timeline, blog with
   math, dark mode). Built on the Apache-2.0 `chiffonng/astro-academic` theme;
   also build-stepped and not auto-deployed. See `astro-folio/README.md`.
+- `astro-portfolio/` — a `nikhitasingh.com`-inspired variant: Astro, warm cream
+  paper, expressive serif display type (Fraunces) over a clean sans (Inter),
+  generous editorial whitespace, light/dark themes. Content-as-data, zero
+  external requests; build-stepped and not auto-deployed. See
+  `astro-portfolio/README.md`.
 
 ## Choosing a style
 

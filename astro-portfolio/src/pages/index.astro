@@ -1,0 +1,299 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Section from "../components/Section.astro";
+import {
+  site,
+  hero,
+  about,
+  research,
+  writing,
+  ethos,
+  contact,
+} from "../data/site";
+---
+
+<Layout>
+  <span id="top"></span>
+  <Nav />
+
+  <main id="main">
+    <!-- Hero -->
+    <header class="hero reveal">
+      <div class="shell">
+        <p class="hero-greeting">{hero.greeting}</p>
+        <h1 class="hero-name">{site.name}</h1>
+        <p class="hero-role">{site.role}</p>
+        <p class="hero-lead">{hero.lead}</p>
+        <p class="hero-kicker">{hero.kicker}</p>
+      </div>
+    </header>
+
+    <!-- About -->
+    <Section id="about" index="01" title={about.title}>
+      {about.paragraphs.map((p) => <p>{p}</p>)}
+    </Section>
+
+    <!-- Research -->
+    <Section id="research" index="02" title={research.title}>
+      <p class="lead-line">{research.intro}</p>
+      <div class="threads">
+        {
+          research.threads.map((t) => (
+            <article class="thread">
+              <h3>{t.title}</h3>
+              <p>{t.body}</p>
+            </article>
+          ))
+        }
+      </div>
+      <p class="note">{research.note}</p>
+    </Section>
+
+    <!-- Writing -->
+    <Section id="writing" index="03" title={writing.title}>
+      {writing.paragraphs.map((p) => <p>{p}</p>)}
+    </Section>
+
+    <!-- Ethos -->
+    <Section id="ethos" index="04" title={ethos.title}>
+      <p>{ethos.intro}</p>
+      <dl class="principles">
+        {
+          ethos.principles.map((pr) => (
+            <div class="principle">
+              <dt>{pr.q}</dt>
+              <dd>{pr.a}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </Section>
+
+    <!-- Contact -->
+    <Section id="contact" index="05" title={contact.title}>
+      <p>{contact.intro}</p>
+      <ul class="links">
+        <li>
+          <span class="links-label">Email</span>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </li>
+        <li>
+          <span class="links-label">GitHub</span>
+          <a href={site.github}>github.com/{site.githubHandle}</a>
+        </li>
+      </ul>
+    </Section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer-inner">
+      <p>© {new Date().getFullYear()} {site.name}</p>
+      <p class="footer-note">Built with Astro · the motion is in the math.</p>
+    </div>
+  </footer>
+</Layout>
+
+<style>
+  /* ---- Hero ---- */
+  .hero {
+    padding-block: clamp(3.5rem, 9vw, 6.5rem) var(--section-gap);
+  }
+  .hero-greeting {
+    color: var(--accent-deep);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.7rem;
+  }
+  .hero-name {
+    font-family: var(--serif);
+    font-weight: 460;
+    font-size: clamp(3rem, 1.8rem + 7vw, 6rem);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    margin: 0 0 0.35rem;
+  }
+  .hero-role {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink-soft);
+    font-size: clamp(1.2rem, 1rem + 1vw, 1.6rem);
+    margin-bottom: 1.8rem;
+    max-width: none;
+  }
+  .hero-lead {
+    font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.4rem);
+    line-height: 1.55;
+    color: var(--ink);
+    max-width: 34rem;
+  }
+  .hero-kicker {
+    margin-top: 1.6rem;
+    padding-left: 1.1rem;
+    border-left: 2px solid var(--accent);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.12rem;
+    color: var(--ink-soft);
+    max-width: 30rem;
+  }
+
+  .lead-line {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--ink);
+    margin-bottom: 2rem;
+  }
+
+  /* ---- Research threads ---- */
+  .threads {
+    display: grid;
+    gap: 1.6rem;
+  }
+  .thread {
+    padding: 1.5rem 1.6rem;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .thread:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 2px 4px rgba(43, 38, 34, 0.06),
+      0 14px 40px rgba(43, 38, 34, 0.1);
+  }
+  .thread h3 {
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+  .thread p {
+    margin-bottom: 0;
+  }
+
+  .note {
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+
+  /* ---- Ethos principles ---- */
+  .principles {
+    margin: 2rem 0 0;
+    display: grid;
+    gap: 1.4rem;
+  }
+  .principle {
+    display: grid;
+    gap: 0.3rem;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .principle:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .principle dt {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.15rem;
+    color: var(--ink);
+  }
+  .principle dd {
+    margin: 0;
+    color: var(--ink-soft);
+  }
+
+  /* ---- Contact links ---- */
+  .links {
+    list-style: none;
+    margin: 1.6rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+  .links li {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .links-label {
+    flex: 0 0 4.5rem;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    font-weight: 600;
+  }
+  .links a {
+    font-size: 1.1rem;
+  }
+
+  /* ---- Footer ---- */
+  .footer {
+    border-top: 1px solid var(--line);
+    padding-block: 2.5rem 3.5rem;
+  }
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .footer p {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--ink-faint);
+  }
+  .footer-note {
+    font-style: italic;
+  }
+
+  /* ---- Scroll reveal ---- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  // Gentle scroll-reveal + sticky-nav hairline. No framework, ~20 lines.
+  const reveals = document.querySelectorAll<HTMLElement>(".reveal");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible");
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+    );
+    reveals.forEach((el) => io.observe(el));
+  } else {
+    reveals.forEach((el) => el.classList.add("is-visible"));
+  }
+
+  const onScroll = () => {
+    document.body.classList.toggle("is-scrolled", window.scrollY > 8);
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+</script>

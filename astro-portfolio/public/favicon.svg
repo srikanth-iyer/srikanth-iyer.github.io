@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#fbf7f0"/>
+  <!-- Three simple agents: emergence from local rules -->
+  <circle cx="11" cy="12" r="2.4" fill="#c2643d"/>
+  <circle cx="21" cy="13" r="2.4" fill="#c2643d"/>
+  <circle cx="16" cy="21" r="2.4" fill="#a44f2d"/>
+  <path d="M11 12 L21 13 L16 21 Z" fill="none" stroke="#c2643d" stroke-width="1.1" stroke-linejoin="round" opacity="0.5"/>
+</svg>
