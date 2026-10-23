@@ -5,7 +5,7 @@
 // and reaches its decision at the bottom of the page.
 import ExplainerShell from './ExplainerShell.astro';
 
-const { theme } = Astro.props;
+const { theme, back } = Astro.props;
 
 // The toy rule from the talk (3 inputs, outputs 0 1 0 1 1 1 0 1) and its four schemata.
 const outputs = [0, 1, 0, 1, 1, 1, 0, 1];
@@ -34,7 +34,7 @@ const area = `${line} L${X(0.1)} ${Y(0)} L${X(0)} ${Y(0)} Z`;
 // One row of 13 cells from the talk's worked example (slide 7), the 7-cell window, and the result.
 const row13 = [1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1];
 ---
-<ExplainerShell theme={theme} title="How 149 cells agree without a leader" description="An illustrated explainer of the density classification task, noise, and why canalized rules make collective decisions robust. From the CCS 2026 talk by Srikanth Iyer and colleagues.">
+<ExplainerShell theme={theme} back={back} title="How 149 cells agree without a leader" description="An illustrated explainer of the density classification task, noise, and why canalized rules make collective decisions robust. From the CCS 2026 talk by Srikanth Iyer and colleagues.">
   <section class="step">
     <div class="card">
       <p class="badge">CCS 2026 · explainer</p>

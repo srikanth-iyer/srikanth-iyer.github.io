@@ -1,0 +1,43 @@
+---
+// ResearchList.astro: the numbered list of research projects (research dialect).
+// "limit" shows only the first few, for the home page.
+import research from '../../data/research.json';
+const { limit, detailed = false } = Astro.props;
+const items = limit ? research.slice(0, limit) : research;
+---
+<ol class="rlist">
+  {items.map((r, i) => (
+    <li>
+      <span class="num">{i + 1}</span>
+      <div class="body">
+        <h3><b>{r.key}</b>{r.rest.startsWith(':') ? '' : ' '}{r.rest}</h3>
+        <p class="text">{r.summary}</p>
+        {detailed && r.authors && <p class="meta">{r.authors}</p>}
+        <p class="meta">
+          {r.badge ? <span class="award">{r.badge}</span> : r.venues}
+          {detailed && r.badge && <> · {r.venues}</>}
+        </p>
+        {(r.story || r.link) && (
+          <p class="links">
+            {r.story && <a class="more" href={`/explainers/${r.story}/`}>Read the explainer →</a>}
+            {r.link && <a class="more" href={r.link}>See the code →</a>}
+          </p>
+        )}
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .rlist { list-style: none; margin: 0; padding: 0; }
+  li { display: flex; gap: var(--space-6); padding-block: var(--space-6); border-top: var(--hairline) solid var(--line); }
+  li:last-child { border-bottom: var(--hairline) solid var(--line); }
+  .num { flex: 0 0 36px; font-family: var(--font-display); font-weight: 700; font-size: 36px; line-height: 1; color: var(--thread); }
+  .body { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+  .body p { margin: 0; }
+  h3 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 24px; line-height: 1.3; text-wrap: balance; }
+  h3 b { font-weight: 700; }
+  .award { background: var(--accent-soft); color: var(--ink); padding: 2px 6px; border-radius: var(--radius-chip); }
+  .links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); margin: var(--space-1) 0 0; }
+  @media (max-width: 560px) { li { gap: var(--space-4); } .num { flex-basis: 24px; font-size: 26px; } }
+</style>

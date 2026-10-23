@@ -1,0 +1,48 @@
+---
+// directions/index.astro: an archive of the six early design directions, kept for comparison.
+// The real home page is src/pages/index.astro.
+import Base from '../../layouts/Base.astro';
+import profile from '../../data/profile.json';
+
+// One entry per design: its address, name and a one-line description.
+const directions = [
+  { slug: 'talks', letter: 'A', name: 'Research Talks', note: 'Built on the design system of your CCS 2026 deck: claim titles, teal section numbers, a live GKL rule with a noise control.' },
+  { slug: 'specimen', letter: 'B', name: 'Living specimen', note: 'Dark and cinematic: the automaton runs behind your name; visitors can flip cells and watch the group recover.' },
+  { slug: 'folio', letter: 'C', name: 'Academic folio', note: 'The classic academic layout: bio, news, talks, projects, film and writing; light and dark theme.' },
+  { slug: 'notebook', letter: 'D', name: 'Editorial notebook', note: 'A magazine feel: career arrows, a filterable work list, a featured talk and a notebooks gallery.' },
+  { slug: 'garden', letter: 'E', name: 'Illustrated garden', note: 'Visual explainers, notes that grow from seedling to evergreen, and your film and writing history.' },
+  { slug: 'lab', letter: 'F', name: 'Monospace lab', note: 'Black-and-white monospace, with a live comparison of the GKL rule and a naive majority vote.' },
+];
+---
+<Base title={`${profile.name} · choose a direction`} fonts="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;700&family=Lato:wght@400;700&display=swap">
+  <main>
+    <p class="kicker">ARCHIVE · SIX EARLY DESIGN DIRECTIONS · <a href="/">back to the site</a></p>
+    <h1><u>{profile.name}</u>: pick the site that feels like you</h1>
+    <p class="lead">Every design below uses the same content, read from the files in <code>src/data/</code>. Open each one, then keep the one you like (or mix parts of several).</p>
+    <ol>
+      {directions.map((d) => (
+        <li>
+          <a href={`/directions/${d.slug}/`}>
+            <span class="letter">{d.letter}</span>
+            <span class="text"><b>{d.name}</b><span>{d.note}</span></span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </main>
+</Base>
+
+<style>
+  main { max-width: 860px; margin: 0 auto; padding: 64px 24px; font-family: Lato, Arial, sans-serif; color: #141414; }
+  .kicker { font-weight: 700; letter-spacing: 0.08em; color: #147466; font-size: 14px; margin: 0 0 12px; }
+  h1 { font-family: 'Hanken Grotesk', sans-serif; font-size: clamp(32px, 5vw, 48px); line-height: 1.1; margin: 0 0 16px; font-weight: 400; }
+  h1 u { font-weight: 700; text-decoration-thickness: 3px; text-underline-offset: 6px; }
+  .lead { font-size: 18px; line-height: 1.6; color: #3d291f; margin: 0 0 32px; }
+  code { background: #f6f4f0; padding: 2px 6px; border-radius: 6px; }
+  ol { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  a { display: flex; gap: 20px; align-items: flex-start; padding: 20px; background: #f6f4f0; border-radius: 12px; text-decoration: none; color: inherit; }
+  a:hover { background: #efeee7; }
+  .letter { flex: 0 0 44px; height: 44px; border-radius: 999px; background: #1b9986; color: #fff; font: 700 20px 'Hanken Grotesk', sans-serif; display: flex; align-items: center; justify-content: center; }
+  .text { display: flex; flex-direction: column; gap: 4px; font-size: 16px; line-height: 1.5; color: #3d291f; }
+  .text b { font-size: 20px; color: #141414; }
+</style>

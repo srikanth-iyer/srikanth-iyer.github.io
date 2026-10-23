@@ -1,0 +1,23 @@
+---
+// film.astro: film and writing (film dialect: script paper and screenplay slug lines).
+import Site from '../layouts/Site.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import FilmScenes from '../components/sections/FilmScenes.astro';
+import profile from '../data/profile.json';
+const mumbai = profile.education.find((e) => e.school.includes('Mumbai'));
+---
+<Site title="Film & writing" current="film" description="Fifteen years of film, advertising and writing by Srikanth Iyer: the feature film Capgras, series development for BBC Studios India, brand films and commercials.">
+  <section class="band" data-theme="film">
+    <div class="wrap section">
+      <SectionHeader number={3} label="Film & writing" level="h1">Fade in: fifteen years of making an audience care</SectionHeader>
+      <p class="lead intro">Before research, I spent fifteen years in media: sports writing, then commercials and event films, then screenplays and series development. I learned how to make an audience care in thirty seconds or two hours. That habit is why my research comes with pictures.</p>
+      <FilmScenes />
+      {mumbai && <p class="meta coda">FADE OUT. Trained in journalism: {mumbai.degree}, {mumbai.school}, {mumbai.years}.</p>}
+    </div>
+  </section>
+</Site>
+
+<style>
+  .intro { margin-bottom: var(--space-12); }
+  .coda { margin: var(--space-12) 0 0; font-family: var(--font-screenplay); font-size: 15px; }
+</style>

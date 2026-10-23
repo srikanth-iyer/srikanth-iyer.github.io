@@ -1,0 +1,88 @@
+/* collective.css: the Collective design system for this site.
+   One grammar (fonts, spacing, the teal "thread", headers) shared by every section,
+   and five dialects (colour themes) that give each section its own identity.
+   A section picks its dialect with data-theme="research" | "art" | "film" | "notes" | "explainers".
+   Every dialect defines the SAME variable names, so every component works in every section. */
+
+/* ---------- Grammar: never changes between sections ---------- */
+:root {
+  --font-display: 'Hanken Grotesk', system-ui, sans-serif;   /* headings, navigation */
+  --font-body: Lato, 'Helvetica Neue', Arial, sans-serif;     /* all running text */
+  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace; /* labels, dates, counters */
+  --font-screenplay: 'Courier Prime', 'Courier New', monospace;  /* film dialect titles only */
+  --font-garden: Fraunces, Georgia, serif;                       /* notes dialect titles only */
+
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-6: 24px; --space-8: 32px; --space-12: 48px; --space-24: 96px;
+  --radius-cell: 0; --radius-chip: 6px; --radius-card: 12px; --radius-pill: 999px;
+  --width-page: 1200px; --width-text: 720px; --badge: 32px; --hairline: 1.5px;
+}
+
+/* ---------- Dialects: each section's own colours ---------- */
+:root, [data-theme="research"] {
+  --thread: #147466; --on-thread: #ffffff; --ground: #ffffff; --surface: #f6f4f0;
+  --ink: #141414; --body: #3d291f; --muted: #6f675f; --line: #cdc6bc;
+  --accent: #e8743b; --accent-soft: #fbe3d6; --pair-a: #1f77b4; --pair-b: #bb0101; --cell-on: #141414;
+}
+[data-theme="art"] {
+  --thread: #7fd3c4; --on-thread: #0e1211; --ground: #0e1211; --surface: #171c1b;
+  --ink: #ecefed; --body: #c3cac6; --muted: #9aa39f; --line: #26302d;
+  --accent: #e8743b; --accent-soft: #3a2418; --pair-a: #6fb3e8; --pair-b: #f0796b; --cell-on: #7fd3c4;
+}
+[data-theme="film"] {
+  --thread: #147466; --on-thread: #ffffff; --ground: #fbfaf6; --surface: #f1eee6;
+  --ink: #16120e; --body: #3a332b; --muted: #6e665c; --line: #d9d3c7;
+  --accent: #b3261e; --accent-soft: #f4dcd8; --pair-a: #1f77b4; --pair-b: #bb0101; --cell-on: #16120e;
+}
+[data-theme="notes"] {
+  --thread: #147466; --on-thread: #ffffff; --ground: #f7f3eb; --surface: #efe9dd;
+  --ink: #1f1b16; --body: #4a4239; --muted: #6b6157; --line: #e3dccf;
+  --accent: #4e6f31; --accent-soft: #e2ead8; --pair-a: #1f77b4; --pair-b: #bb0101; --cell-on: #1f1b16;
+}
+[data-theme="explainers"] {
+  --thread: #147466; --on-thread: #ffffff; --ground: #ffffff; --surface: #f6f4f0;
+  --ink: #141414; --body: #3d291f; --muted: #6f675f; --line: #cdc6bc;
+  --accent: #e8743b; --accent-soft: #fbe3d6; --pair-a: #1f77b4; --pair-b: #bb0101; --cell-on: #141414;
+}
+
+/* ---------- Base ---------- */
+body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--font-body); }
+a { color: var(--thread); }
+a:hover { color: var(--ink); }
+:focus-visible { outline: 3px solid var(--thread); outline-offset: 3px; }
+
+/* A "band" is a full-width stripe in one dialect; .wrap centres its content */
+.band { background: var(--ground); color: var(--ink); }
+.wrap {
+  max-width: var(--width-page); margin: 0 auto; box-sizing: border-box;
+  padding-left: max(var(--space-4), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--space-4), env(safe-area-inset-right, 0px));
+}
+@media (min-width: 720px) { .wrap { padding-left: var(--space-8); padding-right: var(--space-8); } }
+.section { padding-block: var(--space-12) var(--space-24); }
+
+/* ---------- Shared text styles ---------- */
+.kicker { display: flex; align-items: center; gap: var(--space-3); margin: 0 0 var(--space-3);
+  font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: var(--thread); }
+.badge { width: var(--badge); height: var(--badge); flex: none; border-radius: var(--radius-pill); background: var(--thread);
+  color: var(--on-thread); display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 16px; font-weight: 700; letter-spacing: 0; }
+.claim { margin: 0 0 var(--space-8); font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(28px, 3.6vw, 42px); line-height: 1.18; text-wrap: balance; }
+.claim b { font-weight: 700; text-decoration: underline; text-decoration-thickness: var(--hairline); text-underline-offset: 6px; }
+.lead { margin: 0; font-size: 20px; line-height: 1.55; color: var(--body); max-width: var(--width-text); }
+.text { margin: 0; font-size: 18px; line-height: 1.6; color: var(--body); max-width: var(--width-text); }
+.meta { font-family: var(--font-mono); font-size: 13px; line-height: 1.5; color: var(--muted); }
+.more { font-family: var(--font-display); font-weight: 700; text-decoration: none; font-size: 17px; }
+.more:hover { text-decoration: underline; }
+
+/* ---------- Dialect title styles (the one place a section changes its type) ---------- */
+[data-theme="art"] .claim { font-weight: 300; font-size: clamp(34px, 4.6vw, 56px); line-height: 1.04; }
+[data-theme="art"] .claim b { text-decoration: none; }
+[data-theme="film"] .claim { font-family: var(--font-screenplay); font-weight: 700; font-size: clamp(20px, 2.4vw, 26px);
+  text-transform: uppercase; letter-spacing: 0.02em; }
+[data-theme="film"] .claim b { text-decoration: none; }
+[data-theme="notes"] .claim { font-family: var(--font-garden); font-style: italic; }
+[data-theme="notes"] .claim b { font-weight: 400; text-decoration: none; }
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }

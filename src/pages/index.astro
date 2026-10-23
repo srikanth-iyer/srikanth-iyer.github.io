@@ -1,48 +1,142 @@
 ---
-// index.astro: the home page. For now it lets you compare the six design directions.
-// Once you pick one, this file will become that design (see README.md).
-import Base from '../layouts/Base.astro';
+// index.astro: the home page. A short introduction, then one band per section,
+// each in its own dialect, showing a few highlights and a link to the full section page.
+import Site from '../layouts/Site.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import CellRule from '../components/CellRule.astro';
+import ResearchList from '../components/sections/ResearchList.astro';
+import ArtGrid from '../components/sections/ArtGrid.astro';
+import FilmScenes from '../components/sections/FilmScenes.astro';
+import NotesGrid from '../components/sections/NotesGrid.astro';
+import ExplainerCards from '../components/sections/ExplainerCards.astro';
 import profile from '../data/profile.json';
 
-// One entry per design: its address, name and a one-line description.
-const directions = [
-  { slug: 'talks', letter: 'A', name: 'Research Talks', note: 'Built on the design system of your CCS 2026 deck: claim titles, teal section numbers, a live GKL rule with a noise control.' },
-  { slug: 'specimen', letter: 'B', name: 'Living specimen', note: 'Dark and cinematic: the automaton runs behind your name; visitors can flip cells and watch the group recover.' },
-  { slug: 'folio', letter: 'C', name: 'Academic folio', note: 'The classic academic layout: bio, news, talks, projects, film and writing; light and dark theme.' },
-  { slug: 'notebook', letter: 'D', name: 'Editorial notebook', note: 'A magazine feel: career arrows, a filterable work list, a featured talk and a notebooks gallery.' },
-  { slug: 'garden', letter: 'E', name: 'Illustrated garden', note: 'Visual explainers, notes that grow from seedling to evergreen, and your film and writing history.' },
-  { slug: 'lab', letter: 'F', name: 'Monospace lab', note: 'Black-and-white monospace, with a live comparison of the GKL rule and a naive majority vote.' },
+// The coloured buttons under the introduction: one per section, each drawn in that section's look.
+const doors = [
+  { href: '/research/', label: 'Research', theme: 'research' },
+  { href: '/art/', label: 'Art', theme: 'art' },
+  { href: '/film/', label: 'Film & writing', theme: 'film' },
+  { href: '/notes/', label: 'Notes', theme: 'notes' },
+  { href: '/explainers/', label: 'Explainers', theme: 'explainers' },
 ];
 ---
-<Base title={`${profile.name} · choose a direction`} fonts="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;700&family=Lato:wght@400;700&display=swap">
-  <main>
-    <p class="kicker">DRAFT · SIX DESIGN DIRECTIONS</p>
-    <h1><u>{profile.name}</u>: pick the site that feels like you</h1>
-    <p class="lead">Every design below uses the same content, read from the files in <code>src/data/</code>. Open each one, then keep the one you like (or mix parts of several).</p>
-    <ol>
-      {directions.map((d) => (
-        <li>
-          <a href={`/directions/${d.slug}/`}>
-            <span class="letter">{d.letter}</span>
-            <span class="text"><b>{d.name}</b><span>{d.note}</span></span>
-          </a>
-        </li>
-      ))}
-    </ol>
-  </main>
-</Base>
+<Site description={profile.shortBio}>
+  <section class="band" data-theme="research">
+    <div class="wrap hero">
+      <div class="intro">
+        {profile.photo && <img class="portrait" src={profile.photo} alt={`Portrait of ${profile.name}`} width="112" height="112" />}
+        <p class="kicker">COMPLEX SYSTEMS · COLLECTIVE INTELLIGENCE · STORIES</p>
+        <h1 class="h1"><b>How do simple parts</b> reach one shared decision?</h1>
+        <p class="lead">{profile.bio[0]}</p>
+        <p class="lead">{profile.bio[1]}</p>
+        <p class="award"><span class="place">3rd</span><span><b>{profile.highlight.label.replace(', 3rd place', '')}</b>, {profile.highlight.event}, {profile.highlight.detail}.</span></p>
+        <nav class="doors" aria-label="Sections">
+          {doors.map((d) => <a class={`door door-${d.theme}`} data-theme={d.theme} href={d.href}><i aria-hidden="true"></i>{d.label}</a>)}
+        </nav>
+      </div>
+      <figure class="live">
+        <figcaption class="fig-title">Live: the GKL rule settling on the majority colour</figcaption>
+        <div class="figbox"><canvas id="hero-ca" role="img" aria-label="A row of 149 cells evolving downward over time, turning all black or all white to match the majority starting colour"></canvas></div>
+        <div class="controls" role="group" aria-label="Noise level">
+          <span>Noise level <i>η</i></span>
+          <button type="button" data-noise="0" aria-pressed="true">0</button>
+          <button type="button" data-noise="0.01" aria-pressed="false">0.01</button>
+          <button type="button" data-noise="0.05" aria-pressed="false">0.05</button>
+        </div>
+        <p class="meta">Each row is one time step. 149 cells, each seeing only 7. An orange line marks a fresh random start. <a href="/explainers/canalization/">What am I looking at? →</a></p>
+      </figure>
+    </div>
+  </section>
+
+  <section class="band" data-theme="research">
+    <CellRule />
+    <div class="wrap section">
+      <SectionHeader number={1} label="Research"><b>How groups decide</b>, from cells to language models</SectionHeader>
+      <ResearchList limit={3} />
+      <p class="see"><a class="more" href="/research/">All research, talks and news →</a></p>
+    </div>
+  </section>
+
+  <section class="band" data-theme="art">
+    <CellRule />
+    <div class="wrap section">
+      <SectionHeader number={2} label="Art">The same models, <b>made into light</b></SectionHeader>
+      <ArtGrid />
+      <p class="see"><a class="more" href="/art/">More about the art →</a></p>
+    </div>
+  </section>
+
+  <section class="band" data-theme="film">
+    <CellRule />
+    <div class="wrap section">
+      <SectionHeader number={3} label="Film & writing">Fade in: fifteen years of making an audience care</SectionHeader>
+      <FilmScenes limit={3} />
+      <p class="see"><a class="more" href="/film/">All film and writing credits →</a></p>
+    </div>
+  </section>
+
+  <section class="band" data-theme="notes">
+    <CellRule />
+    <div class="wrap section">
+      <SectionHeader number={4} label="Notes">Notes, tended rather than finished</SectionHeader>
+      <NotesGrid limit={3} />
+      <p class="see"><a class="more" href="/notes/">All notes →</a></p>
+    </div>
+  </section>
+
+  <section class="band" data-theme="explainers">
+    <CellRule />
+    <div class="wrap section">
+      <SectionHeader number={5} label="Explainers"><b>Scroll</b>, and the simulation runs</SectionHeader>
+      <ExplainerCards />
+    </div>
+  </section>
+</Site>
+
+<script>
+  // Starts the live automaton in the introduction and wires up the noise buttons.
+  import { startAutomaton } from '../scripts/automaton.js';
+  const canvas = document.getElementById('hero-ca') as HTMLCanvasElement;
+  const ca = startAutomaton(canvas, { mark: '#e8743b' });
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-noise]');
+  buttons.forEach((b) => b.addEventListener('click', () => {
+    ca.setNoise(Number(b.dataset.noise));
+    buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  }));
+</script>
 
 <style>
-  main { max-width: 860px; margin: 0 auto; padding: 64px 24px; font-family: Lato, Arial, sans-serif; color: #141414; }
-  .kicker { font-weight: 700; letter-spacing: 0.08em; color: #147466; font-size: 14px; margin: 0 0 12px; }
-  h1 { font-family: 'Hanken Grotesk', sans-serif; font-size: clamp(32px, 5vw, 48px); line-height: 1.1; margin: 0 0 16px; font-weight: 400; }
-  h1 u { font-weight: 700; text-decoration-thickness: 3px; text-underline-offset: 6px; }
-  .lead { font-size: 18px; line-height: 1.6; color: #3d291f; margin: 0 0 32px; }
-  code { background: #f6f4f0; padding: 2px 6px; border-radius: 6px; }
-  ol { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
-  a { display: flex; gap: 20px; align-items: flex-start; padding: 20px; background: #f6f4f0; border-radius: 12px; text-decoration: none; color: inherit; }
-  a:hover { background: #efeee7; }
-  .letter { flex: 0 0 44px; height: 44px; border-radius: 999px; background: #1b9986; color: #fff; font: 700 20px 'Hanken Grotesk', sans-serif; display: flex; align-items: center; justify-content: center; }
-  .text { display: flex; flex-direction: column; gap: 4px; font-size: 16px; line-height: 1.5; color: #3d291f; }
-  .text b { font-size: 20px; color: #141414; }
+  .hero { display: flex; flex-wrap: wrap; gap: var(--space-12) 64px; padding-block: 64px var(--space-12); }
+  .intro { flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; gap: var(--space-4); }
+  .intro .kicker { margin: 0; }
+  .portrait { width: 112px; height: 112px; border-radius: var(--radius-pill); object-fit: cover; }
+  .h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(40px, 5.6vw, 66px); line-height: 1.06; text-wrap: balance; }
+  .h1 b { font-weight: 700; text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 8px; }
+  .award { display: flex; gap: var(--space-3); align-items: center; margin: var(--space-2) 0 0; background: var(--surface); border-radius: var(--radius-card);
+           padding: var(--space-3) var(--space-4); color: var(--body); font-size: 16px; line-height: 1.45; max-width: var(--width-text); }
+  .award b { color: var(--ink); }
+  .place { font-family: var(--font-display); font-weight: 700; font-size: 28px; color: var(--thread); }
+
+  /* Section "doors": each button is drawn in its own section's dialect */
+  .doors { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
+  .door { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 44px; padding: 0 var(--space-4); border-radius: var(--radius-chip);
+          background: var(--ground); color: var(--ink); border: var(--hairline) solid var(--line); text-decoration: none;
+          font-family: var(--font-display); font-weight: 700; font-size: 15px; }
+  .door i { width: 14px; height: 14px; background: var(--accent); }
+  .door-art i { background: var(--thread); }
+  .door-film { font-family: var(--font-screenplay); text-transform: uppercase; font-size: 14px; }
+  .door-notes { font-family: var(--font-garden); font-style: italic; font-weight: 400; }
+  .door-explainers i { background: linear-gradient(90deg, var(--pair-a) 50%, var(--pair-b) 50%); }
+  .door:hover { border-color: var(--thread); }
+
+  .live { flex: 1 1 400px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+  .fig-title { font-family: var(--font-display); font-weight: 700; font-size: 17px; }
+  .figbox { background: #efeee7; border-radius: var(--radius-card); padding: var(--space-4); }
+  canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; background: #ffffff; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-weight: 700; color: var(--body); }
+  .controls button { min-height: 44px; padding: 0 var(--space-4); border: 0; border-radius: var(--radius-card); background: var(--surface); color: var(--ink); font-weight: 700; cursor: pointer; }
+  .controls button[aria-pressed="true"] { background: var(--ink); color: var(--ground); }
+  .live .meta { margin: 0; }
+
+  .see { margin: var(--space-8) 0 0; }
 </style>

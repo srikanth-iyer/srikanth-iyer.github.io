@@ -1,0 +1,21 @@
+---
+// art.astro: the art section (art dialect: a dark gallery).
+import Site from '../layouts/Site.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import ArtGrid from '../components/sections/ArtGrid.astro';
+---
+<Site title="Art" current="art" description="Algorithmic artwork by Srikanth Iyer, built in TouchDesigner from his own research models: cellular automata and the Schelling model.">
+  <section class="band" data-theme="art">
+    <div class="wrap section">
+      <SectionHeader number={2} label="Art" level="h1">The same models, <b>made into light</b></SectionHeader>
+      <p class="lead intro">These pieces come straight from my research. The models I study, a ring of cells reaching a decision and a town sorting itself, become light and motion in TouchDesigner. Same rules, different audience.</p>
+      <ArtGrid />
+      <p class="meta note">Video loops and stills are coming soon.</p>
+    </div>
+  </section>
+</Site>
+
+<style>
+  .intro { margin-bottom: var(--space-12); }
+  .note { margin: var(--space-12) 0 0; }
+</style>

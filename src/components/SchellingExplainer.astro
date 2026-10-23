@@ -4,7 +4,7 @@
 // Background: the classic Schelling rule on a town grid; scrolling advances the simulation.
 import ExplainerShell from './ExplainerShell.astro';
 
-const { theme } = Astro.props;
+const { theme, back } = Astro.props;
 
 // Final "ghetto count" per scenario: agents (out of 80) with no neighbour from the other group.
 // Mean of the runs used in the paper (Table 1).
@@ -20,7 +20,7 @@ const mechanical = 48.5;   // classic threshold rule, same grid (computed from t
 // The 3×3 view one agent is given, as text (X = you, S = same group, O = other group, E = empty, # = edge).
 const view = [['S', 'O', 'E'], ['S', 'X', 'O'], ['#', '#', '#']];
 ---
-<ExplainerShell theme={theme} title="When a language model decides where you live" description="An illustrated explainer: Schelling's segregation model with language-model agents, and how much the group labels alone change the outcome.">
+<ExplainerShell theme={theme} back={back} title="When a language model decides where you live" description="An illustrated explainer: Schelling's segregation model with language-model agents, and how much the group labels alone change the outcome.">
   <section class="step">
     <div class="card">
       <p class="badge">Explainer · agent-based models</p>

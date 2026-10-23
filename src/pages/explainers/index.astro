@@ -1,0 +1,19 @@
+---
+// explainers/index.astro: the list of scroll-driven explainers (explainers dialect).
+import Site from '../../layouts/Site.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import ExplainerCards from '../../components/sections/ExplainerCards.astro';
+---
+<Site title="Explainers" current="explainers" description="Illustrated, interactive explainers of Srikanth Iyer's research, written for newcomers. Scroll, and a live simulation runs behind the text.">
+  <section class="band" data-theme="explainers">
+    <div class="wrap section">
+      <SectionHeader number={5} label="Explainers" level="h1"><b>Scroll</b>, and the simulation runs</SectionHeader>
+      <p class="lead intro">Each explainer tells one research story for someone new to the field. A live simulation runs behind the text and advances as you scroll, finishing at the end of the story.</p>
+      <ExplainerCards />
+    </div>
+  </section>
+</Site>
+
+<style>
+  .intro { margin-bottom: var(--space-12); }
+</style>
