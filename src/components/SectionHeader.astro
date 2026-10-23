@@ -1,0 +1,9 @@
+---
+// SectionHeader.astro: how every section opens, in every dialect:
+// a teal number badge, a small uppercase label, then the title (passed in between the tags).
+// The badge and label never change; the title takes the section's own title style from collective.css.
+const { number, label, level = 'h2' } = Astro.props;
+const Title = level;   // use <h1> on a section's own page, <h2> on the home page
+---
+<p class="kicker"><span class="badge">{number}</span>{label.toUpperCase()}</p>
+<Title class="claim"><slot /></Title>

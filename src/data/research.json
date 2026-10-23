@@ -1,0 +1,78 @@
+[
+  {
+    "id": "canalization",
+    "key": "Canalization",
+    "rest": "drives robustness to noise",
+    "summary": "Using GPU simulations of more than two billion runs, we evolve cellular-automaton rules for the density classification task and add noise. The rules that hold up are canalized: they can safely ignore some of their inputs. The results suggest robust collective computation lives in the ordered regime, not at the \"edge of chaos\".",
+    "authors": "S. Iyer, A. Challa, D. Hao, J. C. Rozum, L. M. Rocha",
+    "venues": "Talks at NetSci 2025 (Maastricht), NetSci 2026 and CCS 2026",
+    "badge": "Best Student Presentation Award, CCS 2026",
+    "tags": [
+      "cellular automata",
+      "genetic algorithms",
+      "noise"
+    ],
+    "link": null,
+    "story": "canalization"
+  },
+  {
+    "id": "schelling",
+    "key": "Language-model agents",
+    "rest": "in the Schelling model",
+    "summary": "Schelling's segregation model with language-model residents. Changing only what the two groups are called changes how segregated the town becomes: near-total with political labels, almost none with income labels.",
+    "authors": null,
+    "venues": "Paper in preparation, Binghamton University",
+    "badge": null,
+    "tags": [
+      "agent-based models",
+      "LLMs"
+    ],
+    "link": null,
+    "story": "schelling"
+  },
+  {
+    "id": "cana",
+    "key": "CANA",
+    "rest": ": control and redundancy in Boolean networks",
+    "summary": "Expanding the measures in CANA, CASCI's open-source Python library for Boolean networks: simple on/off models of how genes and cells switch each other.",
+    "authors": null,
+    "venues": "Open source",
+    "badge": null,
+    "tags": [
+      "Boolean networks",
+      "Python"
+    ],
+    "link": "https://github.com/srikanth-iyer/CANA",
+    "story": null
+  },
+  {
+    "id": "monopoly",
+    "key": "Monopoly",
+    "rest": "as a random walk on a network",
+    "summary": "The classic board game modelled as a directed, weighted network, so centrality and link analysis can suggest winning strategies.",
+    "authors": "A. J. Lopez-Diaz, S. Iyer, A. Gangadhar, C. Gershenson",
+    "venues": "Poster at NetSci 2024, Québec City",
+    "badge": null,
+    "tags": [
+      "networks",
+      "games"
+    ],
+    "link": null,
+    "story": null
+  },
+  {
+    "id": "puns",
+    "key": "How far",
+    "rest": "does a pun leap?",
+    "summary": "Measuring the semantic jump in homographic puns with word embeddings, across comedies in English literature.",
+    "authors": null,
+    "venues": "Side project",
+    "badge": null,
+    "tags": [
+      "NLP",
+      "word embeddings"
+    ],
+    "link": "https://github.com/srikanth-iyer/semantic-diversity-of-words-in-a-corpus",
+    "story": null
+  }
+]

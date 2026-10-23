@@ -1,0 +1,14 @@
+# Srikanth Iyer
+
+> PhD researcher in Systems Science at Binghamton University (CASCI lab) and Research Fellow in the CBeRa ERA Chair group at the Católica Biomedical Research Centre, Lisbon. Studies collective intelligence: how simple agents with local information reach shared decisions, and what makes those decisions robust to noise. Previously fifteen years in media: commercials, event films and screenwriting (co-writer of the feature film Capgras).
+
+## Research
+- Canalization and robustness under noise: evolving cellular-automaton rules for the density classification task with genetic algorithms. With A. Challa, D. Hao, J. C. Rozum, L. M. Rocha. Best Student Presentation Award (3rd place), CCS 2026. Talks at NetSci 2025 and NetSci 2026.
+- Language-model agents in the Schelling segregation model (work in progress).
+- CANA: control and redundancy in Boolean networks (open-source Python library): https://github.com/srikanth-iyer/CANA
+- Monopoly as a random walk on a directed, weighted network. Poster at NetSci 2024.
+
+## Contact
+- Email: siyer5@binghamton.edu
+- GitHub: https://github.com/srikanth-iyer
+- LinkedIn: https://www.linkedin.com/in/srikanthiyer

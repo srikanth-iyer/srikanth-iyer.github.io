@@ -1,0 +1,90 @@
+---
+// Site.astro: the frame every main page sits in. The header (name + navigation)
+// and the footer are the same on every page, which keeps the site feeling like one place
+// even though each section has its own look.
+import Base from './Base.astro';
+import profile from '../data/profile.json';
+import '../styles/collective.css';   // the Collective design system (shared grammar + section dialects)
+
+const {
+  title,                 // text in the browser tab (the page name)
+  description,           // summary for search engines and link previews
+  current = 'home',      // which navigation item to mark as the current page
+} = Astro.props;
+
+// The site's sections, in their fixed order. The number is shown in each section's badge.
+const nav = [
+  { id: 'research', label: 'Research', href: '/research/' },
+  { id: 'art', label: 'Art', href: '/art/' },
+  { id: 'film', label: 'Film & writing', href: '/film/' },
+  { id: 'notes', label: 'Notes', href: '/notes/' },
+  { id: 'explainers', label: 'Explainers', href: '/explainers/' },
+];
+// The page background behind everything: the ground colour of the page's own section,
+// so the area around the page (when you scroll past the ends) matches it.
+const grounds = { art: '#0e1211', film: '#fbfaf6', notes: '#f7f3eb' };
+const background = grounds[current] ?? '#ffffff';
+const fonts = 'https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;700&family=Lato:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Courier+Prime:wght@400;700&family=Fraunces:ital,opsz,wght@1,9..144,400&display=swap';
+---
+<Base title={title ? `${title} · ${profile.name}` : profile.name} description={description} fonts={fonts} background={background}>
+  <a class="skip" href="#content">Skip to content</a>
+
+  <header class="site-head band" data-theme="research">
+    <div class="wrap bar">
+      <a class="name" href="/">{profile.name}</a>
+      <nav aria-label="Main">
+        {nav.map((n) => (
+          <a href={n.href} aria-current={current === n.id ? 'page' : undefined}>{n.label}</a>
+        ))}
+      </nav>
+    </div>
+  </header>
+
+  <main id="content">
+    <slot />
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap foot">
+      <div class="foot-col">
+        <span class="foot-name">{profile.name}</span>
+        <span>{profile.roles.map((r) => r.org).join(' · ')}</span>
+      </div>
+      <div class="foot-col">
+        <span class="mono">{profile.email}</span>
+        <span><a href={profile.links.github}>GitHub</a> · <a href={profile.links.linkedin}>LinkedIn</a>{profile.links.cv && <> · <a href={profile.links.cv}>CV (PDF)</a></>}</span>
+      </div>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  /* Skip link: hidden until a keyboard user tabs to it */
+  .skip { position: absolute; left: -9999px; top: 8px; z-index: 20; background: var(--ink); color: var(--ground); padding: 10px 14px; }
+  .skip:focus { left: 8px; }
+
+  /* Header: stays at the top while scrolling, always in the research dialect */
+  .site-head { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; border-bottom: var(--hairline) solid #e2ddd5; }
+  .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--space-6); padding-block: var(--space-2); }
+  .name { font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--ink); text-decoration: none; padding-block: var(--space-2); }
+  nav { display: flex; flex-wrap: wrap; gap: 0 var(--space-6); }
+  nav a { font-family: var(--font-display); font-weight: 700; font-size: 16px; color: var(--body); text-decoration: none;
+          padding-block: 12px; border-bottom: 2px solid transparent; }
+  nav a:hover { color: var(--ink); }
+  nav a[aria-current="page"] { color: var(--thread); border-bottom-color: var(--thread); }
+  /* On phones: the header is not pinned, and the menu is one row you can swipe sideways */
+  @media (max-width: 720px) {
+    .site-head { position: static; }
+    .bar { flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 0; }
+    nav { flex-wrap: nowrap; overflow-x: auto; gap: 0 var(--space-4); scrollbar-width: none; min-width: 0; }
+    nav a { font-size: 15px; white-space: nowrap; }
+  }
+
+  /* Footer: the same dark band on every page */
+  .site-foot { background: #141414; color: #ffffff; }
+  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-4) var(--space-8); padding-block: var(--space-8); font-size: 15px; line-height: 1.6; }
+  .foot-col { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+  .foot-name { font-family: var(--font-display); font-weight: 700; font-size: 18px; }
+  .site-foot a { color: #7fd3c4; }
+  .mono { font-family: var(--font-mono); font-size: 14px; user-select: all; overflow-wrap: anywhere; }
+</style>

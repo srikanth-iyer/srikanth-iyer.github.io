@@ -1,0 +1,304 @@
+---
+// SchellingExplainer.astro: what happens to Schelling's segregation model when the
+// residents are language-model agents and only the names of the two groups change.
+// Background: the classic Schelling rule on a town grid; scrolling advances the simulation.
+import ExplainerShell from './ExplainerShell.astro';
+
+const { theme, back } = Astro.props;
+
+// Final "ghetto count" per scenario: agents (out of 80) with no neighbour from the other group.
+// Mean of the runs used in the paper (Table 1).
+const results = [
+  { label: 'High / low income', value: 5.0, share: 0.543 },
+  { label: 'Red / blue (control)', value: 19.5, share: 0.679 },
+  { label: 'Asian / Hispanic', value: 38.9, share: 0.821 },
+  { label: 'White / Black', value: 40.8, share: 0.823 },
+  { label: 'Liberal / conservative', value: 61.6, share: 0.928 },
+];
+const mechanical = 48.5;   // classic threshold rule, same grid (computed from the project's baseline runs)
+
+// The 3×3 view one agent is given, as text (X = you, S = same group, O = other group, E = empty, # = edge).
+const view = [['S', 'O', 'E'], ['S', 'X', 'O'], ['#', '#', '#']];
+---
+<ExplainerShell theme={theme} back={back} title="When a language model decides where you live" description="An illustrated explainer: Schelling's segregation model with language-model agents, and how much the group labels alone change the outcome.">
+  <section class="step">
+    <div class="card">
+      <p class="badge">Explainer · agent-based models</p>
+      <h1><b>When a language model</b> decides where you live</h1>
+      <p>In 1971, Thomas Schelling showed something unsettling with a few coins on a checkerboard. Even when nobody wants to live <i>only</i> with their own group, small preferences can sort a whole town into separate neighbourhoods.</p>
+      <p>We asked what happens when the residents are language models, which have read how real people talk about race, money and politics.</p>
+      <p class="fine">Behind this text is a small town of two groups. Scroll, and watch it sort itself.</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>1</b>Schelling's rule</p>
+      <h2><b>A mild preference</b> is enough</h2>
+      <p>Each house on the grid holds a resident of one of two groups, or stands empty (here, 20% are empty). A resident looks at the 8 houses around them and is happy if <b>at least half</b> of their neighbours are from their own group.</p>
+      <p>Unhappy residents move to a random empty house. One at a time, in random order, everyone gets a turn; then the next round begins. That is the whole rule.</p>
+      <div class="grid3">
+        <div class="tile"><b>Neighbourhood</b><span>The 8 surrounding houses; empty ones don't count.</span></div>
+        <div class="tile"><b>Happy if</b><span>half or more of the neighbours are like me.</span></div>
+        <div class="tile"><b>Otherwise</b><span>move to a random empty house.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>2</b>Measuring segregation</p>
+      <h2><b>Two numbers</b> to watch</h2>
+      <div class="grid3">
+        <div class="tile"><b>Like-neighbour share</b><span>Of all pairs of next-door neighbours, the share from the same group. Random mixing gives about 0.5; full separation gives 1.</span></div>
+        <div class="tile"><b>Ghetto count</b><span>Residents with no neighbour at all from the other group. In a town of 80 residents, the maximum is 80.</span></div>
+      </div>
+      <p>The counter in the corner tracks both for the town behind you. Nobody in this town wants to be segregated, yet the numbers keep climbing.</p>
+      <p class="fine">The study also tracks clusters, distance to the other group, mix deviation and how jagged the borders are.</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>3</b>Language-model agents</p>
+      <h2><b>Replace the rule</b> with a language model</h2>
+      <p>Now each resident is a language-model agent. Instead of a threshold, it gets a short description of who it is and a picture of its block, written as text:</p>
+      <div class="view" role="img" aria-label="A three by three grid: same, other, empty; same, you, other; and a row of edge markers">
+        {view.flat().map((c) => <span class={`v v-${c === '#' ? 'edge' : c}`}>{c}</span>)}
+      </div>
+      <p class="fine">X = you · S = your group · O = the other group · E = empty house · # = edge of town</p>
+      <p>The agent is asked to weigh things like friends, community and comfort, and to answer with one word: <b>MOVE</b> or <b>STAY</b>. Movers go to a random empty house, just as in Schelling's model. Everything else stays the same.</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>4</b>Only the names change</p>
+      <h2><b>Same model, same town</b>, different labels</h2>
+      <p>The experiment keeps the model, the grid and the rules fixed, and changes only what the two groups are called, and the everyday considerations that come with them.</p>
+      <table class="scen">
+        <thead><tr><th>Scenario</th><th>Group A</th><th>Group B</th></tr></thead>
+        <tbody>
+          <tr><td>Control</td><td>red team resident</td><td>blue team resident</td></tr>
+          <tr><td>Race</td><td>white middle-class family</td><td>Black family</td></tr>
+          <tr><td>Ethnicity</td><td>Asian American family</td><td>Hispanic/Latino family</td></tr>
+          <tr><td>Income</td><td>high-income household</td><td>low-income household</td></tr>
+          <tr><td>Politics</td><td>politically liberal household</td><td>politically conservative household</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>5</b>Results</p>
+      <h2><b>Politics divides</b> the town; income barely does</h2>
+      <p>How many of the 80 residents end up with no neighbour from the other group:</p>
+      <figure>
+        <div class="bars" role="img" aria-label="Residents with no neighbour from the other group, out of 80: income 5.0, red/blue 19.5, Asian/Hispanic 38.9, white/Black 40.8, liberal/conservative 61.6; classic rule 48.5">
+          {results.map((r, i) => (
+            <div class="bar"><span>{r.label}</span>
+              <div class="track tall">
+                <i style={`width:${(r.value / 80) * 100}%;background:${i === 4 ? 'var(--b)' : i === 0 ? 'var(--a)' : 'var(--muted)'}`}></i>
+                <em style={`left:${(mechanical / 80) * 100}%`}></em>
+              </div>
+              <b>{r.value.toFixed(1)}</b></div>
+          ))}
+          <div class="bar"><span></span><div class="legend"><em></em> classic rule: {mechanical}</div><b></b></div>
+        </div>
+        <figcaption>Mean final count per scenario. Political labels produce 12.3 times the ghetto count of income labels; all scenarios differ from the control (ANOVA, p &lt; 0.001). Dashed line: Schelling's threshold rule on the same grid, from the project's baseline runs.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>5</b>Results</p>
+      <h2><b>Like-neighbour share</b> tells the same story</h2>
+      <div class="bars">
+        {results.map((r, i) => (
+          <div class="bar"><span>{r.label}</span><div class="track"><i style={`width:${r.share * 100}%;background:${i === 4 ? 'var(--b)' : i === 0 ? 'var(--a)' : 'var(--muted)'}`}></i></div><b>{r.share.toFixed(2)}</b></div>
+        ))}
+      </div>
+      <p>With political labels, 93% of neighbour pairs end up on the same side. With income labels, the town stays close to random mixing. Race and ethnicity land in between, close to each other.</p>
+      <p>The agents are never told to segregate. Whatever pushes them apart comes from what they learned about these groups from human writing.</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>6</b>What it means</p>
+      <h2><b>A mirror</b>, and a warning</h2>
+      <p>Language-model agents can reproduce real-world patterns that hand-written rules miss: political sorting, for example, shows up strongly. That makes them promising for modelling social behaviour.</p>
+      <p>But the same ability means they carry the biases in their training text. Before anyone uses them to test housing or social policy, we need to know which of those biases we are reproducing, and amplifying.</p>
+      <ul>
+        <li>One language model; others may behave differently.</li>
+        <li>Training text is largely American, so the patterns are too.</li>
+        <li>Identities are simplified to two groups, and preferences don't change with experience.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="takeaway">
+      <span>IN OTHER WORDS</span>
+      <p>Change only the names of the groups, and the same AI residents build a different city.</p>
+    </div>
+    <p class="fine" style="margin-top:16px">The town behind you has stopped moving: everyone is happy, and the neighbourhoods are sorted, though no one asked for that.</p>
+  </section>
+
+  <section class="step" style="min-height:60vh">
+    <div class="refs">
+      <p><b>Paper (in preparation):</b> Social Context Matters: How Large Language Model Agents Reproduce Real-World Segregation Patterns in the Schelling Model. A. Pape, C. Lipo and colleagues, Binghamton University.</p>
+      <p>Schelling, T. C. (1971). Dynamic models of segregation. <i>Journal of Mathematical Sociology</i>, 1(2), 143–186. · Pancs, R. &amp; Vriend, N. J. (2007). Schelling's spatial proximity model of segregation revisited. <i>Journal of Public Economics</i>, 91(1–2), 1–24.</p>
+      <p>Background simulation: Schelling's threshold rule (half or more like neighbours, 8-cell neighbourhood, random relocation, 20% empty houses), computed live in your browser.</p>
+    </div>
+  </section>
+</ExplainerShell>
+
+<style is:global>
+  .xp .view { display: grid; grid-template-columns: repeat(3, 56px); gap: 6px; margin: 12px 0 8px; font-family: var(--mono); }
+  .xp .v { height: 56px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; border-radius: 6px; }
+  .xp .v-S { background: var(--a); color: #fff; }
+  .xp .v-O { background: var(--b); color: #fff; }
+  .xp .v-E { background: var(--tint); color: var(--muted); border: 1px dashed var(--line); }
+  .xp .v-X { background: var(--a); color: #fff; outline: 4px solid var(--highlight); outline-offset: 2px; }
+  .xp .v-edge { background: transparent; color: var(--muted); border: 1px solid var(--line); }
+  .xp-lab .v-S, .xp-lab .v-X { background: #000; }
+  .xp-lab .v-O { background: #9a9a9a; }
+  .xp table.scen { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .xp .scen th, .xp .scen td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); color: var(--body); vertical-align: top; }
+  .xp .scen th { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .xp .bars { display: flex; flex-direction: column; gap: 10px; margin: 8px 0 18px; }
+  .xp .bar { display: grid; grid-template-columns: minmax(110px, 180px) 1fr 48px; gap: 10px; align-items: center; font-size: 14px; }
+  .xp .bar span { color: var(--text); }
+  .xp .bar b { font-family: var(--mono); color: var(--text); }
+  .xp .track { height: 16px; background: var(--tint); border-radius: 3px; overflow: hidden; }
+  .xp .track i { display: block; height: 100%; }
+  .xp .track.tall { height: 22px; position: relative; overflow: visible; }
+  .xp .track em, .xp .legend em { position: absolute; top: -4px; bottom: -4px; border-left: 2.5px dashed var(--highlight); }
+  .xp .legend { position: relative; font-family: var(--mono); font-size: 13px; color: var(--muted); padding-left: 14px; }
+  .xp .legend em { left: 0; }
+  .xp ul { padding-left: 20px; }
+</style>
+
+<script is:inline>
+  // Runs in the visitor's browser: simulates Schelling's model once, then shows
+  // the frame that matches how far down the page the reader has scrolled.
+  (function () {
+    var root = document.querySelector('.xp');
+    var css = getComputedStyle(root);
+    var cssVar = function (name) { return css.getPropertyValue(name).trim(); };
+
+    // Seeded random numbers, so every visitor sees the same town.
+    function rng(seed) {
+      return function () {
+        seed = (seed + 0x6D2B79F5) | 0;
+        var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    var rand = rng(2026);
+    var COLS = 44, ROWS = 28, NCELL = COLS * ROWS;   // a wide town that fills a screen
+    // 0 = empty, 1 = group A, 2 = group B; 40% A, 40% B, 20% empty (as in the study)
+    var grid = new Uint8Array(NCELL), i;
+    for (i = 0; i < NCELL; i++) grid[i] = i < NCELL * 0.4 ? 1 : i < NCELL * 0.8 ? 2 : 0;
+    for (i = NCELL - 1; i > 0; i--) { var j = Math.floor(rand() * (i + 1)); var t = grid[i]; grid[i] = grid[j]; grid[j] = t; }
+
+    // Neighbours: the 8 surrounding cells, no wrap-around at the edges.
+    function counts(g, idx) {
+      var x = idx % COLS, y = (idx / COLS) | 0, same = 0, other = 0;
+      for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) {
+        if (!dx && !dy) continue;
+        var nx = x + dx, ny = y + dy;
+        if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS) continue;
+        var v = g[ny * COLS + nx];
+        if (!v) continue;
+        if (v === g[idx]) same++; else other++;
+      }
+      return [same, other];
+    }
+    function happy(g, idx) {
+      var c = counts(g, idx), n = c[0] + c[1];
+      return n === 0 || c[0] / n >= 0.5;   // nobody around counts as happy
+    }
+    // The two numbers from the explainer: like-neighbour share and ghetto count.
+    function stats(g) {
+      var same = 0, pairs = 0, ghetto = 0, unhappy = 0, agents = 0;
+      for (var k = 0; k < NCELL; k++) {
+        if (!g[k]) continue;
+        agents++;
+        var c = counts(g, k);
+        same += c[0]; pairs += c[0] + c[1];
+        if (c[1] === 0 && c[0] > 0) ghetto++;
+        if (!happy(g, k)) unhappy++;
+      }
+      return { share: pairs ? same / pairs : 0, ghetto: ghetto, agents: agents, unhappy: unhappy };
+    }
+
+    // Run the model: random order each round, unhappy residents move to a random empty house.
+    // Save a snapshot every few moves so scrolling can replay it smoothly.
+    var frames = [grid.slice()], moves = 0, quietRounds = 0;
+    for (var round = 0; round < 300 && quietRounds < 5; round++) {
+      var order = [];
+      for (i = 0; i < NCELL; i++) if (grid[i]) order.push(i);
+      for (i = order.length - 1; i > 0; i--) { var r = Math.floor(rand() * (i + 1)); var tt = order[i]; order[i] = order[r]; order[r] = tt; }
+      var moved = 0;
+      for (var o = 0; o < order.length; o++) {
+        var at = order[o];
+        if (!grid[at] || happy(grid, at)) continue;
+        var empties = [];
+        for (i = 0; i < NCELL; i++) if (!grid[i]) empties.push(i);
+        var dest = empties[Math.floor(rand() * empties.length)];
+        grid[dest] = grid[at]; grid[at] = 0;
+        moved++; moves++;
+        if (moves % 12 === 0) frames.push(grid.slice());
+      }
+      quietRounds = moved === 0 ? quietRounds + 1 : 0;
+    }
+    frames.push(grid.slice());
+    var F = frames.length - 1;
+    var frameStats = frames.map(stats);
+
+    var bg = document.getElementById('xp-bg'), ctx = bg.getContext('2d');
+    var colA = cssVar('--a'), colB = cssVar('--b');
+    var alpha = Math.min(0.55, Number(root.dataset.cellOpacity) * 3.2);
+    var hud = document.getElementById('xp-hud');
+    var shown = -1;
+
+    function size() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      bg.width = Math.round(innerWidth * dpr); bg.height = Math.round(innerHeight * dpr);
+      shown = -1; draw();
+    }
+    function progress() {
+      var max = document.documentElement.scrollHeight - innerHeight;
+      return max > 0 ? Math.min(1, Math.max(0, scrollY / (max * 0.88))) : 1;
+    }
+    function draw() {
+      var f = Math.round(progress() * F);
+      if (f === shown) return;
+      shown = f;
+      var W = bg.width, H = bg.height;
+      var cell = Math.max(W / COLS, H / ROWS);               // square houses that cover the screen
+      var ox = (W - cell * COLS) / 2, oy = (H - cell * ROWS) / 2;
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalAlpha = alpha;
+      var g = frames[f], rad = cell * 0.32;
+      for (var k = 0; k < NCELL; k++) {
+        if (!g[k]) continue;
+        ctx.fillStyle = g[k] === 1 ? colA : colB;
+        var cx = ox + (k % COLS + 0.5) * cell, cy = oy + (((k / COLS) | 0) + 0.5) * cell;
+        ctx.beginPath(); ctx.arc(cx, cy, rad, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      var s = frameStats[f];
+      hud.textContent = (f === F ? 'settled · ' : 'moving · ') + 'like-neighbour share ' + s.share.toFixed(2) +
+        ' · unhappy ' + s.unhappy + ' of ' + s.agents;
+    }
+    addEventListener('scroll', function () { requestAnimationFrame(draw); }, { passive: true });
+    addEventListener('resize', size);
+    size();
+  })();
+</script>

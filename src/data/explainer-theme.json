@@ -1,0 +1,16 @@
+{
+  "slug": "collective",
+  "name": "Collective · explainers dialect",
+  "fonts": "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=Lato:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap",
+  "dark": false,
+  "vars": {
+    "bg": "#ffffff", "panel": "rgba(255,255,255,0.94)", "text": "#141414", "body": "#3d291f", "muted": "#6f675f",
+    "line": "#cdc6bc", "tint": "#f6f4f0", "accent": "#147466", "accent-strong": "#147466", "highlight": "#e8743b",
+    "a": "#1f77b4", "b": "#bb0101", "on-accent": "#ffffff",
+    "display": "'Hanken Grotesk', system-ui, sans-serif", "sans": "Lato, 'Helvetica Neue', Arial, sans-serif",
+    "prose": "Lato, 'Helvetica Neue', Arial, sans-serif", "mono": "'JetBrains Mono', ui-monospace, Menlo, monospace",
+    "radius": "12px", "border": "0px", "title-weight": "400", "key-weight": "700"
+  },
+  "cells": { "on": "#141414", "opacity": 0.13 },
+  "band": "#147466"
+}

@@ -1,0 +1,8 @@
+[
+  { "stage": "evergreen", "title": "What is a cellular automaton?", "topic": "Cellular automata · primer" },
+  { "stage": "evergreen", "title": "Canalization, in plain words", "topic": "Boolean networks · primer" },
+  { "stage": "budding", "title": "Lookup tables vs wildcard schemata", "topic": "Genetic algorithms" },
+  { "stage": "budding", "title": "Robustness is an area under a curve", "topic": "Noise · measurement" },
+  { "stage": "seedling", "title": "Do language-model agents segregate like Schelling's did?", "topic": "Schelling model · LLMs" },
+  { "stage": "seedling", "title": "What screenwriting taught me about explaining science", "topic": "Writing · storytelling" }
+]

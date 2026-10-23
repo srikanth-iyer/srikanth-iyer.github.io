@@ -1,0 +1,165 @@
+---
+// Direction A · Research Talks: built on the design system of the CCS 2026 deck.
+import Base from '../../layouts/Base.astro';
+import profile from '../../data/profile.json';
+import research from '../../data/research.json';
+import film from '../../data/film.json';
+import art from '../../data/art.json';
+---
+<Base title={`${profile.name} · Research Talks`} fonts="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=Lato:ital,wght@0,400;0,700;1,400&display=swap">
+  <div class="page">
+    <header>
+      <a class="name" href="#top">{profile.name}</a>
+      <nav aria-label="Main">
+        <a href="#research">Research</a><a href="#art">Art</a><a href="#writing">Film &amp; writing</a><a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section id="top" class="hero wrap">
+      <div class="intro">
+        <p class="kicker">COMPLEX SYSTEMS · COLLECTIVE INTELLIGENCE</p>
+        <h1><u>How do simple parts</u> reach one shared decision?</h1>
+        {profile.bio.map((p) => <p class="body">{p}</p>)}
+        <div class="award"><span class="num">3rd</span><span><b>{profile.highlight.label.replace(', 3rd place', '')}</b>, {profile.highlight.event}, {profile.highlight.detail}</span></div>
+      </div>
+      <figure>
+        <figcaption class="figlabel">Live: the GKL rule settling on the majority colour</figcaption>
+        <div class="figbox"><canvas id="ca-a" role="img" aria-label="A row of 149 cells evolving downward over time, turning all black or all white to match the majority starting colour"></canvas></div>
+        <div class="controls">
+          <span>Noise level <i>η</i></span>
+          <button type="button" data-noise="0" aria-pressed="true">0</button>
+          <button type="button" data-noise="0.01" aria-pressed="false">0.01</button>
+          <button type="button" data-noise="0.05" aria-pressed="false">0.05</button>
+          <button type="button" class="ghost" id="restart-a">Restart</button>
+        </div>
+        <p class="caption">Each row is one time step, read top to bottom. 149 cells, each looking only at its near neighbours. An orange line marks a fresh random start. Add noise and watch the decision get harder.</p>
+      </figure>
+    </section>
+
+    <section id="research" class="wrap">
+      <p class="badge"><span>1</span>RESEARCH</p>
+      <h2><u>{research.length} questions</u> about deciding together</h2>
+      <div class="list">
+        {research.map((r, i) => (
+          <article>
+            <span class="numeral">{i + 1}</span>
+            <div>
+              <h3><b>{r.key}</b> {r.rest}</h3>
+              <p class="body">{r.summary}</p>
+              {r.authors && <p class="meta">{r.authors}</p>}
+              <p class="eg">e.g. {r.badge ?? r.venues}{r.story && <> · <a href={`/directions/talks/${r.story}/`}>read the explainer →</a></>}{r.link && <> · <a href={r.link}>see the code →</a></>}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="art" class="wrap">
+      <p class="badge"><span>2</span>ART</p>
+      <h2><u>The same models</u>, made into light</h2>
+      <div class="tiles">
+        {art.map((a) => (
+          <div class="tile">
+            <div class="ph">[still: {a.title}]</div>
+            <b>{a.title}</b>
+            <span>{a.summary}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="writing" class="wrap">
+      <p class="badge"><span>3</span>FILM &amp; WRITING</p>
+      <h2><u>Fifteen years</u> of making an audience care</h2>
+      <div class="tiles">
+        {film.slice(0, 3).map((f) => (
+          <div class="tile">
+            <span class="tag">{f.kind.toUpperCase()} · {f.years}</span>
+            <b>{f.link ? <a href={f.link}>{f.title}</a> : f.title}</b>
+            <span>{f.role}. {f.summary}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="takeaway">
+        <span>IN OTHER WORDS</span>
+        <p>I study how groups of simple parts decide together, and why some of those decisions survive a noisy world.</p>
+      </div>
+    </section>
+
+    <footer id="contact">
+      <div class="wrap foot">
+        <span>{profile.name} · <a href={`mailto:${profile.email}`}>{profile.email}</a> · <a href={profile.links.github}>GitHub</a> · <a href={profile.links.linkedin}>LinkedIn</a></span>
+        <span class="muted">Binghamton University (CASCI) · Católica Biomedical Research Centre</span>
+      </div>
+    </footer>
+  </div>
+</Base>
+
+<script>
+  // Runs in the visitor's browser: starts the automaton and wires up the noise buttons.
+  import { startAutomaton } from '../../scripts/automaton.js';
+  const canvas = document.getElementById('ca-a');
+  const ca = startAutomaton(canvas, { mark: '#e8743b' });
+  const buttons = document.querySelectorAll('[data-noise]');
+  buttons.forEach((b) => b.addEventListener('click', () => {
+    ca.setNoise(Number(b.dataset.noise));                                // change the noise level
+    buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));  // highlight the chosen button
+  }));
+  document.getElementById('restart-a').addEventListener('click', () => ca.restart());
+</script>
+
+<style>
+  /* Colours and fonts from the "Research Talks" design system */
+  .page { --ink:#141414; --warm:#3d291f; --muted:#787068; --line:#cdc6bc; --tint:#f6f4f0; --panel:#efeee7; --teal:#1b9986; --teal-dark:#147466; font-family: Lato, Arial, sans-serif; color: var(--ink); }
+  a { color: var(--teal-dark); }
+  .wrap { max-width: 1200px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+  header { max-width: 1200px; margin: 0 auto; padding: 20px 32px; display: flex; flex-wrap: wrap; gap: 8px 32px; align-items: center; justify-content: space-between; border-bottom: 1.5px solid #e2ddd5; }
+  .name { font: 700 22px 'Hanken Grotesk', sans-serif; color: var(--ink); text-decoration: none; }
+  nav { display: flex; flex-wrap: wrap; gap: 0 28px; }
+  nav a { color: var(--warm); text-decoration: none; font-weight: 700; padding: 12px 0; }
+  .hero { padding-top: 72px; padding-bottom: 48px; display: flex; flex-wrap: wrap; gap: 48px 64px; }
+  .intro { flex: 1 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+  .kicker { margin: 0; font-weight: 700; letter-spacing: 0.08em; font-size: 15px; color: var(--teal-dark); }
+  h1 { margin: 0; font: 400 clamp(40px, 5.4vw, 68px)/1.06 'Hanken Grotesk', sans-serif; }
+  h1 u, h2 u { font-weight: 700; text-decoration-thickness: 3px; text-underline-offset: 8px; }
+  .body { margin: 0; font-size: 19px; line-height: 1.55; color: var(--warm); max-width: 36em; }
+  .award { display: flex; gap: 12px; align-items: center; background: var(--tint); border-radius: 12px; padding: 14px 18px; max-width: 36em; color: var(--warm); }
+  .award b { color: var(--ink); }
+  .num { font: 700 28px 'Hanken Grotesk', sans-serif; color: var(--teal); }
+  figure { flex: 1 1 420px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  .figlabel { font-weight: 700; font-size: 17px; }
+  .figbox { background: var(--panel); border-radius: 12px; padding: 18px; }
+  canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; background: #fff; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-weight: 700; color: var(--warm); }
+  .controls button { min-height: 44px; padding: 0 16px; border: 0; border-radius: 12px; background: var(--tint); color: var(--ink); font-weight: 700; cursor: pointer; }
+  .controls button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+  .controls .ghost { background: transparent; color: var(--teal-dark); }
+  .caption { margin: 0; font-size: 14px; line-height: 1.45; color: var(--muted); }
+  section.wrap { padding-top: 48px; padding-bottom: 16px; }
+  .badge { display: flex; align-items: center; gap: 12px; margin: 0 0 8px; font-weight: 700; letter-spacing: 0.06em; font-size: 15px; color: var(--teal-dark); }
+  .badge span { width: 32px; height: 32px; border-radius: 999px; background: var(--teal); color: #fff; display: flex; align-items: center; justify-content: center; font: 700 17px 'Hanken Grotesk', sans-serif; }
+  h2 { margin: 0 0 24px; font: 400 clamp(30px, 3.4vw, 42px)/1.2 'Hanken Grotesk', sans-serif; }
+  h2 u { text-decoration-thickness: 2px; text-underline-offset: 6px; }
+  .list article { display: flex; gap: 28px; padding: 28px 0; border-top: 1.5px solid var(--line); }
+  .list article:last-child { border-bottom: 1.5px solid var(--line); }
+  .list > article > div { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .numeral { font: 700 40px/1 'Hanken Grotesk', sans-serif; color: var(--teal); width: 40px; flex-shrink: 0; }
+  h3 { margin: 0; font-size: 24px; line-height: 1.3; font-weight: 400; }
+  .meta { margin: 0; font-size: 15px; color: var(--muted); }
+  .eg { margin: 0; font-size: 16px; font-style: italic; color: var(--teal-dark); }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .tile { background: var(--tint); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px; color: var(--warm); line-height: 1.5; }
+  .tile b { font-size: 20px; color: var(--ink); }
+  .tag { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: var(--teal-dark); }
+  .ph { background: #eeeae2; border-radius: 8px; aspect-ratio: 16 / 10; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; }
+  .takeaway { background: var(--teal-dark); padding: 36px 40px; display: flex; flex-direction: column; gap: 10px; }
+  .takeaway span { font-size: 14px; font-weight: 700; letter-spacing: 0.08em; color: #bfe8e0; }
+  .takeaway p { margin: 0; font: 600 clamp(22px, 2.4vw, 30px)/1.3 'Hanken Grotesk', sans-serif; color: #fff; }
+  footer { background: var(--ink); color: #fff; margin-top: 56px; }
+  .foot { padding-top: 22px; padding-bottom: 22px; display: flex; flex-wrap: wrap; gap: 10px 28px; justify-content: space-between; font-size: 15px; }
+  footer a { color: #7fd3c4; }
+  .muted { color: var(--line); }
+</style>

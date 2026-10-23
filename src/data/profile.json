@@ -1,0 +1,37 @@
+{
+  "name": "Srikanth Iyer",
+  "tagline": "Collective intelligence · complex systems · stories",
+  "headline": "How do simple parts reach one shared decision?",
+  "shortBio": "I study collective intelligence: how groups of simple agents, with no leader and no view of the whole, still reach a shared decision, and why some of those decisions survive a noisy world.",
+  "bio": [
+    "I'm a PhD researcher in Systems Science at Binghamton University's CASCI lab, and a Research Fellow in the CBeRa group at the Católica Biomedical Research Centre in Lisbon. I work with cellular automata, Boolean networks, genetic algorithms and, lately, language-model agents.",
+    "Before research I spent fifteen years in media: sports writing, commercials, event films and screenplays, including co-writing the feature film Capgras and developing series for BBC Studios India. I still think in stories, which is why my research comes with pictures."
+  ],
+  "roles": [
+    { "title": "PhD researcher, Systems Science", "org": "Binghamton University, CASCI lab", "url": "https://www.binghamton.edu/" },
+    { "title": "Research Fellow, CBeRa ERA Chair group", "org": "Católica Biomedical Research Centre, Lisbon", "url": "https://www.ucp.pt/" }
+  ],
+  "education": [
+    { "degree": "PhD, Systems Science", "school": "Binghamton University (SUNY)", "years": "2025 – expected 2029" },
+    { "degree": "MS, Systems Science", "school": "Binghamton University (SUNY)", "years": "2023 – 2024" },
+    { "degree": "Bachelor of Mass Media, Journalism", "school": "University of Mumbai", "years": "2006 – 2009" }
+  ],
+  "highlight": {
+    "label": "Best Student Presentation Award, 3rd place",
+    "event": "Conference on Complex Systems (CCS 2026)",
+    "detail": "for our talk on canalization and robustness under noise"
+  },
+  "now": [
+    "Writing up the canalization and noise results with Jordan Rozum and Luis Rocha",
+    "Running language-model agents through the Schelling model",
+    "Turning both into TouchDesigner pieces",
+    "Looking for a summer 2027 research internship"
+  ],
+  "email": "siyer5@binghamton.edu",
+  "links": {
+    "github": "https://github.com/srikanth-iyer",
+    "linkedin": "https://www.linkedin.com/in/srikanthiyer",
+    "cv": null
+  },
+  "photo": null
+}

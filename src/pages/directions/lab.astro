@@ -1,0 +1,124 @@
+---
+// Direction F · Monospace lab: black-and-white monospace, with a live comparison of two rules.
+import Base from '../../layouts/Base.astro';
+import profile from '../../data/profile.json';
+import research from '../../data/research.json';
+import news from '../../data/news.json';
+import film from '../../data/film.json';
+import art from '../../data/art.json';
+---
+<Base title={`${profile.name} · Lab`} fonts="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&display=swap">
+  <div class="page">
+    <nav aria-label="Main" class="tabs">
+      <a href="#top">home</a><a href="#research">research</a><a href="#art">artwork</a><a href="#before">film &amp; writing</a><a href="#contact">contact</a>
+    </nav>
+
+    <main id="top">
+      <div class="center">
+        <h1>{profile.name}</h1>
+        <span class="grey">{profile.tagline.toLowerCase()}</span>
+      </div>
+
+      <figure>
+        <canvas id="ca-f" role="img" aria-label="Live cellular automaton: rows of black and white cells evolving downward"></canvas>
+        <div class="rules">
+          <span class="grey">rule:</span>
+          <button type="button" data-rule="gkl" aria-pressed="true">[ GKL ]</button>
+          <button type="button" data-rule="local" aria-pressed="false">[ local majority ]</button>
+        </div>
+        <figcaption id="rule-caption">GKL rule: 149 cells, each seeing only nearby cells, usually all turn the colour that started in the majority.</figcaption>
+      </figure>
+
+      <p class="mission"><mark>No cell sees the whole picture, yet the group still decides.</mark> {profile.shortBio} {profile.bio[1]}</p>
+
+      <div class="divider" aria-hidden="true">///// news /////</div>
+      <ul class="news">
+        {news.map((n) => <li><b>{n.date}</b> — <span set:html={n.text} /></li>)}
+      </ul>
+
+      <div id="research" class="divider" aria-hidden="true">///// research /////</div>
+      <div class="research">
+        {research.map((r, i) => (
+          <div>
+            <b>{String(i + 1).padStart(2, '0')}. {r.key} {r.rest}</b><br />
+            <span class="grey">{r.summary}</span><br />
+            {r.authors && <><span class="small">{r.authors}</span><br /></>}
+            <span class="small">[{r.venues}]{r.story && <> [<a href={`/directions/lab/${r.story}/`}>visual explainer</a>]</>}{r.link && <> [<a href={r.link}>code</a>]</>}</span>
+          </div>
+        ))}
+      </div>
+
+      <div id="art" class="divider" aria-hidden="true">///// artwork /////</div>
+      <div class="art">
+        {art.map((a) => (
+          <div>
+            <div class="frame">[still: {a.title}]</div>
+            <b>{a.title}</b>
+            <blockquote>{a.summary}</blockquote>
+          </div>
+        ))}
+      </div>
+
+      <div id="before" class="divider" aria-hidden="true">///// before the lab /////</div>
+      <table>
+        <tbody>
+          {film.map((f) => (
+            <tr><td class="yr">{f.years}</td><td>{f.kind.toLowerCase()} · {f.link ? <a href={f.link}><b>{f.title}</b></a> : <b>{f.title}</b>} · {f.role.toLowerCase()}</td></tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div id="contact" class="contact">
+        {profile.roles.map((r) => `${r.title}, ${r.org}`).join(' · ')}.<br />
+        <a href={`mailto:${profile.email}`}>{profile.email}</a> · [<a href={profile.links.github}>github</a>] [<a href={profile.links.linkedin}>linkedin</a>]
+      </div>
+    </main>
+  </div>
+</Base>
+
+<script>
+  // Start the automaton in "snapshot" mode (a whole new picture every few seconds),
+  // and let the two buttons switch between the clever GKL rule and a naive majority vote.
+  import { startAutomaton } from '../../scripts/automaton.js';
+  const ca = startAutomaton(document.getElementById('ca-f'), { cellPx: 4, rows: 70, on: '#000000', mode: 'snapshot' });
+  const captions = {
+    gkl: 'GKL rule: 149 cells, each seeing only nearby cells, usually all turn the colour that started in the majority.',
+    local: 'Naive local majority: the same 149 cells freeze into stripes and never agree. A good rule needs a trick.',
+  };
+  const buttons = document.querySelectorAll('[data-rule]');
+  buttons.forEach((b) => b.addEventListener('click', () => {
+    ca.setRule(b.dataset.rule);
+    buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    document.getElementById('rule-caption').textContent = captions[b.dataset.rule];
+  }));
+</script>
+
+<style>
+  .page { background: #fff; color: #000; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 16px; line-height: 1.55; }
+  a { color: #000; } a:hover { background: #ffe94d; }
+  .tabs { border-bottom: 2px solid #000; display: flex; flex-wrap: wrap; justify-content: center; position: sticky; top: 0; background: #fff; z-index: 1; }
+  .tabs a { display: block; padding: 12px 22px; text-decoration: none; border-right: 1px solid #000; }
+  .tabs a:first-child { border-left: 1px solid #000; }
+  main { max-width: 860px; margin: 0 auto; padding: 56px 24px 64px; display: flex; flex-direction: column; gap: 28px; }
+  .center { text-align: center; display: flex; flex-direction: column; gap: 6px; }
+  h1 { margin: 0; font-size: clamp(28px, 4vw, 40px); font-weight: 600; }
+  .grey { color: #444; } .small { font-size: 14px; }
+  figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  canvas { width: 100%; max-width: 620px; height: auto; image-rendering: pixelated; border: 2px solid #000; display: block; }
+  .rules { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; }
+  .rules button { min-height: 44px; padding: 0 14px; border: 1px solid #000; border-radius: 0; background: #fff; color: #000; cursor: pointer; font-family: inherit; font-size: 14px; }
+  .rules button[aria-pressed="true"] { background: #000; color: #fff; }
+  figcaption { max-width: 620px; text-align: center; color: #444; font-size: 14px; }
+  .mission { margin: 0; font-size: 18px; line-height: 1.75; }
+  mark { background: #ffe94d; font-weight: 600; }
+  .divider { text-align: center; letter-spacing: 0.1em; margin-top: 16px; }
+  .news { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .research { display: flex; flex-direction: column; gap: 22px; }
+  .art { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .art > div { display: flex; flex-direction: column; gap: 10px; }
+  .frame { aspect-ratio: 4 / 3; border: 2px solid #000; display: flex; align-items: center; justify-content: center; color: #444; font-size: 14px; }
+  blockquote { margin: 0; padding-left: 14px; border-left: 3px solid #000; color: #333; font-size: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  td { border: 1px solid #000; padding: 8px 10px; vertical-align: top; } .yr { width: 120px; white-space: nowrap; }
+  .contact { margin-top: 32px; padding-top: 20px; border-top: 1px solid #000; font-size: 14px; color: #333; }
+</style>

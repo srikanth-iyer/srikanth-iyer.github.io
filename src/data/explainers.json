@@ -1,0 +1,14 @@
+[
+  {
+    "id": "canalization",
+    "title": "How 149 cells agree without a leader",
+    "kicker": "CCS 2026 · scroll to run the simulation",
+    "summary": "Density classification, noise, and why rules that ignore some of their inputs keep their decision. The award-winning CCS 2026 talk, retold for newcomers. A GKL run completes behind the text as you read."
+  },
+  {
+    "id": "schelling",
+    "title": "When a language model decides where you live",
+    "kicker": "Agent-based models · scroll to run the simulation",
+    "summary": "Schelling's segregation model with language-model residents: change only what the two groups are called, and the town sorts itself very differently. A town of two groups segregates behind the text as you read."
+  }
+]

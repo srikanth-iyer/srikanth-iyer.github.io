@@ -1,0 +1,21 @@
+---
+// notes.astro: the notes section (notes dialect: warm paper, italic serif titles, growth-stage chips).
+import Site from '../layouts/Site.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import NotesGrid from '../components/sections/NotesGrid.astro';
+---
+<Site title="Notes" current="notes" description="Working notes by Srikanth Iyer on cellular automata, canalization, genetic algorithms, language-model agents and storytelling.">
+  <section class="band" data-theme="notes">
+    <div class="wrap section">
+      <SectionHeader number={4} label="Notes" level="h1">Notes, tended rather than finished</SectionHeader>
+      <p class="lead intro">Short notes at different stages of growth. A <b>seedling</b> is a rough idea, a <b>budding</b> note is taking shape, and an <b>evergreen</b> note is as finished as it gets. I come back and tend them over time.</p>
+      <NotesGrid />
+      <p class="meta note">These notes are being written; each will get its own page.</p>
+    </div>
+  </section>
+</Site>
+
+<style>
+  .intro { margin-bottom: var(--space-12); }
+  .note { margin: var(--space-12) 0 0; }
+</style>

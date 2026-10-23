@@ -1,0 +1,98 @@
+[
+  {
+    "slug": "talks",
+    "name": "Research Talks",
+    "fonts": "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=Lato:ital,wght@0,400;0,700;1,400&display=swap",
+    "dark": false,
+    "vars": {
+      "bg": "#ffffff", "panel": "rgba(255,255,255,0.94)", "text": "#141414", "body": "#3d291f", "muted": "#787068",
+      "line": "#cdc6bc", "tint": "#f6f4f0", "accent": "#147466", "accent-strong": "#1b9986", "highlight": "#e8743b",
+      "a": "#1f77b4", "b": "#bb0101", "on-accent": "#ffffff",
+      "display": "'Hanken Grotesk', system-ui, sans-serif", "sans": "Lato, 'Helvetica Neue', Arial, sans-serif",
+      "prose": "Lato, 'Helvetica Neue', Arial, sans-serif", "mono": "ui-monospace, 'SFMono-Regular', Menlo, monospace",
+      "radius": "12px", "border": "0px", "title-weight": "400", "key-weight": "700"
+    },
+    "cells": { "on": "#141414", "opacity": 0.13 },
+    "band": "#147466"
+  },
+  {
+    "slug": "specimen",
+    "name": "Living specimen",
+    "fonts": "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;700&family=JetBrains+Mono:wght@400;600&display=swap",
+    "dark": true,
+    "vars": {
+      "bg": "#0e1211", "panel": "rgba(14,18,17,0.86)", "text": "#e9ece8", "body": "#c3cac6", "muted": "#9aa39f",
+      "line": "#26302d", "tint": "#161b1a", "accent": "#7fd3c4", "accent-strong": "#7fd3c4", "highlight": "#e8743b",
+      "a": "#6fb3e8", "b": "#f0796b", "on-accent": "#0e1211",
+      "display": "'Hanken Grotesk', system-ui, sans-serif", "sans": "'Hanken Grotesk', system-ui, sans-serif",
+      "prose": "'Hanken Grotesk', system-ui, sans-serif", "mono": "'JetBrains Mono', monospace",
+      "radius": "14px", "border": "0px", "title-weight": "300", "key-weight": "700"
+    },
+    "cells": { "on": "#7fd3c4", "opacity": 0.32 },
+    "band": "#1b3b35"
+  },
+  {
+    "slug": "folio",
+    "name": "Academic folio",
+    "fonts": "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap",
+    "dark": false,
+    "vars": {
+      "bg": "#ffffff", "panel": "rgba(255,255,255,0.95)", "text": "#1d1f21", "body": "#2b2d30", "muted": "#5f6368",
+      "line": "#e3e3e3", "tint": "#f4f5f4", "accent": "#1b7f70", "accent-strong": "#1b7f70", "highlight": "#e8743b",
+      "a": "#1f77b4", "b": "#bb0101", "on-accent": "#ffffff",
+      "display": "Inter, system-ui, sans-serif", "sans": "Inter, system-ui, sans-serif",
+      "prose": "'Source Serif 4', Georgia, serif", "mono": "ui-monospace, Menlo, monospace",
+      "radius": "12px", "border": "0px", "title-weight": "300", "key-weight": "700"
+    },
+    "cells": { "on": "#1d1f21", "opacity": 0.09 },
+    "band": "#1b7f70"
+  },
+  {
+    "slug": "notebook",
+    "name": "Editorial notebook",
+    "fonts": "https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap",
+    "dark": false,
+    "vars": {
+      "bg": "#fdfdfb", "panel": "rgba(253,253,251,0.95)", "text": "#111111", "body": "#2a2a26", "muted": "#55554f",
+      "line": "#deded8", "tint": "#efefea", "accent": "#1d3fd1", "accent-strong": "#1d3fd1", "highlight": "#e8743b",
+      "a": "#1d3fd1", "b": "#c2410c", "on-accent": "#ffffff",
+      "display": "Newsreader, Georgia, serif", "sans": "Inter, system-ui, sans-serif",
+      "prose": "Inter, system-ui, sans-serif", "mono": "'IBM Plex Mono', monospace",
+      "radius": "0px", "border": "0px", "title-weight": "400", "key-weight": "500"
+    },
+    "cells": { "on": "#111111", "opacity": 0.1 },
+    "band": "#111111"
+  },
+  {
+    "slug": "garden",
+    "name": "Illustrated garden",
+    "fonts": "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&display=swap",
+    "dark": false,
+    "vars": {
+      "bg": "#f7f3eb", "panel": "rgba(255,253,248,0.95)", "text": "#1f1b16", "body": "#4a4239", "muted": "#6b6157",
+      "line": "#e3dccf", "tint": "#efe9dd", "accent": "#246b5d", "accent-strong": "#246b5d", "highlight": "#d2643a",
+      "a": "#246b5d", "b": "#d2643a", "on-accent": "#ffffff",
+      "display": "Fraunces, Georgia, serif", "sans": "Inter, system-ui, sans-serif",
+      "prose": "Inter, system-ui, sans-serif", "mono": "ui-monospace, Menlo, monospace",
+      "radius": "16px", "border": "0px", "title-weight": "300", "key-weight": "500"
+    },
+    "cells": { "on": "#1f1b16", "opacity": 0.1 },
+    "band": "#246b5d"
+  },
+  {
+    "slug": "lab",
+    "name": "Monospace lab",
+    "fonts": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&display=swap",
+    "dark": false,
+    "vars": {
+      "bg": "#ffffff", "panel": "rgba(255,255,255,0.96)", "text": "#000000", "body": "#222222", "muted": "#444444",
+      "line": "#000000", "tint": "#f2f2f2", "accent": "#000000", "accent-strong": "#000000", "highlight": "#ffe94d",
+      "a": "#000000", "b": "#9a9a9a", "on-accent": "#ffffff",
+      "display": "'IBM Plex Mono', ui-monospace, monospace", "sans": "'IBM Plex Mono', ui-monospace, monospace",
+      "prose": "'IBM Plex Mono', ui-monospace, monospace", "mono": "'IBM Plex Mono', ui-monospace, monospace",
+      "radius": "0px", "border": "2px", "title-weight": "600", "key-weight": "600"
+    },
+    "cells": { "on": "#000000", "opacity": 0.1 },
+    "band": "#000000"
+  }
+]
