@@ -1,0 +1,362 @@
+---
+// CanalizationExplainer.astro: the density classification / canalization story,
+// adapted from the CCS 2026 talk and its speaker notes.
+// As the reader scrolls, one GKL run fills in behind the text, row by row,
+// and reaches its decision at the bottom of the page.
+import ExplainerShell from './ExplainerShell.astro';
+
+const { theme } = Astro.props;
+
+// The toy rule from the talk (3 inputs, outputs 0 1 0 1 1 1 0 1) and its four schemata.
+const outputs = [0, 1, 0, 1, 1, 1, 0, 1];
+const schemata = [
+  { s: '0#0', out: 0 }, { s: '#10', out: 0 }, { s: '10#', out: 1 }, { s: '##1', out: 1 },
+];
+// For each lookup-table row: which schemata cover it, and how many inputs it can ignore
+// (the average number of # in its covering schemata).
+const lut = outputs.map((out, i) => {
+  const bits = i.toString(2).padStart(3, '0');
+  const covers = schemata.filter((sc) => [...sc.s].every((c, j) => c === '#' || c === bits[j]));
+  const hashes = covers.map((sc) => [...sc.s].filter((c) => c === '#').length);
+  const ignored = hashes.reduce((a, b) => a + b, 0) / hashes.length;
+  return { name: `f${i + 1}`, bits, out, covers: covers.map((c) => c.s), ignored };
+});
+const kr = lut.reduce((a, r) => a + r.ignored, 0) / lut.length;   // 11.5 / 8 = 1.4375
+
+// GKL's performance at each noise level, from the talk (slides 10–11).
+const curve = [[0, 0.81], [0.01, 0.65], [0.02, 0.57], [0.04, 0.49], [0.06, 0.37], [0.08, 0.10], [0.1, 0.01]];
+// Map those numbers onto the chart's drawing area (x: 60–560 px, y: 300–30 px).
+const X = (eta) => 60 + (eta / 0.1) * 500;
+const Y = (p) => 300 - p * 270;
+const line = curve.map(([e, p], i) => `${i ? 'L' : 'M'}${X(e).toFixed(1)} ${Y(p).toFixed(1)}`).join(' ');
+const area = `${line} L${X(0.1)} ${Y(0)} L${X(0)} ${Y(0)} Z`;
+
+// One row of 13 cells from the talk's worked example (slide 7), the 7-cell window, and the result.
+const row13 = [1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1];
+---
+<ExplainerShell theme={theme} title="How 149 cells agree without a leader" description="An illustrated explainer of the density classification task, noise, and why canalized rules make collective decisions robust. From the CCS 2026 talk by Srikanth Iyer and colleagues.">
+  <section class="step">
+    <div class="card">
+      <p class="badge">CCS 2026 · explainer</p>
+      <h1><b>How 149 cells</b> agree without a leader</h1>
+      <p>Think of a group with no leader: bacteria, a flock, a crowd of voters. Each member sees only its neighbours, yet the group ends up with one decision. Now add the fact that real members are unreliable. They misread signals and make mistakes. Even so, these systems still work.</p>
+      <p><b>The question:</b> what kind of decision rule survives noise, and does evolution find it?</p>
+      <span class="award">Best Student Presentation Award, 3rd place · CCS 2026</span>
+      <p class="fine">Behind this text, 149 cells are trying to reach a decision. Scroll, and watch them get there.</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>1</b>Collective intelligence</p>
+      <h2><b>Glowing squid</b> and the vote nobody counts</h2>
+      <p>The marine bacterium <i>Aliivibrio fischeri</i> lives in the light organ of the Hawaiian bobtail squid. It makes light, but only once there are enough cells. No cell can count the others. Each releases small signal molecules and senses the signal around it; when the signal crosses a threshold, the whole colony switches its light on together. This is <b>quorum sensing</b>, and the squid uses the glow to hide its silhouette against the moonlight.</p>
+      <p>The same kind of switch shows up in biofilms and in human consensus: voting, opinions, social norms.</p>
+      <div class="grid3">
+        <div class="tile"><b>Simple individuals</b><span>Each follows the same simple rule.</span></div>
+        <div class="tile"><b>Local information</b><span>Each sees only its neighbours, never the whole group.</span></div>
+        <div class="tile"><b>One global outcome</b><span>Together they reach a decision none could make alone.</span></div>
+        <div class="tile"><b>…despite noise</b><span>Individuals make mistakes; the decision still holds.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>2</b>Density classification</p>
+      <h2><b>The task:</b> 149 cells, each seeing only 7</h2>
+      <p>Line the individuals up on a ring of 149 cells, each black (1) or white (0). A ring has no ends, so the last cell and the first are neighbours. Each cell sees only <b>7 cells</b>: itself and three on each side.</p>
+      <p>At every time step, all cells update at once with the same rule. The goal: end <b>all black</b> if most cells started black, <b>all white</b> otherwise. No cell can count the whole ring, so the group has to work it out together.</p>
+      <figure>
+        <svg viewBox="0 0 420 120" role="img" aria-label="Thirteen cells in a row; the middle cell looks at the seven cells around it and becomes black at the next step" style="width:100%;height:auto">
+          {row13.map((v, i) => (
+            <rect x={12 + i * 30} y="20" width="26" height="26" fill={v ? 'var(--text)' : 'var(--bg)'} stroke="var(--muted)" stroke-width="1" />
+          ))}
+          <rect x={12 + 3 * 30 - 4} y="14" width={7 * 30 + 4} height="38" fill="none" stroke="var(--highlight)" stroke-width="4" rx="4" />
+          <text x={12 + 6.5 * 30} y="76" text-anchor="middle" font-size="16" fill="var(--muted)" font-family="var(--mono)">all it can see: 7 cells</text>
+          <path d={`M${12 + 6 * 30 + 13} 84 v14`} stroke="var(--muted)" stroke-width="2" />
+          <rect x={12 + 6 * 30} y="100" width="26" height="18" fill="var(--text)" />
+          <text x={12 + 7 * 30 + 6} y="114" font-size="16" fill="var(--muted)" font-family="var(--mono)">next step: 0 → 1</text>
+        </svg>
+        <figcaption>From the talk's worked example: the rule turns these 7 cells into the middle cell's next state.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>2</b>Density classification</p>
+      <h2><b>The GKL rule</b> gets it right about 81% of the time</h2>
+      <p>A classic answer is the GKL rule (Gács, Kurdyumov &amp; Levin, 1978). A white cell polls itself and the cells 1 and 3 steps to its left; a black cell polls itself and the cells 1 and 3 steps to its right. The majority of those three wins.</p>
+      <p>The picture behind this card <i>is</i> a GKL run, drawn one row per time step, top to bottom. This ring started with <b>70 of 149 cells black</b>, a minority, so the right answer is all white. Locally, black can look like it's winning; globally, it isn't.</p>
+      <p>Over many random starts, GKL is right about <b>81%</b> of the time. That fraction is its <b>performance</b>.</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>3</b>Noise</p>
+      <h2><b>Noise:</b> after every update, each cell flips with probability η</h2>
+      <p>Real individuals are unreliable. We model this with a noise level <i>η</i>: after every update, each cell tosses its own biased coin and flips with probability <i>η</i>. At η = 0.01 that is about 1.5 of 149 cells per step; at η = 0.1, about 15.</p>
+      <figure>
+        <div class="noise-row">
+          <div><canvas class="noise" data-eta="0"></canvas><span class="nl">η = 0 · <span data-verdict></span></span></div>
+          <div><canvas class="noise" data-eta="0.01"></canvas><span class="nl">η = 0.01 · <span data-verdict></span></span></div>
+          <div><canvas class="noise" data-eta="0.1"></canvas><span class="nl">η = 0.1 · <span data-verdict></span></span></div>
+        </div>
+        <figcaption>Live: the same rule, the same starting row (52% black) and the same random numbers; only η differs. Time runs downward.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>3</b>Noise</p>
+      <h2><b>Robustness to noise</b> = the area under the performance curve</h2>
+      <p>Score GKL at many noise levels and its performance falls fast: 0.81 without noise, 0.65 at η = 0.01, almost nothing by 0.1. We summarise the whole curve with one number, the shaded area. For GKL it is <b>0.038</b>; a rule that was always right would score <b>0.1</b>.</p>
+      <figure>
+        <svg viewBox="0 0 600 350" role="img" aria-label="Line chart: GKL performance falls from 0.81 at no noise to 0.01 at noise level 0.1; the area under the curve is shaded" style="width:100%;height:auto">
+          {[0, 0.25, 0.5, 0.75, 1].map((p) => (<>
+            <line x1="60" x2="560" y1={Y(p)} y2={Y(p)} stroke="var(--line)" stroke-width="1" />
+            <text x="50" y={Y(p) + 4} text-anchor="end" font-size="16" fill="var(--muted)" font-family="var(--mono)">{p}</text>
+          </>))}
+          {[0, 0.02, 0.04, 0.06, 0.08, 0.1].map((e) => (
+            <text x={X(e)} y="322" text-anchor="middle" font-size="16" fill="var(--muted)" font-family="var(--mono)">{e}</text>
+          ))}
+          <path d={area} fill="var(--highlight)" fill-opacity="0.28" />
+          <path d={line} fill="none" stroke="var(--highlight)" stroke-width="3.5" stroke-linejoin="round" />
+          {curve.map(([e, p]) => <circle cx={X(e)} cy={Y(p)} r="4.5" fill="var(--highlight)" />)}
+          <text x={X(0.012)} y={Y(0.84)} font-size="18" font-weight="700" fill="var(--text)" font-family="var(--sans)">GKL</text>
+          <text x={X(0.03)} y={Y(0.18)} font-size="17" fill="var(--text)" font-family="var(--sans)">robustness = 0.038</text>
+          <text x="310" y="345" text-anchor="middle" font-size="17" font-weight="700" fill="var(--text)" font-family="var(--sans)">noise level η</text>
+          <text x="16" y="165" text-anchor="middle" font-size="17" font-weight="700" fill="var(--text)" font-family="var(--sans)" transform="rotate(-90 16 165)">performance</text>
+        </svg>
+        <figcaption>GKL at 51 noise levels; each point the mean of 100 runs × 100,000 random starting rows (L = 149).</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>4</b>Canalization</p>
+      <h2><b>Canalization:</b> how many inputs can a rule ignore?</h2>
+      <p>A rule that ignores some of its inputs cannot be hurt by errors in those inputs. Biology calls this <b>canalization</b>. To measure it, write the rule as a lookup table and merge rows that differ in one input but give the same output. Here is a toy rule with 3 inputs. Tap a schema to see which rows it covers; <code>#</code> means "don't care".</p>
+      <div class="schemata" role="group" aria-label="Schemata of the toy rule">
+        {schemata.map((sc) => <button type="button" class="chip" data-schema={sc.s} aria-pressed="false">{sc.s} : {sc.out}</button>)}
+      </div>
+      <table class="lut">
+        <thead><tr><th>row</th><th>x₁ x₂ x₃</th><th>output</th><th>inputs ignored</th></tr></thead>
+        <tbody>
+          {lut.map((r) => (
+            <tr data-covers={r.covers.join(' ')}>
+              <td>{r.name}</td><td class="mono">{r.bits.split('').join(' ')}</td><td class="mono">{r.out}</td><td class="mono">{r.ignored}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p><b>Input redundancy</b> K<sub>r</sub> is the average of the last column: 11.5 / 8 = <b>{kr}</b>. On average, this rule can ignore about one and a half of its three inputs. The density classification rules have 7 inputs and 128 rows; the schemata are computed with <a href="https://github.com/CASCI-lab/CANA">CANA</a>.</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>4</b>Canalization</p>
+      <h2><b>Redundancy</b> costs you without noise, and pays off with it</h2>
+      <p>Take the 26 best-known density classification rules from the literature, all designed or evolved without noise.</p>
+      <div class="grid3">
+        <div class="tile"><b class="big">ρ = −0.67</b><span>Without noise, the more inputs a rule can ignore, the <i>lower</i> its performance.</span></div>
+        <div class="tile"><b class="big">ρ = +0.76</b><span>With noise, the more redundant rules are the <i>more robust</i> ones.</span></div>
+      </div>
+      <p class="fine">Spearman rank correlations with K<sub>r</sub>; 95% intervals −0.82 to −0.40 and 0.44 to 0.91. The sign flips at about η = 0.02, roughly 3 flips per step.</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>5</b>Evolution under noise</p>
+      <h2><b>Let evolution decide</b>: two ways to write a rule's genome</h2>
+      <div class="grid3">
+        <div class="tile" style="border-top: 6px solid var(--a)"><b style="color: var(--a)">Implicit · lookup table</b><span>The genome is the table's 128 output bits. Nothing in it says which inputs are ignored.</span></div>
+        <div class="tile" style="border-top: 6px solid var(--b)"><b style="color: var(--b)">Explicit · schemata</b><span>The genome is the rule's wildcard schemata. Every # is an ignored input, written in the genome itself.</span></div>
+      </div>
+      <p>Same genetic algorithm, and the only reward is robustness to noise. Input redundancy is never rewarded directly.</p>
+      <p><b>Result:</b> schemata genomes reach higher robustness, and redundancy rises in both encodings over the generations, more so with schemata.</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="card">
+      <p class="badge"><b>5</b>Evolution under noise</p>
+      <h2><b>Head to head</b>, explicit redundancy wins every time</h2>
+      <p>One population of 1,000 agents, half of each encoding, competing under noise for the same fitness. In all <b>100 of 100 runs</b>, schemata agents take over the population, at a median of generation <b>13</b> (IQR 12–14).</p>
+      <div class="wins" aria-label="100 of 100 runs won by schemata agents">{Array.from({ length: 100 }).map(() => <i></i>)}</div>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="takeaway">
+      <span>IN OTHER WORDS</span>
+      <p>Evolution finds better collective decisions when genomes explicitly represent canalized logic.</p>
+    </div>
+    <p class="fine" style="margin-top:16px">By now the ring behind you has reached its answer: every cell white, the correct decision, with no cell ever seeing more than 7 of the 149.</p>
+  </section>
+
+  <section class="step" style="min-height:60vh">
+    <div class="refs">
+      <p><b>Talk:</b> S. Iyer, A. Challa, D. Hao, J. C. Rozum, L. M. Rocha. Canalization drives Robustness in the Evolution of Collective Intelligence under Noise. CCS 2026, Binghamton. Best Student Presentation Award (3rd place).</p>
+      <p>A. Challa, D. Hao, S. Iyer, J. C. Rozum, L. M. Rocha. Canalization Improves Robustness in Collective Intelligence Under Noise. In preparation.</p>
+      <p>S. Iyer, J. C. Rozum, L. M. Rocha. Noise Drives the Evolution of Logical Redundancy in Collective Intelligence. In preparation.</p>
+      <p>Gács, Kurdyumov &amp; Levin (1978) · Marques-Pita &amp; Rocha (2013), PLoS ONE 8(3): e55946 · Gates et al. (2021), PNAS 118(12): e2022598118 · Nealson, Platt &amp; Hastings (1970) · Jones &amp; Nishiguchi (2004).</p>
+      <p>Part of CBeRa, the ERA Chair at the Católica Biomedical Research Centre, funded by the European Union's Horizon Europe programme (grant agreement 101186558).</p>
+    </div>
+  </section>
+</ExplainerShell>
+
+<style is:global>
+  .xp .noise-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .xp .noise-row > div { display: flex; flex-direction: column; gap: 6px; }
+  .xp canvas.noise { width: 100%; height: auto; image-rendering: pixelated; border: 1px solid var(--line); border-radius: 4px; display: block; }
+  .xp .nl { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .xp .schemata { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px; }
+  .xp table.lut { width: 100%; border-collapse: collapse; font-size: 15px; margin-bottom: 14px; }
+  .xp .lut th, .xp .lut td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); color: var(--body); }
+  .xp .lut th { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--muted); }
+  .xp .lut .mono { font-family: var(--mono); }
+  .xp .lut tr.on td { background: color-mix(in srgb, var(--highlight) 22%, transparent); }
+  .xp code { font-family: var(--mono); background: var(--tint); padding: 1px 5px; border-radius: 4px; }
+  .xp .tile b.big { font-size: 28px; color: var(--accent); }
+  .xp .wins { display: grid; grid-template-columns: repeat(20, 1fr); gap: 4px; margin-top: 12px; }
+  .xp .wins i { aspect-ratio: 1; background: var(--b); border-radius: 2px; }
+</style>
+
+<script is:inline>
+  // Everything below runs in the visitor's browser.
+  (function () {
+    var root = document.querySelector('.xp');
+    var css = getComputedStyle(root);
+    var cssVar = function (name) { return css.getPropertyValue(name).trim(); };
+    var N = 149;  // cells on the ring
+
+    // A seeded random-number generator, so every visitor sees the same run.
+    function rng(seed) {
+      return function () {
+        seed = (seed + 0x6D2B79F5) | 0;
+        var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    // One GKL step on the ring (see the explainer text for the rule in words).
+    function gkl(s) {
+      var out = new Uint8Array(N);
+      for (var i = 0; i < N; i++) {
+        var a = s[i];
+        var b = a === 0 ? s[(i - 1 + N) % N] : s[(i + 1) % N];
+        var c = a === 0 ? s[(i - 3 + N) % N] : s[(i + 3) % N];
+        out[i] = a + b + c >= 2 ? 1 : 0;
+      }
+      return out;
+    }
+    // A starting row with exactly "black" black cells, placed at random.
+    function start(black, rand) {
+      var idx = [], s = new Uint8Array(N), i;
+      for (i = 0; i < N; i++) idx.push(i);
+      for (i = N - 1; i > 0; i--) { var j = Math.floor(rand() * (i + 1)); var t = idx[i]; idx[i] = idx[j]; idx[j] = t; }
+      for (i = 0; i < black; i++) s[idx[i]] = 1;
+      return s;
+    }
+    var count = function (s) { var k = 0; for (var i = 0; i < N; i++) k += s[i]; return k; };
+
+    // ---- The background run: 70 of 149 black, GKL until every cell is white ----
+    var rows = null;
+    for (var seed = 1; seed < 500 && !rows; seed++) {
+      var s = start(70, rng(seed)), r = [s];
+      for (var t = 0; t < 260; t++) { s = gkl(s); r.push(s); if (count(s) === 0) break; }
+      if (count(s) === 0 && r.length > 90) rows = r;   // a run that ends correctly, after a visible struggle
+    }
+    var T = rows.length - 1;
+    var bg = document.getElementById('xp-bg');
+    var ctx = bg.getContext('2d');
+    var on = root.dataset.cellOn, alpha = Number(root.dataset.cellOpacity), mark = cssVar('--highlight');
+    var hud = document.getElementById('xp-hud');
+    var shown = -1;
+
+    function size() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      bg.width = Math.round(innerWidth * dpr); bg.height = Math.round(innerHeight * dpr);
+      shown = -1; draw();
+    }
+    // How far down the page the reader is, from 0 (top) to 1 (bottom).
+    function progress() {
+      var max = document.documentElement.scrollHeight - innerHeight;
+      return max > 0 ? Math.min(1, Math.max(0, scrollY / (max * 0.92))) : 1;
+    }
+    function draw() {
+      var upto = Math.round(progress() * T);          // how many time steps to reveal
+      if (upto === shown) return;
+      shown = upto;
+      var W = bg.width, H = bg.height, cw = W / N, rh = H / (T + 1);
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalAlpha = alpha; ctx.fillStyle = on;
+      for (var y = 0; y <= upto; y++) {
+        var row = rows[y];
+        for (var i = 0; i < N; i++) if (row[i]) ctx.fillRect(i * cw, y * rh, Math.ceil(cw), Math.ceil(rh));
+      }
+      ctx.globalAlpha = Math.min(1, alpha * 4); ctx.fillStyle = mark;      // the "now" line
+      ctx.fillRect(0, (upto + 1) * rh, W, Math.max(2, rh * 0.5));
+      ctx.globalAlpha = 1;
+      var black = count(rows[upto]);
+      hud.textContent = upto === T
+        ? 't = ' + T + ' · all 149 cells white: correct'
+        : 't = ' + upto + ' of ' + T + ' · ' + Math.round((black / N) * 100) + '% black';
+    }
+    addEventListener('scroll', function () { requestAnimationFrame(draw); }, { passive: true });
+    addEventListener('resize', size);
+    size();
+
+    // ---- The three noise runs: same start (78 of 149 black) and same random numbers, different η ----
+    function noisyRun(eta, seedNum, steps) {
+      var rand = rng(seedNum), s = start(78, rng(seedNum + 7)), out = [s];
+      for (var t = 0; t < steps; t++) {
+        s = gkl(s);
+        for (var i = 0; i < N; i++) { var u = rand(); if (u < eta) s[i] ^= 1; }  // same coins for every η
+        out.push(s);
+      }
+      return out;
+    }
+    // Did a run settle on black? (with noise, "settled" means at least 95% black over its last 20 rows)
+    function settled(run) {
+      return run.slice(-20).every(function (s) { return count(s) / N >= 0.95; });
+    }
+    function verdict(run) { return settled(run) ? 'settles on black: correct' : 'never settles: incorrect'; }
+    // Pick a seed where the three runs tell the story of the talk: correct, correct, incorrect.
+    var noiseSeed = 11, steps = 240;
+    for (var k = 11; k < 400; k++) {
+      var ok = [0, 0.01, 0.1].map(function (e) { return settled(noisyRun(e, k, steps)); });
+      if (ok[0] && ok[1] && !ok[2]) { noiseSeed = k; break; }
+    }
+    document.querySelectorAll('canvas.noise').forEach(function (c) {
+      var eta = Number(c.dataset.eta), run = noisyRun(eta, noiseSeed, steps), px = 2;
+      c.width = N * px; c.height = (steps + 1) * px;
+      var g = c.getContext('2d');
+      g.fillStyle = cssVar('--bg'); g.fillRect(0, 0, c.width, c.height);
+      g.fillStyle = cssVar('--text');
+      run.forEach(function (row, y) { for (var i = 0; i < N; i++) if (row[i]) g.fillRect(i * px, y * px, px, px); });
+      c.parentNode.querySelector('[data-verdict]').textContent = verdict(run);
+    });
+
+    // ---- Schema buttons: highlight the lookup-table rows each schema covers ----
+    var buttons = document.querySelectorAll('[data-schema]');
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var pressed = b.getAttribute('aria-pressed') === 'true';
+        buttons.forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+        document.querySelectorAll('.lut tbody tr').forEach(function (tr) {
+          var hit = !pressed && tr.dataset.covers.split(' ').indexOf(b.dataset.schema) >= 0;
+          tr.classList.toggle('on', hit);
+        });
+        if (!pressed) b.setAttribute('aria-pressed', 'true');
+      });
+    });
+  })();
+</script>

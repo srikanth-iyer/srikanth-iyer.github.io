@@ -1,0 +1,12 @@
+---
+// Builds the Schelling explainer once for each design direction:
+// /directions/talks/schelling/, /directions/specimen/schelling/, and so on.
+import SchellingExplainer from '../../../components/SchellingExplainer.astro';
+import themes from '../../../data/themes.json';
+
+export function getStaticPaths() {
+  return themes.map((theme) => ({ params: { theme: theme.slug }, props: { theme } }));
+}
+const { theme } = Astro.props;
+---
+<SchellingExplainer theme={theme} />

@@ -43,7 +43,7 @@ import art from '../../data/art.json';
             <b>{String(i + 1).padStart(2, '0')}. {r.key} {r.rest}</b><br />
             <span class="grey">{r.summary}</span><br />
             {r.authors && <><span class="small">{r.authors}</span><br /></>}
-            <span class="small">[{r.venues}]{r.link && <> [<a href={r.link}>code</a>]</>}</span>
+            <span class="small">[{r.venues}]{r.story && <> [<a href={`/directions/lab/${r.story}/`}>visual explainer</a>]</>}{r.link && <> [<a href={r.link}>code</a>]</>}</span>
           </div>
         ))}
       </div>

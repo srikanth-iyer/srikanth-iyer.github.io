@@ -7,19 +7,28 @@
     "authors": "S. Iyer, A. Challa, D. Hao, J. C. Rozum, L. M. Rocha",
     "venues": "Talks at NetSci 2025 (Maastricht), NetSci 2026 and CCS 2026",
     "badge": "Best Student Presentation Award, CCS 2026",
-    "tags": ["cellular automata", "genetic algorithms", "noise"],
-    "link": null
+    "tags": [
+      "cellular automata",
+      "genetic algorithms",
+      "noise"
+    ],
+    "link": null,
+    "story": "canalization"
   },
   {
     "id": "schelling",
     "key": "Language-model agents",
     "rest": "in the Schelling model",
-    "summary": "What happens to a classic model of neighbourhood segregation when each resident's decision to move is made by a language model instead of a fixed rule? Local models with Ollama, AutoGen and Mesa, in game-theoretic models of social dynamics.",
+    "summary": "Schelling's segregation model with language-model residents. Changing only what the two groups are called changes how segregated the town becomes: near-total with political labels, almost none with income labels.",
     "authors": null,
-    "venues": "Work in progress",
+    "venues": "Paper in preparation, Binghamton University",
     "badge": null,
-    "tags": ["agent-based models", "LLMs"],
-    "link": null
+    "tags": [
+      "agent-based models",
+      "LLMs"
+    ],
+    "link": null,
+    "story": "schelling"
   },
   {
     "id": "cana",
@@ -29,8 +38,12 @@
     "authors": null,
     "venues": "Open source",
     "badge": null,
-    "tags": ["Boolean networks", "Python"],
-    "link": "https://github.com/srikanth-iyer/CANA"
+    "tags": [
+      "Boolean networks",
+      "Python"
+    ],
+    "link": "https://github.com/srikanth-iyer/CANA",
+    "story": null
   },
   {
     "id": "monopoly",
@@ -40,8 +53,12 @@
     "authors": "A. J. Lopez-Diaz, S. Iyer, A. Gangadhar, C. Gershenson",
     "venues": "Poster at NetSci 2024, Québec City",
     "badge": null,
-    "tags": ["networks", "games"],
-    "link": null
+    "tags": [
+      "networks",
+      "games"
+    ],
+    "link": null,
+    "story": null
   },
   {
     "id": "puns",
@@ -51,7 +68,11 @@
     "authors": null,
     "venues": "Side project",
     "badge": null,
-    "tags": ["NLP", "word embeddings"],
-    "link": "https://github.com/srikanth-iyer/semantic-diversity-of-words-in-a-corpus"
+    "tags": [
+      "NLP",
+      "word embeddings"
+    ],
+    "link": "https://github.com/srikanth-iyer/semantic-diversity-of-words-in-a-corpus",
+    "story": null
   }
 ]

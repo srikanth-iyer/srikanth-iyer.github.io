@@ -9,7 +9,7 @@ import art from '../../data/art.json';
 
 // Merge research, art and film into one list; "kind" is what the filter buttons use.
 const work = [
-  ...research.map((r) => ({ kind: 'research', chip: r.badge ? 'RESEARCH · AWARD' : 'RESEARCH', title: `${r.key} ${r.rest}`.replace(' :', ':'), note: r.summary, href: r.link ?? `#${r.id}` })),
+  ...research.map((r) => ({ kind: 'research', chip: r.badge ? 'RESEARCH · AWARD' : 'RESEARCH', title: `${r.key} ${r.rest}`.replace(' :', ':'), note: r.summary, href: r.story ? `/directions/notebook/${r.story}/` : (r.link ?? `#${r.id}`) })),
   ...art.map((a) => ({ kind: 'art', chip: a.medium.toUpperCase(), title: a.title, note: a.summary, href: '#art' })),
   ...film.map((f) => ({ kind: 'film', chip: f.kind.toUpperCase(), title: f.title, note: `${f.role}. ${f.summary}`, href: f.link ?? '#film' })),
 ];

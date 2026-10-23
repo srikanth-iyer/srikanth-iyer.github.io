@@ -47,7 +47,7 @@ import art from '../../data/art.json';
               <h3><b>{r.key}</b> {r.rest}</h3>
               <p class="body">{r.summary}</p>
               {r.authors && <p class="meta">{r.authors}</p>}
-              <p class="eg">e.g. {r.badge ?? r.venues}{r.link && <> · <a href={r.link}>see the code →</a></>}</p>
+              <p class="eg">e.g. {r.badge ?? r.venues}{r.story && <> · <a href={`/directions/talks/${r.story}/`}>read the explainer →</a></>}{r.link && <> · <a href={r.link}>see the code →</a></>}</p>
             </div>
           </article>
         ))}

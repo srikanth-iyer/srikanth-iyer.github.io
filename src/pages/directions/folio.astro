@@ -61,7 +61,7 @@ import film from '../../data/film.json';
         <h2>projects</h2>
         <div class="cards">
           {research.map((r) => (
-            <a class="card" href={r.link ?? `#${r.id}`}>
+            <a class="card" href={r.story ? `/directions/folio/${r.story}/` : (r.link ?? `#${r.id}`)}>
               <b>{r.key} {r.rest}</b>
               <span class="muted">{r.tags.join(' · ')}</span>
             </a>

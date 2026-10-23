@@ -32,7 +32,7 @@ import art from '../../data/art.json';
     <section id="work" class="wrap">
       <p class="mono dim label">// research</p>
       {research.map((r, i) => (
-        <a class="row" href={r.link ?? `#${r.id}`}>
+        <a class="row" href={r.story ? `/directions/specimen/${r.story}/` : (r.link ?? `#${r.id}`)}>
           <span class="mono idx">{String(i + 1).padStart(2, '0')}</span>
           <span class="title">{r.key} {r.rest}</span>
           <span class="desc">{r.summary}</span>

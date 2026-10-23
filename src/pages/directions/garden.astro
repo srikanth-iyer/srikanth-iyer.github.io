@@ -7,9 +7,8 @@ import film from '../../data/film.json';
 
 // The visual explainers planned for the site (each will become its own illustrated page).
 const explainers = [
-  { title: 'How 149 cells agree without a leader', note: 'The density classification task, and the clever rule that almost solves it.', meta: 'Evergreen · interactive', art: 'illustration: 149 cells voting' },
-  { title: 'Why noise breaks most rules, and not all', note: 'Canalization: the rules that survive can ignore some inputs. The award-winning CCS 2026 talk, retold for newcomers.', meta: 'Budding · interactive', art: 'illustration: noise flipping cells' },
-  { title: 'When a language model decides where you live', note: "Re-running Schelling's segregation model with language-model residents.", meta: 'Seedling · in progress', art: 'illustration: a town on a grid' },
+  { title: 'How 149 cells agree without a leader', note: 'The density classification task, noise, and why rules that ignore some inputs survive it. The award-winning CCS 2026 talk, retold for newcomers.', meta: 'Evergreen · scroll to run the simulation', art: 'illustration: 149 cells voting', href: '/directions/garden/canalization/' },
+  { title: 'When a language model decides where you live', note: "Schelling's segregation model with language-model residents: change only the group labels, and the town sorts itself differently.", meta: 'Budding · scroll to run the simulation', art: 'illustration: a town on a grid', href: '/directions/garden/schelling/' },
 ];
 const stages = [
   { id: 'all', label: 'All' },
@@ -57,7 +56,7 @@ const stages = [
       <div class="head"><h2>Visual explainers</h2><span class="muted">Illustrated, interactive, written for newcomers</span></div>
       <div class="cards">
         {explainers.map((e) => (
-          <a class="card" href="#explainers">
+          <a class="card" href={e.href}>
             <div class="ph">[{e.art}]</div>
             <span class="ct">{e.title}</span>
             <span class="cn">{e.note}</span>
