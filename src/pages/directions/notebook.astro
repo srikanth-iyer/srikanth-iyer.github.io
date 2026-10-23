@@ -1,0 +1,154 @@
+---
+// Direction D · Editorial notebook: magazine feel, career arrows, a filterable work list.
+import Base from '../../layouts/Base.astro';
+import profile from '../../data/profile.json';
+import research from '../../data/research.json';
+import talks from '../../data/talks.json';
+import film from '../../data/film.json';
+import art from '../../data/art.json';
+
+// Merge research, art and film into one list; "kind" is what the filter buttons use.
+const work = [
+  ...research.map((r) => ({ kind: 'research', chip: r.badge ? 'RESEARCH · AWARD' : 'RESEARCH', title: `${r.key} ${r.rest}`.replace(' :', ':'), note: r.summary, href: r.link ?? `#${r.id}` })),
+  ...art.map((a) => ({ kind: 'art', chip: a.medium.toUpperCase(), title: a.title, note: a.summary, href: '#art' })),
+  ...film.map((f) => ({ kind: 'film', chip: f.kind.toUpperCase(), title: f.title, note: `${f.role}. ${f.summary}`, href: f.link ?? '#film' })),
+];
+const filters = [
+  { id: 'all', label: 'All' },
+  { id: 'research', label: 'Research' },
+  { id: 'film', label: 'Film & writing' },
+  { id: 'art', label: 'Art' },
+];
+const [featured, ...otherTalks] = talks;   // the first talk is featured, the rest are listed below it
+---
+<Base title={`${profile.name} · Notebook`} background="#fdfdfb" fonts="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+  <div class="page">
+    <header class="wrap">
+      <a class="logo" href="#top">{profile.name}</a>
+      <nav aria-label="Main"><a href="#bio">Bio</a><a href="#work">Work</a><a href="#talks">Talks</a><a href="#notebooks">Notebooks</a><a href="#hello">Contact</a></nav>
+    </header>
+
+    <section id="top" class="wrap hero">
+      <div class="hero-text">
+        <h1>Studying how simple parts decide together, <i>and telling the story.</i></h1>
+        <ul class="arrows">
+          <li>Sports writer <span>→</span> Ad films <span>→</span> Screenwriter</li>
+          <li>Screenwriter <span>→</span> Complex systems</li>
+          {profile.roles.map((r) => <li>{r.title.split(',')[0]} <span>→</span> {r.org}</li>)}
+        </ul>
+        <div class="ctas"><a class="pill dark" href="#bio">READ FULL BIO</a><a class="pill" href={`mailto:${profile.email}`}>EMAIL ME</a></div>
+      </div>
+      {profile.photo ? <img class="portrait" src={profile.photo} alt={`Portrait of ${profile.name}`} /> : <div class="portrait ph">[portrait]</div>}
+    </section>
+
+    <div class="stars" aria-hidden="true">* * *</div>
+
+    <section id="bio" class="bio">
+      {profile.bio.map((p) => <p>{p}</p>)}
+    </section>
+
+    <section id="work" class="wrap">
+      <div class="head">
+        <h2>Work</h2>
+        <div role="group" aria-label="Filter work" class="filters">
+          {filters.map((f, i) => <button type="button" data-filter={f.id} aria-pressed={i === 0 ? 'true' : 'false'}>{f.label}</button>)}
+        </div>
+      </div>
+      <div class="work">
+        {work.map((w) => (
+          <a class="item" data-kind={w.kind} href={w.href}>
+            <span class="chip">{w.chip}</span>
+            <span class="t">{w.title}</span>
+            <span class="n">{w.note}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section id="talks" class="wrap">
+      <h2 class="ruled">Talks</h2>
+      <div class="featured">
+        <div class="ph wide">[talk photo or first slide]</div>
+        <div class="fcol">
+          <span class="chip solid">FEATURED · {featured.short}{featured.award ? ' · ' + featured.award.toUpperCase() : ''}</span>
+          <span class="ft">{featured.title}</span>
+          <span class="muted">{featured.authors}. {featured.note}</span>
+        </div>
+      </div>
+      {otherTalks.map((t) => (
+        <div class="talk"><span class="chip">{t.short}{t.type === 'Poster' ? ' · POSTER' : ''}</span><span>{t.title}</span></div>
+      ))}
+    </section>
+
+    <section id="notebooks" class="wrap">
+      <h2>Notebooks</h2>
+      <p class="muted">Sketches of rules, storyboards, and the pages where a model first made sense.</p>
+      <div class="gallery">
+        <div class="ph tall">[notebook page]</div><div class="ph tall">[storyboard]</div><div class="ph tall">[rule sketch]</div><div class="ph tall">[script page]</div>
+      </div>
+    </section>
+
+    <section id="hello" class="wrap hello">
+      <div class="stars" aria-hidden="true">* * *</div>
+      <h2>Say hello</h2>
+      <p>Collaborations, internships, or a good story: <a href={`mailto:${profile.email}`}>{profile.email}</a></p>
+    </section>
+
+    <footer class="wrap"><span>© 2026 {profile.name}</span><span><a href={profile.links.github}>GitHub</a> · <a href={profile.links.linkedin}>LinkedIn</a></span></footer>
+  </div>
+</Base>
+
+<script>
+  // Filter buttons: show only the work items whose data-kind matches the chosen button.
+  const buttons = document.querySelectorAll('[data-filter]');
+  const items = document.querySelectorAll('.item');
+  buttons.forEach((b) => b.addEventListener('click', () => {
+    const f = b.dataset.filter;
+    buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    items.forEach((it) => { it.hidden = !(f === 'all' || it.dataset.kind === f); });   // hide the others
+  }));
+</script>
+
+<style>
+  .page { --ink:#111111; --muted:#55554f; --line:#deded8; --blue:#1d3fd1; --ph:#efefea; background:#fdfdfb; color: var(--ink); font-family: Inter, system-ui, sans-serif; }
+  a { color: var(--blue); }
+  .wrap { max-width: 1180px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+  header { padding-top: 20px; padding-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 32px; }
+  .logo { font: 400 28px Newsreader, Georgia, serif; color: var(--ink); text-decoration: none; }
+  nav { display: flex; flex-wrap: wrap; gap: 0 24px; font-weight: 500; } nav a { color: var(--ink); text-decoration: none; padding: 12px 0; }
+  .hero { padding-top: 56px; padding-bottom: 40px; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-end; }
+  .hero-text { flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 28px; }
+  h1 { margin: 0; font: 400 clamp(40px, 5.4vw, 72px)/1.12 Newsreader, Georgia, serif; }
+  .arrows { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 18px; } .arrows span { color: var(--blue); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  .pill { font: 500 13px 'IBM Plex Mono', monospace; letter-spacing: 0.06em; text-decoration: none; color: var(--ink); border: 1.5px solid var(--ink); border-radius: 999px; padding: 12.5px 22px; }
+  .pill.dark { background: var(--ink); color: #fdfdfb; }
+  .portrait { flex: 0 1 340px; min-width: 240px; aspect-ratio: 4 / 5; object-fit: cover; }
+  .ph { background: var(--ph); display: flex; align-items: center; justify-content: center; color: #6b6b66; font-size: 14px; }
+  .stars { text-align: center; letter-spacing: 1.2em; color: #9a9a94; font-size: 18px; padding: 24px 0; }
+  .bio { max-width: 760px; margin: 0 auto; padding: 16px 32px 32px; font-size: 19px; line-height: 1.7; }
+  .bio p { margin: 0 0 18px; }
+  section.wrap { padding-top: 40px; padding-bottom: 16px; }
+  .head { display: flex; flex-wrap: wrap; gap: 16px; align-items: baseline; justify-content: space-between; border-bottom: 1.5px solid var(--ink); padding-bottom: 14px; }
+  h2 { margin: 0; font: 400 44px Newsreader, Georgia, serif; }
+  .ruled { border-bottom: 1.5px solid var(--ink); padding-bottom: 14px; margin-bottom: 20px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filters button { min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; font-weight: 500; }
+  .filters button[aria-pressed="true"] { background: var(--ink); color: #fdfdfb; }
+  .item { display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: baseline; padding: 22px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink); }
+  .item[hidden] { display: none; }
+  .chip { flex: 0 0 190px; font: 500 12px 'IBM Plex Mono', monospace; letter-spacing: 0.08em; color: var(--blue); }
+  .chip.solid { flex: none; align-self: flex-start; background: var(--ink); color: #fdfdfb; padding: 6px 10px; }
+  .t { flex: 1 1 360px; min-width: 0; font: 400 28px/1.2 Newsreader, Georgia, serif; }
+  .n { flex: 1 1 280px; min-width: 0; font-size: 16px; line-height: 1.5; color: var(--muted); }
+  .featured { display: flex; flex-wrap: wrap; gap: 28px; align-items: center; padding-bottom: 24px; }
+  .wide { flex: 1 1 420px; aspect-ratio: 16 / 9; }
+  .fcol { flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+  .ft { font: 400 34px/1.15 Newsreader, Georgia, serif; }
+  .muted { color: var(--muted); }
+  .talk { display: flex; flex-wrap: wrap; gap: 8px 28px; padding: 16px 0; border-top: 1px solid var(--line); }
+  .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 20px; }
+  .tall { aspect-ratio: 3 / 4; }
+  .hello { text-align: center; padding-bottom: 56px; } .hello h2 { font-size: clamp(40px, 5vw, 64px); }
+  footer { padding-top: 20px; padding-bottom: 20px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 14px; color: var(--muted); }
+</style>

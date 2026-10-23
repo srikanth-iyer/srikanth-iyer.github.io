@@ -1,0 +1,161 @@
+---
+// Direction E · Illustrated garden: visual explainers, growing notes, and film and writing history.
+import Base from '../../layouts/Base.astro';
+import profile from '../../data/profile.json';
+import notes from '../../data/notes.json';
+import film from '../../data/film.json';
+
+// The visual explainers planned for the site (each will become its own illustrated page).
+const explainers = [
+  { title: 'How 149 cells agree without a leader', note: 'The density classification task, and the clever rule that almost solves it.', meta: 'Evergreen · interactive', art: 'illustration: 149 cells voting' },
+  { title: 'Why noise breaks most rules, and not all', note: 'Canalization: the rules that survive can ignore some inputs. The award-winning CCS 2026 talk, retold for newcomers.', meta: 'Budding · interactive', art: 'illustration: noise flipping cells' },
+  { title: 'When a language model decides where you live', note: "Re-running Schelling's segregation model with language-model residents.", meta: 'Seedling · in progress', art: 'illustration: a town on a grid' },
+];
+const stages = [
+  { id: 'all', label: 'All' },
+  { id: 'seedling', label: 'Seedlings' },
+  { id: 'budding', label: 'Budding' },
+  { id: 'evergreen', label: 'Evergreen' },
+];
+---
+<Base title={`${profile.name} · Garden`} background="#f7f3eb" fonts="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&display=swap">
+  <div class="page">
+    <header class="wrap">
+      <a class="logo" href="#top">{profile.name}</a>
+      <nav aria-label="Main"><a href="#explainers">Explainers</a><a href="#garden">Garden</a><a href="#before">Film &amp; writing</a><a href="#now">Now</a></nav>
+    </header>
+
+    <section id="top" class="wrap hero">
+      <div class="hero-text">
+        <h1>I draw, write and simulate my way through <i>how groups think.</i></h1>
+        <p>This is a garden of visual explainers, half-grown notes and older stories. {profile.bio[0]}</p>
+        <p class="latest">Latest: our talk on canalization and noise won a Best Student Presentation Award (3rd place) at CCS 2026.</p>
+      </div>
+      <!-- A hand-drawn-style sketch: a ring of agents, each seeing only its neighbours -->
+      <svg viewBox="0 0 360 300" role="img" aria-label="Sketch of a ring of agents, each looking only at its neighbours, with an arrow toward a shared decision">
+        <g fill="none" stroke="#1f1b16" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M180 58 C 248 56, 300 100, 298 152 C 296 210, 244 248, 178 246 C 112 244, 62 204, 64 150 C 66 96, 116 60, 180 58" stroke-dasharray="2 7" stroke="#8a7f72"></path>
+          <circle cx="180" cy="58" r="15" fill="#1f1b16"></circle>
+          <circle cx="262" cy="86" r="15" fill="#f7f3eb"></circle>
+          <circle cx="298" cy="152" r="15" fill="#1f1b16"></circle>
+          <circle cx="262" cy="220" r="15" fill="#1f1b16"></circle>
+          <circle cx="178" cy="246" r="15" fill="#f7f3eb"></circle>
+          <circle cx="96" cy="220" r="15" fill="#1f1b16"></circle>
+          <circle cx="64" cy="150" r="15" fill="#f7f3eb"></circle>
+          <circle cx="98" cy="84" r="15" fill="#1f1b16"></circle>
+          <path d="M296 152 C 320 150, 330 136, 332 120" stroke="#d2643a" stroke-width="2.6"></path>
+          <path d="M262 220 C 252 200, 264 172, 285 160" stroke="#d2643a" stroke-width="2.6"></path>
+          <path d="M180 150 l -10 -6 M180 150 l 10 -6 M180 150 l 0 18" stroke="#246b5d"></path>
+        </g>
+        <text x="196" y="160" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="17" fill="#246b5d">one decision?</text>
+        <text x="304" y="112" font-family="Inter, sans-serif" font-size="12" fill="#8a4a2e">sees only</text>
+        <text x="304" y="126" font-family="Inter, sans-serif" font-size="12" fill="#8a4a2e">neighbours</text>
+      </svg>
+    </section>
+
+    <section id="explainers" class="wrap">
+      <div class="head"><h2>Visual explainers</h2><span class="muted">Illustrated, interactive, written for newcomers</span></div>
+      <div class="cards">
+        {explainers.map((e) => (
+          <a class="card" href="#explainers">
+            <div class="ph">[{e.art}]</div>
+            <span class="ct">{e.title}</span>
+            <span class="cn">{e.note}</span>
+            <span class="muted small">{e.meta}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section id="garden" class="wrap">
+      <div class="head">
+        <h2>The garden</h2>
+        <div role="group" aria-label="Filter notes by how finished they are" class="filters">
+          {stages.map((s, i) => <button type="button" data-stage={s.id} aria-pressed={i === 0 ? 'true' : 'false'}>{s.label}</button>)}
+        </div>
+      </div>
+      <p class="muted">Notes at different stages of growth. Seedlings are rough ideas, budding notes are taking shape, evergreen notes are as finished as they get.</p>
+      <div class="notes">
+        {notes.map((n) => (
+          <a class="note" data-stage={n.stage} href="#garden">
+            <span class="stage">{n.stage.toUpperCase()}</span>
+            <span><span class="nt">{n.title}</span><br /><span class="muted small">{n.topic}</span></span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section id="before" class="wrap">
+      <h2>Before the lab: film &amp; writing</h2>
+      <p class="intro">I spent fifteen years making an audience care, in thirty seconds or two hours: sports writing, commercials, event films, then screenplays. That habit is why my research comes with pictures.</p>
+      <div class="dark-cards">
+        {film.slice(0, 3).map((f) => (
+          <a class="dark" href={f.link ?? '#before'}>
+            <span class="tag">{f.kind.toUpperCase()} · {f.years}</span>
+            <span class="dt">{f.title}</span>
+            <span class="dn">{f.role}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section id="now" class="wrap">
+      <div class="nowbox">
+        <h2>Now</h2>
+        <ul>{profile.now.map((x) => <li>{x}</li>)}</ul>
+      </div>
+    </section>
+
+    <footer class="wrap"><span><a href={`mailto:${profile.email}`}>Email</a> · <a href={profile.links.github}>GitHub</a> · <a href={profile.links.linkedin}>LinkedIn</a></span><span>Notes are tended, not finished.</span></footer>
+  </div>
+</Base>
+
+<script>
+  // Stage buttons: show only the notes at the chosen growth stage.
+  const buttons = document.querySelectorAll('button[data-stage]');
+  const notes = document.querySelectorAll('.note');
+  buttons.forEach((b) => b.addEventListener('click', () => {
+    const s = b.dataset.stage;
+    buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    notes.forEach((n) => { n.hidden = !(s === 'all' || n.dataset.stage === s); });
+  }));
+</script>
+
+<style>
+  .page { --ink:#1f1b16; --warm:#4a4239; --muted:#6b6157; --line:#e3dccf; --green:#246b5d; --paper:#fffdf8; background:#f7f3eb; color: var(--ink); font-family: Inter, system-ui, sans-serif; }
+  a { color: var(--green); }
+  .wrap { max-width: 1180px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+  header { padding-top: 20px; padding-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 32px; }
+  .logo { font: 500 24px Fraunces, Georgia, serif; color: var(--ink); text-decoration: none; }
+  nav { display: flex; flex-wrap: wrap; gap: 0 26px; font-weight: 500; } nav a { color: var(--warm); text-decoration: none; padding: 12px 0; }
+  .hero { padding-top: 48px; padding-bottom: 40px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center; }
+  .hero-text { flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+  h1 { margin: 0; font: 300 clamp(40px, 5.6vw, 72px)/1.08 Fraunces, Georgia, serif; letter-spacing: -0.015em; }
+  h1 i { font-weight: 400; color: var(--green); }
+  .hero-text p { margin: 0; font-size: 19px; line-height: 1.65; color: var(--warm); max-width: 34em; }
+  .hero-text .latest { font-size: 15px; color: var(--green); font-weight: 600; }
+  .hero svg { flex: 0 1 360px; min-width: 240px; height: auto; }
+  section.wrap { padding-top: 48px; padding-bottom: 16px; }
+  .head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 24px; margin-bottom: 16px; }
+  h2 { margin: 0; font: 400 40px Fraunces, Georgia, serif; }
+  .muted { color: var(--muted); } .small { font-size: 13px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .card { background: var(--paper); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: var(--ink); box-shadow: 0 1px 0 #e6dfd2; }
+  .ph { aspect-ratio: 4 / 3; border-radius: 10px; background: #efe9dd; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; }
+  .ct { font: 400 24px/1.2 Fraunces, Georgia, serif; } .cn { font-size: 15px; line-height: 1.5; color: var(--warm); }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filters button { min-height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: #ece5d8; color: var(--ink); cursor: pointer; font-weight: 500; }
+  .filters button[aria-pressed="true"] { background: var(--green); color: #fff; }
+  .notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 4px 32px; margin-top: 16px; }
+  .note { display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-top: 1px solid var(--line); text-decoration: none; color: var(--ink); }
+  .note[hidden] { display: none; }
+  .stage { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--green); background: #e4efe9; border-radius: 6px; padding: 4px 8px; margin-top: 4px; }
+  .nt { font: 400 21px/1.25 Fraunces, Georgia, serif; }
+  .intro { font-size: 17px; line-height: 1.6; color: var(--warm); max-width: 42em; }
+  .dark-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .dark { background: var(--ink); color: #f7f3eb; border-radius: 16px; aspect-ratio: 16 / 9; padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; text-decoration: none; }
+  .tag { font-size: 12px; letter-spacing: 0.08em; color: #d9cfbf; } .dt { font: 400 22px Fraunces, Georgia, serif; } .dn { font-size: 14px; color: #d9cfbf; }
+  .nowbox { background: var(--paper); border-radius: 16px; padding: 28px 32px; display: flex; flex-wrap: wrap; gap: 12px 40px; box-shadow: 0 1px 0 #e6dfd2; }
+  .nowbox h2 { flex: 0 0 160px; font-size: 32px; } .nowbox ul { margin: 0; padding-left: 20px; flex: 1 1 420px; font-size: 17px; line-height: 1.7; color: var(--warm); }
+  footer { padding-top: 22px; padding-bottom: 22px; margin-top: 40px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 14px; color: var(--muted); }
+</style>

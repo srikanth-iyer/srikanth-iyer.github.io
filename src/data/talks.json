@@ -1,0 +1,32 @@
+[
+  {
+    "short": "CCS 2026",
+    "year": 2026,
+    "type": "Talk",
+    "title": "Canalization drives Robustness in the Evolution of Collective Intelligence under Noise",
+    "authors": "S. Iyer, A. Challa, D. Hao, J. C. Rozum, L. M. Rocha",
+    "venue": "Conference on Complex Systems (CCS 2026), Binghamton",
+    "award": "Best Student Presentation Award, 3rd place",
+    "note": "Also presented at NetSci 2026."
+  },
+  {
+    "short": "NetSci 2025",
+    "year": 2025,
+    "type": "Talk",
+    "title": "Canalization and Symmetry Enhance Noise Resilience in the Density Classification Task",
+    "authors": "S. Iyer, A. Challa, D. Hao, J. C. Rozum, L. M. Rocha",
+    "venue": "International School and Conference on Network Science (NetSci 2025), Maastricht",
+    "award": null,
+    "note": null
+  },
+  {
+    "short": "NetSci 2024",
+    "year": 2024,
+    "type": "Poster",
+    "title": "Analyzing Monopoly as a Random Walk and a Directed, Weighted Network",
+    "authors": "A. J. Lopez-Diaz, S. Iyer, A. Gangadhar, C. Gershenson",
+    "venue": "International School and Conference on Network Science (NetSci 2024), Québec City",
+    "award": null,
+    "note": null
+  }
+]

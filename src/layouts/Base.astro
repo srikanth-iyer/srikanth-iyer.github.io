@@ -1,0 +1,61 @@
+---
+// Base.astro: the shell every page sits inside (the <head> tags plus <body>).
+// The part between the two "---" lines runs when the site is built, not in the visitor's browser.
+
+import profile from '../data/profile.json';   // your name, bio and links, read from the data file
+
+// "props" are the settings a page passes in when it uses this layout.
+const {
+  title = profile.name,                 // text shown in the browser tab
+  description = profile.shortBio,       // summary shown by search engines and link previews
+  fonts = '',                           // a Google Fonts address, if the page needs special fonts
+  background = '#ffffff',               // page background colour
+} = Astro.props;
+
+// The full address of this page, e.g. https://srikanth-iyer.github.io/directions/garden/
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// "Structured data": a small machine-readable description of you,
+// which search engines and AI tools read to understand who the site is about.
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  description: profile.shortBio,
+  email: `mailto:${profile.email}`,
+  url: Astro.site?.toString(),
+  sameAs: [profile.links.github, profile.links.linkedin],
+  affiliation: profile.roles.map((r) => ({ '@type': 'Organization', name: r.org })),
+  jobTitle: profile.roles[0].title,
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <!-- Open Graph tags: control how the link looks when shared on social media or chat apps -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {fonts && <link rel="preconnect" href="https://fonts.googleapis.com" />}
+    {fonts && <link rel="stylesheet" href={fonts} />}
+    <script type="application/ld+json" set:html={JSON.stringify(person)} />
+    <style is:global>
+      /* A few rules shared by every page */
+      *, *::before, *::after { box-sizing: border-box; }
+      body { margin: 0; }
+      img, canvas { max-width: 100%; }
+      button { font: inherit; }
+      @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+    </style>
+  </head>
+  <body style={`background:${background}`}>
+    <slot />
+  </body>
+</html>

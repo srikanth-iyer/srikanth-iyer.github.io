@@ -1,0 +1,117 @@
+---
+// Direction B · Living specimen: dark, with the automaton running behind your name.
+import Base from '../../layouts/Base.astro';
+import profile from '../../data/profile.json';
+import research from '../../data/research.json';
+import film from '../../data/film.json';
+import art from '../../data/art.json';
+---
+<Base title={`${profile.name} · Living specimen`} background="#0e1211" fonts="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+  <div class="page">
+    <header class="wrap">
+      <a href="#top">srikanth_iyer</a>
+      <nav aria-label="Main"><a href="#work">/research</a><a href="#art">/art</a><a href="#before">/before</a><a href="#contact">/contact</a></nav>
+    </header>
+
+    <section id="top" class="hero">
+      <canvas id="ca-b" aria-hidden="true"></canvas>
+      <div class="scrim"></div>
+      <div class="wrap hero-text">
+        <span class="mono teal">collective intelligence · complex systems · PhD researcher</span>
+        <h1>Many small parts. <b>One decision.</b></h1>
+        <p>I'm {profile.name}. {profile.shortBio}</p>
+        <span class="pill">★ {profile.highlight.label} · CCS 2026</span>
+        <div class="buttons">
+          <button type="button" id="restart-b" class="solid">↻ new random start</button>
+          <button type="button" id="kick-b">⚡ flip 10% of cells</button>
+          <span class="mono dim">behind this text: the GKL rule, live</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="work" class="wrap">
+      <p class="mono dim label">// research</p>
+      {research.map((r, i) => (
+        <a class="row" href={r.link ?? `#${r.id}`}>
+          <span class="mono idx">{String(i + 1).padStart(2, '0')}</span>
+          <span class="title">{r.key} {r.rest}</span>
+          <span class="desc">{r.summary}</span>
+          <span class="mono teal">{r.badge ? 'award →' : r.venues + ' →'}</span>
+        </a>
+      ))}
+    </section>
+
+    <section id="art" class="wrap">
+      <p class="mono dim label">// the same models, as art</p>
+      <div class="cards">
+        {art.map((a) => (
+          <div class="card"><span class="mono dim">[{a.medium} loop]</span><b>{a.title}</b></div>
+        ))}
+      </div>
+    </section>
+
+    <section id="before" class="wrap">
+      <p class="mono dim label">// how I got here</p>
+      <p class="story">Sports writing <span class="orange">→</span> ad films <span class="orange">→</span> screenwriting <span class="orange">→</span> complex systems. <span class="dim">I left stories about people for stories about systems, and found they are the same kind of story.</span></p>
+      <div class="credits">
+        {film.map((f) => (
+          <div><span class="mono orange">{f.years} · {f.kind.toLowerCase()}</span><br /><b>{f.link ? <a href={f.link}>{f.title}</a> : f.title}</b><br /><span class="dim">{f.role}</span></div>
+        ))}
+      </div>
+    </section>
+
+    <footer id="contact">
+      <div class="wrap foot mono">
+        <span><a href={`mailto:${profile.email}`}>email</a> · <a href={profile.links.github}>github</a> · <a href={profile.links.linkedin}>linkedin</a></span>
+        <span>Binghamton University (CASCI) · Católica Biomedical Research Centre</span>
+      </div>
+    </footer>
+  </div>
+</Base>
+
+<script>
+  // Start the background automaton (teal cells on the dark page, a little background noise).
+  import { startAutomaton } from '../../scripts/automaton.js';
+  const ca = startAutomaton(document.getElementById('ca-b'), {
+    cells: 240, cellPx: 4, rows: 140, on: '#7fd3c4', off: '#0e1211', noise: 0.002, stepMs: 70,
+  });
+  document.getElementById('restart-b').addEventListener('click', () => ca.restart());
+  document.getElementById('kick-b').addEventListener('click', () => ca.kick(0.1));
+</script>
+
+<style>
+  .page { --bg:#0e1211; --text:#e9ece8; --dim:#9aa39f; --line:#26302d; --teal:#7fd3c4; --orange:#e8743b; background: var(--bg); color: var(--text); font-family: 'Hanken Grotesk', system-ui, sans-serif; min-height: 100vh; }
+  a { color: var(--teal); }
+  .wrap { max-width: 1240px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+  .mono { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+  .dim { color: var(--dim); } .teal { color: var(--teal); } .orange { color: var(--orange); }
+  header { padding-top: 20px; padding-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 32px; font-family: 'JetBrains Mono', monospace; font-size: 14px; }
+  header a { color: var(--text); text-decoration: none; padding: 12px 0; }
+  nav { display: flex; flex-wrap: wrap; gap: 0 24px; } nav a { color: var(--dim) !important; }
+  .hero { position: relative; overflow: hidden; min-height: 580px; display: flex; align-items: flex-end; }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; opacity: 0.55; }
+  .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14,18,17,0.1), rgba(14,18,17,0.6) 55%, var(--bg)); }
+  .hero-text { position: relative; width: 100%; padding-top: 120px; padding-bottom: 56px; display: flex; flex-direction: column; gap: 20px; }
+  h1 { margin: 0; font-size: clamp(44px, 7vw, 96px); line-height: 0.98; font-weight: 300; letter-spacing: -0.02em; max-width: 12em; }
+  h1 b { font-weight: 700; }
+  .hero-text p { margin: 0; font-size: 20px; line-height: 1.55; color: #c3cac6; max-width: 36em; }
+  .pill { align-self: flex-start; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--bg); background: var(--orange); border-radius: 6px; padding: 6px 10px; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  button { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; min-height: 44px; padding: 0 18px; border: 0; border-radius: 10px; background: rgba(255,255,255,0.08); color: var(--text); cursor: pointer; }
+  button.solid { background: var(--text); color: var(--bg); }
+  section.wrap { padding-top: 48px; padding-bottom: 16px; }
+  .label { margin: 0 0 16px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px 32px; align-items: baseline; padding: 28px 0; border-top: 1px solid var(--line); text-decoration: none; color: var(--text); }
+  .row:last-of-type { border-bottom: 1px solid var(--line); }
+  .idx { color: var(--orange); width: 48px; font-size: 14px; }
+  .title { flex: 1 1 380px; min-width: 0; font-size: clamp(24px, 2.6vw, 34px); line-height: 1.2; }
+  .desc { flex: 1 1 320px; min-width: 0; font-size: 16px; line-height: 1.5; color: var(--dim); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .card { background: #161b1a; border-radius: 14px; aspect-ratio: 16 / 9; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; padding: 22px; font-size: 22px; }
+  .story { margin: 0; font-size: clamp(24px, 3vw, 38px); line-height: 1.35; font-weight: 300; max-width: 26em; }
+  .credits { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0 32px; margin-top: 36px; font-size: 16px; line-height: 1.5; }
+  .credits > div { padding: 16px 0; border-top: 1px solid var(--line); }
+  .credits a { color: var(--text); }
+  footer { border-top: 1px solid var(--line); margin-top: 48px; }
+  .foot { padding-top: 24px; padding-bottom: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 28px; color: var(--dim); }
+</style>
