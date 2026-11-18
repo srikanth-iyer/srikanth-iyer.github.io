@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+{% include head.html %}
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+{%- comment -%}
+  Background effects: each name in the page's "effects" list loads _includes/effects/NAME.html.
+  The default list is set in _config.yml. Add a new effect by adding a file there.
+{%- endcomment -%}
+{%- for effect in page.effects %}
+{% include effects/{{ effect }}.html %}
+{%- endfor %}
+
+{% include header.html %}
+
+<main id="main">
+  <div class="wrap">
+{{ content }}
+  </div>
+</main>
+
+{% include footer.html %}
+
+<script src="{{ '/assets/js/site.js' | relative_url }}"></script>
+{%- comment -%} Extra scripts for one page, listed in its front matter as  scripts: [/assets/js/x.js] {%- endcomment -%}
+{%- for script in page.scripts %}
+<script src="{{ script | relative_url }}"></script>
+{%- endfor %}
+</body>
+</html>

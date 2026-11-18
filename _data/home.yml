@@ -1,0 +1,27 @@
+# The words on the home page. The timeline, news and project tiles have their own files:
+# _data/timeline.yml, _data/news.yml and _data/projects.yml.
+
+hero:
+  pill: Complex systems · PhD researcher
+  heading: Many tiny parts. No one in charge.
+  lede: >-
+    I'm Srikanth Iyer. I study how crowds of simple things, from cells to people
+    to AI agents, make good decisions together when the world is noisy.
+  photo_caption: Photo coming soon   # shown on the placeholder until a real photo is added
+
+about:
+  eyebrow: About
+  heading: Storyteller turned complex-systems researcher
+  lede: >-
+    I spent fifteen years telling stories in Mumbai before I turned to science.
+    I still think like a screenwriter, so this site shows my research the way I'd
+    pitch a film: with pictures you can play with.
+
+projects:
+  eyebrow: Featured projects
+  heading: A sneak peek
+  button: See all projects
+
+news:
+  eyebrow: Latest
+  heading: Recent news

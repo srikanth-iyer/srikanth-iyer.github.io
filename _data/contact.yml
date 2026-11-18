@@ -1,0 +1,26 @@
+# How people reach you. Used in the footer of every page and on the Contact page.
+# Rule 1 in WEBSITE-RULES.md: never add a phone number here (the tests check for one).
+
+emails:
+  - address: siyer5@binghamton.edu
+    short: Binghamton               # small label in the footer
+    long: Binghamton University     # label on the Contact page
+  - address: siyer@ucp.pt
+    short: Católica
+    long: Católica, Lisbon
+  - address: tosrikanthiyer@gmail.com
+    short: personal
+    long: personal
+
+elsewhere:
+  - label: GitHub
+    url: https://github.com/srikanth-iyer
+  - label: LinkedIn
+    url: https://www.linkedin.com/in/srikanthiyer
+
+footer_blurb: Complex-systems researcher. Binghamton, NY and Lisbon, Portugal.
+where: Binghamton, New York and Lisbon, Portugal.
+
+# The Contact box sends messages to this Google Apps Script (tools/contact-form.gs),
+# which emails them to you. It is the script's web app address, ending in /exec.
+form_endpoint: https://script.google.com/macros/s/AKfycbzGI0pZAju6KdkWnYuydB1gVgOG6-r_agcAylYTwhushzwrSUsjWQvoV75xmwMGnPPLdw/exec

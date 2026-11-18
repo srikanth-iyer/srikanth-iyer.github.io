@@ -1,0 +1,39 @@
+{%- assign contact = site.data.contact %}
+    <section class="contact">
+      <!-- The message box. Messages go to a Google Apps Script in Srikanth's account (tools/contact-form.gs),
+           which emails them to him. Its address is form_endpoint in _data/contact.yml. -->
+      <form class="write" id="write" data-endpoint="{{ contact.form_endpoint }}" novalidate>
+        <label><span>Your name</span><input type="text" name="name" autocomplete="name" required></label>
+        <label><span>Your email</span><input type="email" name="email" autocomplete="email" required></label>
+        <label><span>Message</span><textarea name="message" rows="7" required></textarea></label>
+        <!-- Hidden from people; a bot that fills it in is ignored -->
+        <div class="trap" aria-hidden="true"><label><span>Leave this empty</span><input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+        <div class="row">
+          <button class="btn primary" type="submit">Send message</button>
+          <p class="status" id="status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <aside class="info-col">
+        <div class="box">
+          <h2>Email</h2>
+          <ul>
+            {%- for e in contact.emails %}
+            <li><a href="mailto:{{ e.address }}">{{ e.address }}</a><small>{{ e.long }}</small></li>
+            {%- endfor %}
+          </ul>
+        </div>
+        <div class="box">
+          <h2>Elsewhere</h2>
+          <ul>
+            {%- for l in contact.elsewhere %}
+            <li><a href="{{ l.url }}" rel="noopener">{{ l.label }}</a></li>
+            {%- endfor %}
+          </ul>
+        </div>
+        <div class="box">
+          <h2>Where</h2>
+          <p>{{ contact.where }}</p>
+        </div>
+      </aside>
+    </section>

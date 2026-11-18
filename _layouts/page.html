@@ -1,0 +1,17 @@
+---
+layout: default
+---
+{%- comment -%}
+  A plain page with a heading block: Projects, Contact and similar pages.
+  Front matter sets  crumb, eyebrow, heading, lede.  The page's own text follows below it.
+{%- endcomment %}
+    <div class="crumbs"><a href="{{ '/' | relative_url }}">Home</a> / {{ page.crumb | default: page.title }}</div>
+
+    <header class="proj-head">
+      <div class="eyebrow">{{ page.eyebrow }}</div>
+      <h1>{{ page.heading | default: page.title }}</h1>
+      {%- if page.lede %}
+      <p class="lede">{{ page.lede | strip }}</p>
+      {%- endif %}
+    </header>
+{{ content }}

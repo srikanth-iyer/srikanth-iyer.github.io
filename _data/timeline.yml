@@ -1,0 +1,51 @@
+# The journey on the home page, oldest first. Each entry is one step.
+#   id:    a short unique name, used for the year links (keep it as j-YEAR)
+#   year:  the year shown in the "Jump to a year" links
+#   when:  the small line above the title
+#   text:  one or two sentences. Markdown works: *italics*, **bold**, [a link](https://…)
+#   link:  optional button under the text
+
+- id: j-2006
+  year: 2006
+  when: 2006 to 2009 · Mumbai
+  title: Mass media and journalism
+  text: >-
+    A bachelor's in mass media at the University of Mumbai, and my first paid
+    writing, as a sports writer.
+
+- id: j-2008
+  year: 2008
+  when: 2008 to 2022 · Mumbai
+  title: Fifteen years of stories
+  text: >-
+    I produced commercials and ran their post-production, wrote and directed for
+    brands, consulted on branding, and then wrote stories and screenplays,
+    including co-writing *Capgras*, a psychological horror film rooted in folklore.
+
+- id: j-2023
+  year: 2023
+  when: 2023 · Binghamton, New York
+  title: A turn to science
+  text: >-
+    A master's in Systems Science at Binghamton University, then research in the
+    CASCI lab with Luis M. Rocha on how simple parts decide things together.
+
+- id: j-2025
+  year: 2025
+  when: 2025 · Binghamton
+  title: PhD in Systems Science
+  text: >-
+    Which rules let a crowd of simple things reach the right answer when the world
+    is noisy, and what happens when the crowd is made of AI agents.
+
+- id: j-2026
+  year: 2026
+  when: 2026 · Lisbon
+  title: Research Fellow at CBeRa
+  text: >-
+    Network models of genes, disease and the body at the Católica Biomedical
+    Research Centre, alongside the PhD. In October, third place for Best Student
+    Presentation at CCS 2026.
+  link:
+    text: The full story is in the CV
+    url: /cv/

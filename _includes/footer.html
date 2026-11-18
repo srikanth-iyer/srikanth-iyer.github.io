@@ -1,0 +1,30 @@
+{%- assign contact = site.data.contact -%}
+<footer id="contact">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a class="brand" href="{{ '/' | relative_url }}"><i></i>{{ site.title }}</a>
+        <p>{{ contact.footer_blurb }}</p>
+      </div>
+      <div>
+        <h2>Email</h2>
+        <ul>
+          {%- for e in contact.emails %}
+          <li><a href="mailto:{{ e.address }}">{{ e.address }}</a><small>{{ e.short }}</small></li>
+          {%- endfor %}
+        </ul>
+      </div>
+      <div>
+        <h2>Elsewhere</h2>
+        <ul>
+          <li><a href="{{ '/contact/' | relative_url }}">Write to me</a></li>
+          {%- for l in contact.elsewhere %}
+          <li><a href="{{ l.url }}" rel="noopener">{{ l.label }}</a></li>
+          {%- endfor %}
+          <li><a href="{{ '/cv/srikanth-iyer-cv.pdf' | relative_url }}">CV (PDF)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fine"><span>© <span class="year">{{ site.time | date: '%Y' }}</span> {{ site.title }}</span></div>
+  </div>
+</footer>

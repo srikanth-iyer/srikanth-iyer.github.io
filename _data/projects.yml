@@ -1,0 +1,71 @@
+# Projects. The tiles appear on the Projects page in this order, and each
+# project page's "Previous" and "Next" links follow the same order.
+#   url:      the project's own page
+#   tag:      the small line at the top of the tile
+#   blurb:    two or three sentences on the tile
+#   picture:  "ring" or "schelling" for a live simulation, or the path to an image
+#   featured: true to also show the tile on the home page
+
+tiles:
+  - url: /projects/dct/
+    tag: Research · Collective intelligence
+    title: How a ring of cells agrees on the truth
+    blurb: >-
+      149 cells, each seeing only its neighbours, must work out together what most
+      of them were at the start. Add noise, and only some rules survive. Evolution
+      keeps the ones that can ignore part of what they see.
+    picture: ring
+    featured: true
+
+  - url: /projects/schelling/
+    tag: Research · AI agents and society
+    title: AI agents in a segregation model
+    blurb: >-
+      A classic model of how mild preferences sort a city, rebuilt so that every
+      resident is a language model with a social identity. Do the patterns they
+      make look like real U.S. neighbourhoods?
+    picture: schelling
+    featured: true
+
+  - url: /projects/thinky/
+    tag: Software · Notes app
+    title: thinky, an outliner for notes you own
+    blurb: >-
+      A small, fast app for linked notes on Windows and Android, inspired by
+      Obsidian and Logseq. Every note stays a plain Markdown file, so nothing is
+      locked in, and it works well alongside AI. With a browser extension for highlights.
+    picture: /assets/img/thinky/journals.png
+    featured: false
+
+# Smaller cards under "More work" on the Projects page (no page of their own yet).
+# "title" and "text" can use Markdown, for example [a link](https://…) or *italics*.
+more:
+  - tag: Research · Energy
+    title: Why New York towns ban new solar, wind and batteries
+    text: >-
+      Statistical models of when towns pass moratoria on large renewable projects,
+      and whether one town's ban spreads to its neighbours, feeding into GenX, a
+      model for planning the state's power grid.
+    meta: Collaborative Decisions group, Binghamton · since 2025
+
+  - tag: Research · Biomedicine
+    title: Network models of the body
+    text: >-
+      Gene regulation, disease co-occurrence, epidemics and the brain, and how
+      built-in logical redundancy shapes how these networks behave.
+    meta: CBeRa, Católica Biomedical Research Centre, Lisbon · since 2026
+
+  - tag: Open source
+    title: "[CANA](https://github.com/CASCI-lab/CANA): control and redundancy in Boolean networks"
+    text: >-
+      I help maintain the CASCI lab's Python library for Boolean networks: new
+      symmetry measures, faster and reproducible calculations, and reviewing other
+      people's code.
+    meta: Python, Cython · since 2024
+
+  - tag: Film and writing
+    title: Fifteen years of making an audience care
+    text: >-
+      Co-wrote the feature film *Capgras*, a psychological horror rooted in
+      folklore, after years of scripting and producing ads and brand films in Mumbai.
+    meta: Mumbai · 2008 to 2022

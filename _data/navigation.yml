@@ -1,0 +1,11 @@
+# The links in the header, in order. "id" must match a page's "nav:" line
+# so that page's link is highlighted.
+- id: projects
+  label: Projects
+  url: /projects/
+- id: cv
+  label: CV
+  url: /cv/
+- id: contact
+  label: Contact
+  url: /contact/

@@ -1,0 +1,51 @@
+# Site-wide settings. Jekyll reads this once each time it builds the site.
+# GitHub Pages builds the site from these files by itself every time you push.
+
+title: Srikanth Iyer                     # your name: used in page titles and the header
+tagline: Complex systems researcher      # shown after your name in the home page's tab title
+description: >-
+  Srikanth Iyer studies how many simple parts, from cells to people to AI agents,
+  make good decisions together in a noisy world.
+url: "https://srikanth-iyer.github.io"   # where the site lives
+baseurl: ""                              # empty because the site sits at the top of that address
+
+# No ready-made theme: the site's own look lives in _layouts, _includes and assets/css
+theme: null
+encoding: utf-8
+
+# Markdown settings: GitHub-style Markdown, and keep plain ' and " as you typed them
+markdown: kramdown
+kramdown:
+  input: GFM
+  smart_quotes: ["apos", "apos", "quot", "quot"]
+
+# Stop the build with a clear error if a template has a mistake, instead of guessing
+liquid:
+  error_mode: strict
+  strict_filters: true
+
+# Files that are part of the repo but not part of the website
+exclude:
+  - README.md
+  - EDITING.md
+  - WEBSITE-RULES.md
+  - Gemfile
+  - Gemfile.lock
+  - package.json
+  - package-lock.json
+  - node_modules
+  - vendor
+  - tools
+  - tests
+  - requirements-test.txt
+  - playwright.config.js
+  - test-results
+  - playwright-report
+
+# Defaults for every page, so each page only says what is different about it
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+      effects: [ripple]     # background effects to switch on (see _includes/effects/)

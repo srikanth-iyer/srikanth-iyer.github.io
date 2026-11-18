@@ -1,0 +1,31 @@
+<!-- The classic model, live -->
+<section class="block" id="play" style="padding-top:48px">
+  <div class="eyebrow">Try it</div>
+  <h2>The classic model</h2>
+  <p class="lede">Each dot is a resident. If too few of their neighbours are like them, they move to a random empty home. Press play, then try asking for less.</p>
+  <div class="lab">
+    <div class="board"><canvas id="board" role="img" aria-label="A grid of two groups of residents moving until they are content with their neighbours."></canvas></div>
+    <div class="controls">
+      <div class="legend"><span><i style="background:var(--group-a)"></i>Group A</span><span><i style="background:var(--group-b)"></i>Group B</span></div>
+      <label>
+        <span>Each resident wants at least <b id="want-val">30%</b> like neighbours</span>
+        <input type="range" id="want" min="0" max="80" step="5" value="30">
+      </label>
+      <label>
+        <span>Empty homes <b id="empty-val">10%</b></span>
+        <input type="range" id="empty" min="4" max="30" step="2" value="10">
+      </label>
+      <div class="row">
+        <button class="btn primary" type="button" id="play-btn">Pause</button>
+        <button class="btn" type="button" id="step-btn">One round</button>
+        <button class="btn" type="button" id="reset-btn">Shuffle the city</button>
+      </div>
+      <div class="gauges" aria-live="polite">
+        <div><b id="g-sim">0%</b><small>like neighbours, on average</small></div>
+        <div><b id="g-sad">0%</b><small>residents unhappy</small></div>
+        <div><b id="g-round">0</b><small>rounds</small></div>
+      </div>
+      <p class="hint" id="note">Even at 30%, most residents end up living among mostly their own group.</p>
+    </div>
+  </div>
+</section>

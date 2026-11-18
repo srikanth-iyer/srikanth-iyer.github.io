@@ -1,0 +1,21 @@
+{%- comment -%}
+  One project tile. Used on the home page and the Projects page.
+  include.level is the heading level (3 unless the page asks for 2).
+  include.p is one entry from _data/projects.yml (tiles).
+{%- endcomment -%}
+{%- assign p = include.p -%}
+        <a class="tile" href="{{ p.url | relative_url }}">
+          <div class="vis">
+            {%- if p.picture == 'ring' or p.picture == 'schelling' -%}
+            <canvas id="tile-{{ p.picture }}" data-sim="{{ p.picture }}" aria-hidden="true"></canvas>
+            {%- else -%}
+            <img src="{{ p.picture | relative_url }}" alt="" width="1280" height="800" loading="lazy">
+            {%- endif -%}
+          </div>
+          <div class="body">
+            <span class="tag">{{ p.tag }}</span>
+            <h{{ include.level | default: 3 }}>{{ p.title }}</h{{ include.level | default: 3 }}>
+            <p>{{ p.blurb | strip }}</p>
+            <span class="more">Open the project <span aria-hidden="true">→</span></span>
+          </div>
+        </a>

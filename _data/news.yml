@@ -1,0 +1,20 @@
+# Recent news on the home page, newest first. Add a new item at the top.
+#   when: short date, like "Oct 2026"
+#   what: the headline
+#   note: one small line under it
+
+- when: Oct 2026
+  what: Best Student Presentation Award, 3rd place, at CCS 2026 in Binghamton
+  note: For the talk on how canalization drives robustness in collective intelligence under noise.
+
+- when: Jun 2026
+  what: Talk at the CPIN2 satellite of NetSci 2026
+  note: The same canalization work, for a network-science audience.
+
+- when: Apr 2026
+  what: Joined CBeRa in Lisbon as a Research Fellow
+  note: Network models of gene regulation, disease and epidemics at the Católica Biomedical Research Centre.
+
+- when: Mar 2026
+  what: Both projects presented at NERCCS 2026
+  note: Canalization under noise, and language-model agents in the Schelling model.

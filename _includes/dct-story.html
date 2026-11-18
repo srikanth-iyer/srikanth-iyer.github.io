@@ -1,0 +1,22 @@
+{%- comment -%} The DCT story: the ring stays pinned while the chapters (from the page's front matter) scroll past. {%- endcomment %}
+<section class="story" aria-label="The project in three chapters">
+  <div class="pin">
+    <canvas class="ring" id="ring" role="img" aria-label="A ring of 149 black and white cells. Each new step is drawn as an outer ring, so time grows outward."></canvas>
+    <div class="readout" aria-live="polite">
+      <span>Rule: <b id="r-rule">GKL</b></span>
+      <span>Noise: <b id="r-noise">0%</b></span>
+      <span>Black cells: <b id="r-dens">50%</b></span>
+    </div>
+    <div class="readout">Tap the ring to flip cells. Time grows outward.</div>
+  </div>
+
+  <div>
+    {%- for ch in page.chapters %}
+    <article class="chapter" data-ch="{{ forloop.index }}">
+      <div class="numeral">{{ ch.numeral }}</div>
+      <h2>{{ ch.title }}</h2>
+      {{ ch.text | markdownify | strip }}
+    </article>
+    {%- endfor %}
+  </div>
+</section>

@@ -1,0 +1,23 @@
+# Things made on your computer that never go in the public repo
+
+# The built website and Jekyll's working files
+_site/
+.jekyll-cache/
+.sass-cache/
+.jekyll-metadata
+.bundle/
+vendor/
+Gemfile.lock
+
+# Test tools and their results
+node_modules/
+test-results/
+playwright-report/
+__pycache__/
+.pytest_cache/
+
+# Your phone number for the privacy check (rule 1): it stays on your computer only
+tests/private-phone.txt
+
+# Titles of unpublished papers for the privacy check: they stay on your computer only
+tests/private-titles.txt

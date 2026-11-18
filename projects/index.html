@@ -1,0 +1,43 @@
+---
+# The Projects page. The tiles and the "More work" cards come from _data/projects.yml.
+layout: page
+nav: projects
+title: Projects
+crumb: Projects
+eyebrow: Projects
+heading: Things I'm working on
+lede: >-
+  Each project gets its own page with a picture you can play with. The pictures
+  on the tiles are live simulations. Click one to open the project.
+description: >-
+  Research projects by Srikanth Iyer: collective intelligence under noise, AI agents
+  in a segregation model, energy moratoria, biomedical networks and the CANA library.
+og_description: How many tiny parts, with no one in charge, still decide something together.
+more_eyebrow: More work
+more_heading: Pages on the way
+scripts:
+  - /assets/js/ring.js
+  - /assets/js/schelling.js
+  - /assets/js/tiles.js
+---
+
+      <div class="tiles">
+        {%- for p in site.data.projects.tiles %}
+{% include tile.html p=p level=2 %}
+        {%- endfor %}
+      </div>
+
+    <section class="block" id="more">
+      <div class="eyebrow">{{ page.more_eyebrow }}</div>
+      <h2>{{ page.more_heading }}</h2>
+      <div class="cards">
+        {%- for c in site.data.projects.more %}
+        <article class="card">
+          <span class="tag">{{ c.tag }}</span>
+          <h3>{{ c.title | markdownify | remove: '<p>' | remove: '</p>' | strip }}</h3>
+          <p>{{ c.text | markdownify | remove: '<p>' | remove: '</p>' | strip }}</p>
+          <span class="meta">{{ c.meta }}</span>
+        </article>
+        {%- endfor %}
+      </div>
+    </section>

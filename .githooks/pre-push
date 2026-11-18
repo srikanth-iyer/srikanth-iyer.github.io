@@ -1,0 +1,13 @@
+#!/bin/sh
+# Runs the full website checks before each push, including the browser tests (a minute or two).
+# Switched on by:  python tests/run_tests.py setup   (it sets git config core.hooksPath .githooks)
+# To skip them once:  git push --no-verify
+cd "$(git rev-parse --show-toplevel)" || exit 1
+for py in python3 python py; do
+  # Use the first Python 3 that really works (on Windows "python3" can be a shortcut to the Store)
+  if command -v "$py" >/dev/null 2>&1 && "$py" -c "import sys; sys.exit(sys.version_info < (3, 9))" >/dev/null 2>&1; then
+    exec "$py" tests/run_tests.py full
+  fi
+done
+echo "Website checks skipped: Python 3 wasn't found."
+exit 0

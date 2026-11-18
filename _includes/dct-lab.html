@@ -1,0 +1,29 @@
+<!-- Try it yourself -->
+<section class="block" id="play">
+  <div class="eyebrow">Try it</div>
+  <h2>Run the ring yourself</h2>
+  <p class="lede">Pick a rule and a noise level. Then start the ring again from a fresh random mix, or throw in a burst of noise.</p>
+  <div class="lab">
+    <div class="board"><canvas class="ring" id="ring2" style="width:100%" role="img" aria-label="A second ring you can control with the buttons beside it."></canvas></div>
+    <div class="controls">
+      <div class="row" role="group" aria-label="Rule">
+        <button class="btn" type="button" data-rule="GKL" aria-pressed="true">GKL rule</button>
+        <button class="btn" type="button" data-rule="majority" aria-pressed="false">Local majority</button>
+      </div>
+      <label>
+        <span>Noise (chance a cell flips each step) <b id="n-val">1%</b></span>
+        <input type="range" id="noise" min="0" max="5" step="0.5" value="1">
+      </label>
+      <div class="row">
+        <button class="btn primary" type="button" id="fresh">New random start</button>
+        <button class="btn" type="button" id="burst">Burst of noise</button>
+      </div>
+      <div class="gauges">
+        <div><b id="g-dens">50%</b><small>black cells</small></div>
+        <div><b id="g-rule">GKL</b><small>rule</small></div>
+        <div><b id="g-noise">1%</b><small>noise</small></div>
+      </div>
+      <p class="hint">GKL: a white cell looks at itself and the cells 1 and 3 to its left, a black cell at itself and the cells 1 and 3 to its right, and takes the majority of the three. Local majority: each cell takes the majority of the 7 cells around it.</p>
+    </div>
+  </div>
+</section>

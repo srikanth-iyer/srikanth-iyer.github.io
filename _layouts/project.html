@@ -1,0 +1,71 @@
+---
+layout: default
+---
+{%- comment -%}
+  A project page. Its front matter fills the top (eyebrow, title, lede, chips, buttons)
+  and the Details boxes at the end. The page's own text goes in between.
+  The Previous / Next links follow the order of the tiles in _data/projects.yml.
+{%- endcomment -%}
+{%- assign tiles = site.data.projects.tiles -%}
+{%- assign here = page.url | remove: 'index.html' -%}
+    <div class="crumbs"><a href="{{ '/' | relative_url }}">Home</a> / <a href="{{ '/projects/' | relative_url }}">Projects</a> / {{ page.crumb }}</div>
+
+    <header class="proj-head">
+      <div class="eyebrow">{{ page.eyebrow }}</div>
+      <h1>{% if page.icon %}<img class="app-icon" src="{{ page.icon | relative_url }}" alt="" width="56" height="56">{% endif %}{{ page.heading | default: page.title }}</h1>
+      <p class="lede">{{ page.lede | strip }}</p>
+      {%- if page.chips %}
+      <div class="meta-row">
+        {%- for chip in page.chips %}
+        <span class="chip">{{ chip }}</span>
+        {%- endfor %}
+      </div>
+      {%- endif -%}
+      {%- if page.buttons %}
+      <div class="link-row">
+        {%- for b in page.buttons %}
+        <a class="btn{% if b.primary %} primary{% endif %}" href="{{ b.url | relative_url }}" rel="noopener">{{ b.text }}</a>
+        {%- endfor %}
+      </div>
+      {%- endif %}
+    </header>
+{{ content }}
+{%- if page.details %}
+    <section class="block" id="details">
+      <div class="eyebrow">Details</div>
+      <h2>{{ page.details_heading | default: "The team and where it's been" }}</h2>
+      <div class="info">
+        {%- for box in page.details %}
+        <div class="box">
+          <h3>{{ box.heading }}</h3>
+          {%- if box.text %}
+          <p>{{ box.text | markdownify | remove: '<p>' | remove: '</p>' | strip }}</p>
+          {%- endif -%}
+          {%- if box.items %}
+          <ul>
+            {%- for item in box.items %}
+            <li>{{ item | markdownify | remove: '<p>' | remove: '</p>' | strip }}</li>
+            {%- endfor %}
+          </ul>
+          {%- endif %}
+        </div>
+        {%- endfor %}
+      </div>
+    </section>
+{%- endif %}
+
+    {%- comment -%} Find this page among the tiles, then link to its neighbours {%- endcomment -%}
+    {%- for t in tiles -%}{%- if t.url == here -%}{%- assign i = forloop.index0 -%}{%- endif -%}{%- endfor -%}
+    {%- assign prev_i = i | minus: 1 -%}{%- assign next_i = i | plus: 1 %}
+    <nav class="next" aria-label="More projects">
+      {%- if i == 0 %}
+      <a href="{{ '/projects/' | relative_url }}"><small>← Back</small><span>All projects</span></a>
+      {%- else %}
+      <a href="{{ tiles[prev_i].url | relative_url }}"><small>← Previous project</small><span>{{ tiles[prev_i].title }}</span></a>
+      {%- endif -%}
+      {%- if next_i < tiles.size %}
+      <a href="{{ tiles[next_i].url | relative_url }}" style="text-align:right"><small>Next project →</small><span>{{ tiles[next_i].title }}</span></a>
+      {%- else %}
+      <a href="{{ '/projects/' | relative_url }}" style="text-align:right"><small>Back →</small><span>All projects</span></a>
+      {%- endif %}
+    </nav>

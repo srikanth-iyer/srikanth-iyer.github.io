@@ -1,0 +1,74 @@
+---
+layout: default
+---
+{%- comment -%}
+  The home page. Its words live in _data/home.yml, _data/timeline.yml,
+  _data/news.yml and _data/projects.yml, so you rarely need to edit this file.
+{%- endcomment -%}
+{%- assign home = site.data.home -%}
+
+    <!-- Hello: photo, name, one line -->
+    <section class="hero">
+      <div>
+        <span class="pill"><b></b>{{ home.hero.pill }}</span>
+        <h1>{{ home.hero.heading }}</h1>
+        <p class="lede">{{ home.hero.lede | strip }}</p>
+      </div>
+      <!-- Placeholder until a real photo is chosen: swap the canvas for <img src="/assets/img/srikanth.png" alt="Srikanth Iyer"> -->
+      <figure class="portrait">
+        <canvas id="portrait" role="img" aria-label="Photo placeholder"></canvas>
+        <figcaption>{{ home.hero.photo_caption }}</figcaption>
+      </figure>
+    </section>
+
+    <!-- About: the journey as a timeline. The line fills as you read; each year jumps to its part. -->
+    <section class="block about" id="about">
+      <div class="about-intro">
+        <div class="eyebrow">{{ home.about.eyebrow }}</div>
+        <h2>{{ home.about.heading }}</h2>
+        <p class="lede">{{ home.about.lede | strip }}</p>
+        <nav class="years" aria-label="Jump to a year">
+          {%- for step in site.data.timeline %}<a href="#{{ step.id }}">{{ step.year }}</a>{% endfor -%}
+        </nav>
+      </div>
+      <ol class="timeline" id="timeline">
+        {%- for step in site.data.timeline %}
+        <li id="{{ step.id }}"><span class="when">{{ step.when }}</span>
+          <h3>{{ step.title }}</h3>
+          {{ step.text | markdownify | strip }}
+          {%- if step.link %}
+          <a class="more-link" href="{{ step.link.url | relative_url }}">{{ step.link.text }} <span aria-hidden="true">→</span></a>
+          {%- endif -%}
+        </li>
+        {%- endfor %}
+      </ol>
+    </section>
+
+    <!-- Project tiles: each opens its own page -->
+    <section class="block" id="projects">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">{{ home.projects.eyebrow }}</div>
+          <h2>{{ home.projects.heading }}</h2>
+        </div>
+        <a class="btn" href="{{ '/projects/' | relative_url }}">{{ home.projects.button }} <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="tiles">
+        {%- for p in site.data.projects.tiles -%}
+        {%- if p.featured %}
+{% include tile.html p=p %}
+        {%- endif -%}
+        {%- endfor %}
+      </div>
+    </section>
+
+    <!-- Latest -->
+    <section class="block" id="latest">
+      <div class="eyebrow">{{ home.news.eyebrow }}</div>
+      <h2>{{ home.news.heading }}</h2>
+      <ul class="news">
+        {%- for n in site.data.news %}
+        <li><span class="when">{{ n.when }}</span><span class="what">{{ n.what }}<small>{{ n.note }}</small></span></li>
+        {%- endfor %}
+      </ul>
+    </section>

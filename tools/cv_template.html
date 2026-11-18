@@ -1,0 +1,31 @@
+---
+# This page is made by tools/build_cv_page.py from the CV repo's data/cv.yaml.
+# Edit cv.yaml (or tools/cv_template.html) and run the script; don't edit this file by hand.
+title: CV
+nav: cv
+description: "Curriculum vitae of {{NAME}}: complex systems, collective intelligence, network science, AI agents, and fifteen years in film and advertising."
+og_type: profile
+scripts:
+  - /assets/js/pages/cv.js
+---
+{% raw %}
+    <div class="cv-head">
+      <div>
+        <div class="eyebrow">Curriculum vitae</div>
+        <h1>{{NAME}}</h1>
+        <p class="lede" style="font-size:16px">{{EMAILS}}<br>{{LINKS}} · {{LOCATION}}</p>
+      </div>
+    </div>
+    <p class="cv-updated">Last updated {{UPDATED}}</p>
+
+    <div class="cv-layout">
+      <nav class="toc" aria-label="CV sections"><ol>
+{{TOC}}
+      </ol>
+        <p class="toc-file"><a href="srikanth-iyer-cv.pdf">PDF version</a> · <button type="button" onclick="print()">Print</button></p>
+      </nav>
+      <article class="cv">
+{{SECTIONS}}
+      </article>
+    </div>
+{% endraw %}

@@ -1,0 +1,30 @@
+# A small safety net on GitHub: the quick checks (build, data files, privacy) on every push.
+# Your laptop already runs these before each commit; this catches commits made anywhere else,
+# such as ones Claude makes from the cloud, which never pass through your laptop.
+name: Safety check
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quick:
+    # Ubuntu 24.04: the newest system the browser test tool (Playwright) supports
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true          # remembers the installed gems between runs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-test.txt
+      - name: Quick checks
+        run: python tests/run_tests.py quick
+        env:
+          PHONE_TO_BLOCK: ${{ secrets.PHONE_TO_BLOCK }}   # optional: your number, kept secret, for an exact check
