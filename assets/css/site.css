@@ -314,12 +314,6 @@ main, footer { text-shadow: 0 0 8px color-mix(in srgb, var(--bg) 80%, transparen
 /* thin reading-progress line at the very top of the window */
 .progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 40; background: var(--accent-bright); opacity: 0.7; transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
 
-/* PDF and Print links under the CV's side menu */
-.toc-file { margin: 18px 0 0 14px; font-size: 13px; color: var(--muted); }
-.toc-file a, .toc-file button { color: var(--muted); font: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
-.toc-file button { min-height: 24px; padding: 0 2px; }
-.toc-file a:hover, .toc-file button:hover { color: var(--accent); }
-@media (max-width: 860px) { .toc-file { margin-left: 0; } }
 @media print { .progress { display: none; } }
 
 /* smaller text cards (projects without their own page yet) */

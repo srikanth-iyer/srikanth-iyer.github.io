@@ -99,9 +99,8 @@ python tools/build_cv_page.py ../CV/data/cv.yaml
 
 That rewrites `cv/index.html`. Never copy `cv.yaml` itself into this repo (the checks stop it).
 
-**The CV PDF:** build the long CV in the CV repository from a copy of `cv.yaml` with the phone
-line removed and `manuscripts: []` (never from the original), then copy `build/long/cv-long.pdf` here as
-`cv/srikanth-iyer-cv.pdf`. The checks read the PDF and stop a commit if it holds a phone number.
+**No downloadable CV:** the CV lives only on the CV page, in one version. There is no PDF
+and no Print or Download link (your choice, 18 Nov 2026), and the checks stop a commit that adds a PDF.
 
 ## Graphics, backgrounds and animations
 
@@ -183,7 +182,7 @@ Quick checks (before each commit):
   private files, no `cv.yaml`, and `WEBSITE-RULES.md` stays uncommitted.
 - **Unpublished papers:** no Manuscripts section and none of the words that mark a paper in
   preparation ("manuscript", "in preparation", "preprint", "under review" and the like), on the
-  pages, in the built site or in the CV PDF.
+  pages or in the built site.
 - **Scripts and styles:** no typing mistakes in the JavaScript or CSS.
 - **The build:** Jekyll builds the site with no warnings.
 - **Built pages:** every page has a title, one main heading, working links (including links to

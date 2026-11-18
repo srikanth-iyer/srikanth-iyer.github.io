@@ -326,3 +326,11 @@ def test_no_unpublished_papers_in_source():
 def test_cv_page_has_no_manuscripts_section():
     text = (ROOT / "cv" / "index.html").read_text(encoding="utf-8")
     assert 'id="manuscripts"' not in text, "cv/index.html has a Manuscripts section; papers in preparation stay private"
+
+
+def test_no_downloadable_cv():
+    """You chose to keep the CV on the web page only, in one version: no PDF, no Print or Download link."""
+    pdfs = [f for f in committed_files() if f.lower().endswith(".pdf")]
+    assert not pdfs, "The CV stays on the web page only. Take these PDFs out: " + ", ".join(pdfs)
+    page = (ROOT / "tools" / "cv_template.html").read_text(encoding="utf-8") + (ROOT / "_includes" / "footer.html").read_text(encoding="utf-8")
+    assert ".pdf" not in page and "print()" not in page, "The CV page or footer links to a PDF or a Print button again"
