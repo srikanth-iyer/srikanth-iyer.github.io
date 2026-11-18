@@ -1,0 +1,419 @@
+# The CV page (/cv/). Edit the words here; the page itself is cv/index.html.
+# This file is kept by hand. It is NOT copied from your private CV repo, so you can
+# word and merge things for the web. When you add a talk to your private CV, add it here too.
+#
+# Rule 1: never a phone number. Rule 2: nothing private, so no unfinished papers
+# and nothing marked tentative or submitted. The checks stop a commit that breaks these.
+#
+# Each section has:
+#   id:       short name used in the page address (/cv/#talks); keep it unique
+#   heading:  the title shown on the page
+#   menu:     optional shorter name for the side menu
+#   compact:  optional; true packs the entries closer together
+#   intro:    optional sentence under the heading
+#   feature:  optional video at the top: youtube (the id after watch?v=), title, caption
+#   entries:  the items, each with any of these fields:
+#     title, url (makes the title a link), when, where,
+#     bullets (a list), note (one line), meta (one small grey line),
+#     tags (a list of short words), links and watch (lists of label + url)
+#   pairs:    instead of entries, label + text rows (used for Skills)
+#
+# Markdown works in the text: *italics*, **bold**, [a link](https://...).
+
+name: Srikanth Iyer
+location: Lisbon, Portugal and Binghamton, NY, USA
+updated: Nov 2026
+sections:
+
+  - id: education
+    heading: Education
+    entries:
+      - title: Ph.D. in Systems Science
+        when: Jan 2025 – Jan 2029 (expected)
+        where: Binghamton University, State University of New York · Binghamton, NY, USA
+        note: >-
+          Complex systems, network science, bio-inspired computation · Advisor: Prof. Luis
+          M. Rocha
+      - title: M.S. in Systems Science
+        when: Sep 2023 – Dec 2024
+        where: Binghamton University, State University of New York · Binghamton, NY, USA
+        note: GPA 3.972 / 4.00
+      - title: Bachelor of Mass Media, Journalism
+        when: May 2006 – May 2009
+        where: University of Mumbai · Mumbai, India
+
+  - id: positions
+    heading: Research positions
+    menu: Research
+    entries:
+      - title: Research Fellow
+        when: Apr 2026 – present
+        where: >-
+          CBeRa (ERA Chair), Católica Biomedical Research Centre · Católica Medical School,
+          Universidade Católica Portuguesa · Oeiras, Lisbon, Portugal
+        bullets:
+          - >-
+            Studying network models of gene regulation, disease co-occurrence (comorbidity),
+            epidemic spread and the brain, and how built-in logical redundancy shapes their
+            system dynamics.
+          - >-
+            Developing open-source Python tooling to analyze and visualize graphs, aimed at
+            explainability of the dynamic evolution and control of systems biology models.
+          - >-
+            Building multiscale biochemical network models and their data pipelines toward
+            the project's goal of biomedical digital twins.
+        note: >-
+          Supervisor: Prof. Luis M. Rocha (PI, ERA Chair Holder) · Funded by Horizon Europe
+          ERA Chair (grant 101186558)
+        links:
+          - label: cberaproject.eu
+            url: https://www.cberaproject.eu
+          - label: linkedin.com/company/cbera-project
+            url: https://www.linkedin.com/company/cbera-project/
+      - title: Research Collaborator
+        when: Aug 2025 – present
+        where: >-
+          Collaborative Decisions group (Dr. Neha Patankar) · Binghamton University, State
+          University of New York · Binghamton, NY, USA
+        bullets:
+          - >-
+            Analyzing town and county moratoria on large solar, wind and battery projects
+            across New York State, so that GenX, a capacity-expansion model that finds the
+            lowest-cost mix of power plants, storage and transmission lines, can account for
+            them.
+          - >-
+            Modeling why and when towns adopt a moratorium, and whether one town's decision
+            spreads to its neighbors, with statistical models that isolate the main factors
+            behind local decisions; a neighboring town's adoption raises a town's monthly
+            odds of adopting by about 11%.
+          - >-
+            Forecasting future moratoria with Monte Carlo simulation: running the fitted model
+            forward month by month many times, then testing the forecasts against what happened
+            later (out-of-time backtest).
+          - >-
+            Working with PowerGenome, an open-source tool that turns public power-system data
+            into planning scenarios, to build New York scenarios for GenX, and optimizing
+            them with Gurobi, a commercial mathematical-optimization solver, including runs
+            that produce a range of near-lowest-cost alternatives (modeling to generate alternatives).
+          - >-
+            Built a GenX scenario export pipeline and an interactive results dashboard (Quarto,
+            Shinylive) that compare New York scenarios: capacity built, power-plant dispatch,
+            emissions and capacity factors.
+        tags:
+          - Python
+          - GeoPandas
+          - statsmodels
+          - SQLite
+          - GenX (Julia)
+          - PowerGenome
+          - Quarto
+        links:
+          - label: Dr. Neha Patankar, SSIE faculty profile
+            url: https://www.binghamton.edu/ssie/people/profile.html?id=npatankar
+      - title: Graduate Research Assistant
+        when: May 2024 – present
+        where: >-
+          Complex Adaptive Systems and Computational Intelligence Lab (CASCI) · Binghamton
+          University, State University of New York · Binghamton, NY, USA
+        bullets:
+          - >-
+            Showed that when simple decision rules evolve to reach a group decision despite
+            random errors, evolution favors rules with more logical redundancy (rules that
+            rely on only some of their inputs), using large-scale GPU simulation of a collective
+            behavior model.
+          - >-
+            Extended CANA, an open-source library that measures redundancy, symmetry and control
+            in on/off (Boolean) network models, and added new symmetry calculations to the
+            main library.
+          - >-
+            Developed Balanced Robustness, a single score for how well a decision rule holds
+            up under random errors, and used it to show that redundancy and symmetry are the
+            design features behind reliable rules.
+          - >-
+            Testing whether evolution selects for symmetry in a rule's logic as a design principle.
+        note: >-
+          Supervisor: Prof. Luis M. Rocha · Funded by an SSIE Graduate Assistantship with
+          tuition scholarship, awarded on academic merit (Fall 2024 - Spring 2026)
+        links:
+          - label: casci.binghamton.edu
+            url: https://casci.binghamton.edu/
+
+  - id: talks
+    heading: Talks and posters
+    menu: Talks
+    entries:
+      - title: >-
+          Canalization drives Robustness in the Evolution of Collective Intelligence under
+          Noise
+        when: October 2026
+        where: Conference on Complex Systems (CCS 2026) · Binghamton, NY, USA
+        note: '**Srikanth Iyer**, Annajirao Challa, Duxiao Hao, Jordan C. Rozum, Luis M. Rocha'
+        meta: >-
+          Talk · session T4-2, Robustness, Noise, and Multiscale Intelligence in Complex Systems;
+          Best Student Presentation Award, 3rd place
+      - title: >-
+          (Some) Large Language Model Agents Partially Reproduce Real-World Segregation Patterns
+          in the Sakoda-Schelling Model
+        when: October 2026
+        where: Conference on Complex Systems (CCS 2026) · Binghamton, NY, USA
+        note: >-
+          **Srikanth Iyer**, Andreas Pape, Yixin Ren, Nency Dhameja, Christopher Zosh, Mohammad
+          Mahinur Alam, Carl Lipo
+        meta: >-
+          Talk · session T2-2, Patterns, Policies, and Emergence in Model-Based Complex Systems
+          · presented by A. Pape
+      - title: Canalization and Robustness in Collective Decision-Making under Noise
+        when: June 2026
+        where: >-
+          CBeRa Forum 2026: Complex Networks, Systems & Art in Biomedicine · Champalimaud
+          Foundation, Lisbon, Portugal
+        note: '**Srikanth Iyer**'
+        meta: Recorded talk
+      - title: >-
+          Canalization drives Robustness in the Evolution of Collective Intelligence under
+          Noise
+        when: June 2026
+        where: >-
+          CPIN2: Critical Phenomena in Networks, satellite symposium of NetSci 2026 · Boston,
+          MA, USA
+        note: '**Srikanth Iyer**, Annajirao Challa, Duxiao Hao, Jordan C. Rozum, Luis M. Rocha'
+        meta: Talk · one of six contributed talks
+      - title: >-
+          (Some) Large Language Model Agents Partially Reproduce Real-World Segregation Patterns
+          in the Sakoda-Schelling Model
+        when: March 2026
+        where: >-
+          Ninth Northeast Regional Conference on Complex Systems (NERCCS 2026) · University
+          of Rochester, Rochester, NY, USA
+        note: >-
+          **Srikanth Iyer**, Andreas Pape, Yixin Ren, Nency Dhameja, Christopher Zosh, Mohammad
+          Mahinur Alam, Carl Lipo
+        meta: Talk · presented by A. Pape
+      - title: >-
+          Canalization drives Robustness in the Evolution of Collective Intelligence under
+          Noise
+        when: March 2026
+        where: >-
+          Ninth Northeast Regional Conference on Complex Systems (NERCCS 2026) · University
+          of Rochester, Rochester, NY, USA
+        note: '**Srikanth Iyer**, Annajirao Challa, Duxiao Hao, Jordan C. Rozum, Luis M. Rocha'
+        meta: 'Talk · session: Self-Organization, Robustness, and Epidemic Coupling'
+      - title: >-
+          Generating strategies to win Monopoly by analyzing it as a directed, weighted network
+        when: July 2024
+        where: >-
+          International School and Conference on Network Science (NetSci 2024) · Québec City,
+          Canada
+        note: Amahury J. López-Díaz, **Srikanth Iyer**, Akshay Gangadhar, Carlos Gershenson
+        meta: Poster · presented by A. J. López-Díaz
+
+  - id: awards
+    heading: Awards
+    compact: true
+    entries:
+      - title: Best Student Presentation Award, 3rd Place
+        when: October 2026
+        where: '[Conference on Complex Systems (CCS 2026)](https://ccs26.cssociety.org/)'
+        note: >-
+          For the contributed talk *Canalization drives Robustness in the Evolution of Collective
+          Intelligence under Noise*.
+      - title: CBeRa Research Fellowship (competitive)
+        when: '2026'
+        where: Católica Biomedical Research Centre, Universidade Católica Portuguesa, Lisbon
+      - title: Graduate Assistantship with Tuition Scholarship
+        when: 2024 – 2026
+        where: School of Systems Science and Industrial Engineering, Binghamton University
+      - title: Academic Excellence in Systems Science
+        when: '2024'
+        where: >-
+          Thomas J. Watson College of Engineering and Applied Science, Binghamton University
+        note: Graduate departmental honors for the *M.S. in Systems Science*.
+      - title: Best Design Award
+        when: '2016'
+        where: Acetech 2016
+        note: For a *360-degree immersive brand video* created for Goldmedal Electricals.
+
+  - id: projects
+    heading: Projects and software
+    menu: Projects
+    entries:
+      - title: 'CANA: Control and Redundancy in Boolean Networks'
+        url: https://github.com/CASCI-lab/CANA
+        when: Aug 2024 – present
+        where: Maintainer (Python library, CASCI lab) · Python, Cython
+        bullets:
+          - >-
+            Six merged pull requests, making me the library's fifth-largest contributor: new
+            symmetry measures for Boolean networks, and faster, reproducible calculations.
+          - >-
+            Rewrote the contributor guidelines (August 2026); reviews and merges contributions
+            from other developers.
+          - >-
+            Prototyped faster code (Cython) for computing the compact rule patterns (schemata)
+            the library relies on.
+      - title: Classifying Drug-Term Relations in Epilepsy Patient Forums
+        when: Apr 2025 – May 2025
+        bullets:
+          - >-
+            Course project (SSIE 548, Healthcare Data Science and Analytics) classifying drug
+            and medical-term pairs in Epilepsy Foundation forum and Reddit posts as indications
+            or side effects, comparing logistic regression, support vector machines, random
+            forests and gradient boosting.
+        tags:
+          - Python
+          - scikit-learn
+      - title: Resource and Customer-Service Optimization for a Made-to-Order Restaurant
+        when: Mar 2024
+        bullets:
+          - >-
+            Modeled restaurant operations to determine staffing and task allocation that minimize
+            labor cost within service-level constraints.
+        tags:
+          - Simio
+          - discrete-event simulation
+
+  - id: teaching
+    heading: Teaching and service
+    menu: Teaching
+    entries:
+      - title: SSIE 583 / ISE 483, Biologically Inspired Computing
+        when: Spring 2025
+        where: Graduate Assistant · Binghamton University
+        note: >-
+          Instructor: L. M. Rocha. Delivered the first lab session and supervised the graduate
+          students who led the later labs.
+      - title: SSIE 501 / ISE 440, Introduction to Systems Science
+        when: Fall 2024
+        where: Graduate Assistant · Binghamton University
+        note: >-
+          Instructor: L. M. Rocha. Gave the first lecture as substitute instructor (20 August
+          2024) and led a paper-discussion class (22 October 2024).
+      - title: On-site Organizing Team
+        when: December 2025
+        where: COMPLEX NETWORKS 2025, Binghamton University
+        note: Session support and speaker liaison
+      - title: On-site Organizing Team
+        when: April 2025
+        where: NERCCS 2025, Binghamton University
+        note: Session and Zoom-host support on all three days
+      - title: Co-organizer
+        when: Spring 2025
+        where: CoCo CRISPIE student seminar series, Binghamton Center of Complex Systems
+        note: Scheduled the semester's seminars and invited external speakers
+      - title: Accepted participant
+        when: 9-10 October 2026
+        where: Young Researchers of the Complex Systems Society (yrCSS) / CCS 2026 Warm-Up
+        note: Binghamton University, Binghamton, NY
+
+  - id: film
+    heading: Film, advertising and writing
+    menu: Film and ads
+    intro: >-
+      Before research, I spent fifteen years in Mumbai writing, directing and producing for
+      film, television and brands. A few of the films are below.
+    feature:
+      youtube: aTseAspUL4E
+      title: 360-degree immersive brand video for Goldmedal Electricals
+      caption: >-
+        Best Design Award, Acetech 2016. I created it as Goldmedal's branding and creative
+        consultant.
+    entries:
+      - title: Story and Screenplay Writer
+        when: 2018 – 2022
+        where: Baweja Studios Ltd. and Epilogue Entertainment · Mumbai, India
+        bullets:
+          - >-
+            Developed and co-wrote the story and screenplay for the feature film *Capgras*,
+            a psychological horror exploring gender roles, folklore and ecological conflict.
+            Currently in production.
+      - title: Branding and Creative Consultant
+        when: 2015 – 2018
+        where: Goldmedal Electricals Pvt Ltd. · Mumbai, India
+        bullets:
+          - >-
+            Created a 360-degree immersive brand video for Goldmedal (electrical switches
+            and home-automation products) that won Best Design at Acetech 2016.
+          - >-
+            Scripted television commercials, brand idents and corporate films, and built a
+            year-round communications calendar for consumers and vendors.
+        watch:
+          - label: 360-degree brand video
+            url: https://www.youtube.com/watch?v=aTseAspUL4E
+          - label: Automation (TV ad)
+            url: https://www.youtube.com/watch?v=GxEi4PQgk1E
+          - label: Home (TV ad)
+            url: https://www.youtube.com/watch?v=-2XupTxvLGU
+          - label: iDock (TV ad)
+            url: https://www.youtube.com/watch?v=x716IDElhAs
+      - title: Creative Writer and Associate Director
+        when: 2014 – 2015
+        where: Percept Media Pvt Ltd. · Mumbai, India
+        bullets:
+          - >-
+            Scripted and executed promos and after-movies for Sunburn Music Festival (India's
+            largest electronic music festival).
+          - >-
+            Associate director on films for the National Games 2015 (India's national multi-sport
+            event), Canon (printers) and Oxemberg (menswear).
+        watch:
+          - label: Sunburn Music Festival
+            url: https://www.youtube.com/watch?v=5wKqRFpVggw
+          - label: National Games 2015
+            url: https://www.youtube.com/watch?v=b_EGBGq_rHY
+          - label: Oxemberg
+            url: https://www.youtube.com/watch?v=L_NEMMVRNJc
+      - title: Executive Producer, Scripting and Post-Production
+        when: 2013 – 2014
+        where: Twentyseventh Films Pvt Ltd. · Mumbai, India
+        bullets:
+          - >-
+            Executive producer and assistant director on films for Monte Carlo (winterwear),
+            Videocon (mobile phones), and Denver and Envy (men's grooming and fragrance).
+        watch:
+          - label: Monte Carlo
+            url: https://vimeo.com/79470398
+          - label: Videocon
+            url: https://vimeo.com/72253237
+          - label: Denver and Envy, part 1
+            url: https://vimeo.com/87440424
+          - label: Denver and Envy, part 2
+            url: https://vimeo.com/90713856
+      - title: Associate Producer, Post-Production
+        when: 2012 – 2013
+        where: Kiss Films Pvt Ltd. · Mumbai, India
+        bullets:
+          - >-
+            Delivered television commercials for Hero Glamour (motorcycles), Pond's (skincare),
+            Wills (apparel), Toshiba (LED TVs) and ESPN Hockey (sports broadcasting), supervising
+            editing, color grading, CGI, compositing and sound design.
+        watch:
+          - label: Hero Glamour
+            url: https://www.youtube.com/watch?v=s04rfd4-Xsw
+          - label: Pond's
+            url: https://vimeo.com/334450972
+          - label: Wills
+            url: https://vimeo.com/341776777
+          - label: ESPN Hockey, 1
+            url: https://vimeo.com/338226816
+          - label: ESPN Hockey, 2
+            url: https://vimeo.com/338226429
+      - title: Sports Writer
+        when: 2008 – 2011
+        where: Goal.com, iSportBureau, JamMag · Mumbai, India
+        bullets:
+          - Feature articles on Indian soccer, Italian Serie A and Formula 1.
+
+  - id: skills
+    heading: Skills
+    pairs:
+      - label: Programming
+        text: Python (NumPy, Pandas, Scikit-learn, PyTorch), R, Julia
+      - label: Scientific computing
+        text: GPU simulation with CuPy, NetworkX, CANA, GeoPandas, statsmodels
+      - label: Modeling and simulation
+        text: >-
+          Mesa (agent-based modeling), Simio (discrete-event), NetLogo, GenX (power systems)
+      - label: LLM tooling
+        text: Ollama, llama.cpp
+      - label: Workflow
+        text: Git, Snakemake, Docker, Conda, Quarto, LaTeX, Overleaf

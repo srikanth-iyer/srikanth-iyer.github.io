@@ -195,10 +195,43 @@ def test_project_pages_have_tiles():
             assert url in tile_urls, f"{path.relative_to(ROOT)} has no tile in projects.yml (url {url})"
 
 
-def test_cv_page_keeps_its_raw_block():
-    """The CV page's text is wrapped in {% raw %} so Jekyll leaves it exactly as written."""
-    text = (ROOT / "cv" / "index.html").read_text(encoding="utf-8")
-    assert "{% raw %}" in text and "{% endraw %}" in text, "cv/index.html lost its {% raw %} ... {% endraw %} lines"
+def test_cv_page_data():
+    """_data/cv_page.yml (the CV page's words) has what the page needs, in the right shape."""
+    cv = load("cv_page.yml")
+    need(cv, ["name", "location", "updated", "sections"], "cv_page.yml")
+    assert re.fullmatch(r"[A-Z][a-z]{2} \d{4}", cv["updated"]), "cv_page.yml: 'updated' should look like Nov 2026"
+    ids = []
+    for i, s in enumerate(cv["sections"], 1):
+        need(s, ["id", "heading"], f"cv_page.yml section {i}")
+        where = f"cv_page.yml section '{s['id']}'"
+        assert re.fullmatch(r"[a-z][a-z0-9-]*", s["id"]), f"{where}: id should be short lowercase words, like talks"
+        assert s.get("entries") or s.get("pairs"), f"{where}: needs entries or pairs"
+        ids.append(s["id"])
+        for j, e in enumerate(s.get("entries") or [], 1):
+            need(e, ["title"], f"{where} entry {j}")
+            for key in ("bullets", "tags", "links", "watch"):
+                assert isinstance(e.get(key, []), list), f"{where} entry {j}: '{key}' should be a list (lines starting with -)"
+            for link in (e.get("links") or []) + (e.get("watch") or []):
+                need(link, ["label", "url"], f"{where} entry {j} link")
+                assert link["url"].startswith("https://"), f"{where} entry {j}: {link['url']} should start with https://"
+            if e.get("url"):
+                assert e["url"].startswith("https://"), f"{where} entry {j}: url should start with https://"
+        for j, p in enumerate(s.get("pairs") or [], 1):
+            need(p, ["label", "text"], f"{where} pair {j}")
+        if s.get("feature"):
+            need(s["feature"], ["youtube", "title"], f"{where} feature")
+            assert re.fullmatch(r"[\w-]{11}", s["feature"]["youtube"]), \
+                f"{where}: feature 'youtube' should be the 11-letter id after watch?v= in the video's address"
+    assert len(ids) == len(set(ids)), "cv_page.yml: two sections have the same id"
+
+
+def test_videos_use_the_privacy_player():
+    """Embedded YouTube videos load from youtube-nocookie.com, which sets no tracking cookies until played."""
+    for path in [ROOT / "cv" / "index.html", *INCLUDES.rglob("*.html"), *LAYOUTS.glob("*.html")]:
+        for src in re.findall(r"<iframe[^>]*\ssrc=\"([^\"]+)\"", path.read_text(encoding="utf-8")):
+            if "youtube" in src:
+                assert src.startswith("https://www.youtube-nocookie.com/embed/"), \
+                    f"{path.relative_to(ROOT)}: embed YouTube from https://www.youtube-nocookie.com/embed/, not {src}"
 
 
 # ---------------------------------------------------------------- privacy (WEBSITE-RULES.md, rule 1)
@@ -324,13 +357,15 @@ def test_no_unpublished_papers_in_source():
 
 
 def test_cv_page_has_no_manuscripts_section():
-    text = (ROOT / "cv" / "index.html").read_text(encoding="utf-8")
-    assert 'id="manuscripts"' not in text, "cv/index.html has a Manuscripts section; papers in preparation stay private"
+    ids = [str(s.get("id", "")).lower() for s in load("cv_page.yml")["sections"]]
+    assert not [i for i in ids if "manuscript" in i or "prep" in i], \
+        "cv_page.yml has a Manuscripts section; papers in preparation stay private"
 
 
 def test_no_downloadable_cv():
     """You chose to keep the CV on the web page only, in one version: no PDF, no Print or Download link."""
     pdfs = [f for f in committed_files() if f.lower().endswith(".pdf")]
     assert not pdfs, "The CV stays on the web page only. Take these PDFs out: " + ", ".join(pdfs)
-    page = (ROOT / "tools" / "cv_template.html").read_text(encoding="utf-8") + (ROOT / "_includes" / "footer.html").read_text(encoding="utf-8")
+    page = "".join((ROOT / f).read_text(encoding="utf-8") for f in
+                   ("cv/index.html", "_includes/cv-entry.html", "_includes/footer.html", "_data/cv_page.yml"))
     assert ".pdf" not in page and "print()" not in page, "The CV page or footer links to a PDF or a Print button again"

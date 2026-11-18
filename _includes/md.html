@@ -1,0 +1,5 @@
+{%- comment -%}
+  Turns one line of Markdown (*italics*, **bold**, [links](https://...)) into HTML,
+  without the <p> wrapper Markdown adds. Use:  {% include md.html text=some.text %}
+{%- endcomment -%}
+{{- include.text | markdownify | remove: "<p>" | remove: "</p>" | strip -}}

@@ -18,6 +18,7 @@ _data/timeline.yml        The journey timeline on the home page
 _data/news.yml            "Recent news" on the home page
 _data/projects.yml        Project tiles (home and Projects page) and the "More work" cards
 _data/contact.yml         Email addresses, links, the Contact box's address (used on every page)
+_data/cv_page.yml         The CV page's words, kept by hand (see "Updating the CV")
 _data/navigation.yml      The links in the header
 
 projects/dct/index.md     A project page: settings and short texts at the top (between the
@@ -25,7 +26,7 @@ projects/dct/index.md     A project page: settings and short texts at the top (b
 projects/schelling/...    Another project page
 projects/thinky/...       Another project page
 contact/index.html        The Contact page's heading and intro
-cv/index.html             The CV, made from your private CV repo (see "Updating the CV")
+cv/index.html             How the CV page is laid out (its words are in _data/cv_page.yml)
 404.html                  The "page not found" page
 
 _layouts/                 Page designs (home, project page, plain page). Rarely needs editing.
@@ -36,7 +37,7 @@ assets/js/                Scripts: site.js (every page), ring.js and schelling.j
                           tiles.js (live tiles), pages/*.js (one page each)
 _config.yml               Site-wide settings
 tests/                    The automatic checks (see "Checks")
-tools/                    The CV page maker and the Contact box's Google script
+tools/                    The Contact box's Google script
 ```
 
 ## Changing words
@@ -88,16 +89,20 @@ ready to go live. The checks block a commit that looks private (see "Checks").
 
 ## Updating the CV
 
-The CV's facts live in your private CV repository (`data/cv.yaml`). A script copies only the
-public, finished parts into this site: it never reads the phone number, leaves out entries
-marked `submitted` or `tentative`, private records (`in: []`) and the whole list of papers in
-preparation (`manuscripts`), and stops with an error if the phone number shows up anyway. With both repos side by side:
+The CV page's words live in `_data/cv_page.yml`, which you edit by hand. It is a shorter web
+version of your CV: eight sections, some merged, with the extras (languages, coursework,
+memberships, the summary) left in your private CV. It is not copied from your private CV repo,
+so when you add a talk or an award there, add it here too. The comments at the top of the file
+list every field. To add a talk, copy an existing talk entry, paste it at the top of the Talks
+list and change the words.
 
-```
-python tools/build_cv_page.py ../CV/data/cv.yaml
-```
+The Film section can show one video at the top (`feature:`, with the YouTube id: the part after
+`watch?v=` in the video's address). It plays through `youtube-nocookie.com`, YouTube's
+privacy-enhanced player, which sets no tracking cookies until someone presses play. The `watch:`
+list under a job makes the small "Watch" links.
 
-That rewrites `cv/index.html`. Never copy `cv.yaml` itself into this repo (the checks stop it).
+Never copy `cv.yaml` itself into this repo (the checks stop it), and never add papers in
+preparation or anything marked tentative or submitted (the checks look for those too).
 
 **No downloadable CV:** the CV lives only on the CV page, in one version. There is no PDF
 and no Print or Download link (your choice, 18 Nov 2026), and the checks stop a commit that adds a PDF.

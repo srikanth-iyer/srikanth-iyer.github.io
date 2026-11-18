@@ -1,0 +1,16 @@
+{%- comment -%}
+  One CV entry, from _data/cv_page.yml. Called by cv/index.html as
+  {% include cv-entry.html e=entry compact=section.compact %}
+{%- endcomment -%}
+{%- assign e = include.e -%}
+<div class="entry{% if include.compact %} compact{% endif %}">
+  <div class="t">{% if e.url %}<a href="{{ e.url }}" rel="noopener">{% include md.html text=e.title %}</a>{% else %}{% include md.html text=e.title %}{% endif %}</div>
+  <div class="d">{{ e.when }}</div>
+  {%- if e.where %}<div class="s">{% include md.html text=e.where %}</div>{% endif %}
+  {%- if e.bullets %}<ul>{% for b in e.bullets %}<li>{% include md.html text=b %}</li>{% endfor %}</ul>{% endif %}
+  {%- if e.note %}<div class="note">{% include md.html text=e.note %}</div>{% endif %}
+  {%- if e.meta %}<div class="s">{% include md.html text=e.meta %}</div>{% endif %}
+  {%- if e.tags %}<div class="tags">{% for t in e.tags %}<span>{{ t }}</span>{% endfor %}</div>{% endif %}
+  {%- if e.links %}<div class="note">{% for l in e.links %}<a href="{{ l.url }}" rel="noopener">{{ l.label }}</a>{% unless forloop.last %} · {% endunless %}{% endfor %}</div>{% endif %}
+  {%- if e.watch %}<div class="watch"><span class="watch-label">Watch</span>{% for w in e.watch %}<a href="{{ w.url }}" rel="noopener">{{ w.label }}</a>{% endfor %}</div>{% endif %}
+</div>

@@ -271,6 +271,19 @@ footer .fine { margin-top: 36px; font-family: var(--mono); font-size: 11.5px; di
 .inline-list { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
 .inline-list li { font-size: 14px; border: 1px solid var(--line); background: var(--card); border-radius: 8px; padding: 4px 10px; }
 .cv-updated { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.cv-contact { font-size: 16px; }
+/* Film section: a short intro, one featured video, and "Watch" links under each job */
+.cv-intro { font-family: var(--serif); font-size: 17px; line-height: 1.7; margin: 0 0 20px; }
+.cv-video { margin: 0 0 28px; }
+.cv-video .frame { position: relative; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #000; }
+.cv-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.cv-video figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
+.cv-video figcaption b { color: var(--fg); font-weight: 600; }
+.entry .watch { grid-column: 1 / -1; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+.entry .watch-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-right: 2px; }
+.entry .watch a { font-size: 13px; text-decoration: none; border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 3px 10px; }
+.entry .watch a::before { content: "\25B6"; font-size: 9px; margin-right: 6px; color: var(--accent); }
+.entry .watch a:hover { border-color: var(--accent-bright); }
 @media (max-width: 860px) {
   .cv-layout { grid-template-columns: 1fr; gap: 8px; }
   .toc { position: static; }
