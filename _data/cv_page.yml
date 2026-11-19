@@ -368,16 +368,21 @@ sections:
         bullets:
           - >-
             Executive producer and assistant director on films for Monte Carlo (winterwear),
-            Videocon (mobile phones), and Denver and Envy (men's grooming and fragrance).
+            Videocon (mobile phones), Denver and Envy (men's grooming and fragrance), and
+            Vanessa.
         watch:
           - label: Monte Carlo
             url: https://vimeo.com/79470398
           - label: Videocon
             url: https://vimeo.com/72253237
-          - label: Denver and Envy, part 1
+          - label: Envy 1000, part 1
             url: https://vimeo.com/87440424
-          - label: Denver and Envy, part 2
+          - label: Envy 1000, part 2
             url: https://vimeo.com/90713856
+          - label: Denver Fairplay
+            url: https://vimeo.com/79295686
+          - label: Vanessa Fairtone
+            url: https://vimeo.com/79366057
       - title: Associate Producer, Post-Production
         when: 2012 – 2013
         where: Kiss Films Pvt Ltd. · Mumbai, India
@@ -397,11 +402,6 @@ sections:
             url: https://vimeo.com/338226816
           - label: ESPN Hockey, 2
             url: https://vimeo.com/338226429
-      - title: Sports Writer
-        when: 2008 – 2011
-        where: Goal.com, iSportBureau, JamMag · Mumbai, India
-        bullets:
-          - Feature articles on Indian soccer, Italian Serie A and Formula 1.
 
   - id: skills
     heading: Skills
